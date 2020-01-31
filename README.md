@@ -1,8 +1,15 @@
-# exoplayer-kotlin
+# Exoplayer-kotlin
 
 Example of Exoplayer v2.11.1 in Kotlin
 
 This example is for HLS video
+
+# Project branch
+
+1. Master -> Only Player
+2. feature/fullscreenDialog -> Player + fullscreen via Dialog
+3. feature/fullscreenLayoutParams -> Player + fullscreen via modifying LayoutParams
+4. feature/qualitySelector -> Player + Quality Selector
 
 # Resources
 
