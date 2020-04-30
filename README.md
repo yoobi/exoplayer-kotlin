@@ -1,6 +1,6 @@
 # Exoplayer-kotlin
 
-Example of Exoplayer v2.11.1 in Kotlin
+Example of Exoplayer v2.11.4 in Kotlin
 
 This example is for HLS video
 
@@ -10,6 +10,7 @@ This example is for HLS video
 2. feature/fullscreenDialog -> Player + fullscreen via Dialog
 3. feature/fullscreenLayoutParams -> Player + fullscreen via modifying LayoutParams
 4. feature/qualitySelector -> Player + Quality Selector
+5. feature/rvItemPreview -> Exoplayer in a recyclerview allowing a preview onLongClick
 
 # Resources
 
@@ -18,3 +19,5 @@ This example is for HLS video
 [Exoplayer website](https://exoplayer.dev/)
 
 [Exoplayer github](https://github.com/google/ExoPlayer)
+
+[Recyclerview - forked](https://github.com/mitchtabian/Video-Player-RecyclerView)
