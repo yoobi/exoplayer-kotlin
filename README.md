@@ -11,6 +11,7 @@ This example is for HLS video
 3. feature/fullscreenLayoutParams -> Player + fullscreen via modifying LayoutParams
 4. feature/qualitySelector -> Player + Quality Selector
 5. feature/rvItemPreview -> Exoplayer in a recyclerview allowing a preview onLongClick
+6. feature/nativePreview -> Small thumb above progress bar
 
 # Resources
 
@@ -21,3 +22,5 @@ This example is for HLS video
 [Exoplayer github](https://github.com/google/ExoPlayer)
 
 [Recyclerview - forked](https://github.com/mitchtabian/Video-Player-RecyclerView)
+
+[PreviewSeekbar - inspired](https://github.com/rubensousa/PreviewSeekBar)
