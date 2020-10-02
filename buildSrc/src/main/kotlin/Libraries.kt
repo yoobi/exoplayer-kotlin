@@ -9,10 +9,15 @@ object Libraries {
     object Androidx {
         const val appcompat = "androidx.appcompat:appcompat:1.2.0"
         const val constraintlayout = "androidx.constraintlayout:constraintlayout:2.0.1"
+        const val recyclerview = "androidx.recyclerview:recyclerview:1.1.0"
 
         object Ktx {
             const val core = "androidx.core:core-ktx:1.3.1"
         }
+    }
+
+    object Glide {
+        const val glide= "com.github.bumptech.glide:glide:4.11.0"
     }
 
     object Exoplayer {

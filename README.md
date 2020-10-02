@@ -2,7 +2,7 @@
 
 Example of Exoplayer v2.11.4 in Kotlin
 
-This example is for HLS video
+All example are for HLS video
 
 # Project Module
 
@@ -28,6 +28,8 @@ Added quality selector thanks to [Exoplayer demo](https://github.com/google/ExoP
 ### `rvItemPreview`
 
 Exoplayer in a recyclerview allowing a preview onLongClick
+
+Added and forked from [this repo](https://github.com/mitchtabian/Video-Player-RecyclerView)
 
 ### `nativePreview`
 

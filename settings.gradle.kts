@@ -1,2 +1,3 @@
-include(":app", ":fullscreendialog", ":fullscreenlayoutparams", ":qualityselector")
+include(":app", ":fullscreendialog", ":fullscreenlayoutparams", ":qualityselector",
+        ":rvitempreview")
 rootProject.name = "Exoplayer-kotlin"
