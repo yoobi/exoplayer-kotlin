@@ -23,6 +23,7 @@ Added Fullscreen thanks to [this repository](https://github.com/danyalstd/fullsc
 ### `qualitySelector`
 
 Player + Quality Selector
+Added quality selector thanks to [Exoplayer demo](https://github.com/google/ExoPlayer/tree/release-v2/demos/main/src/main/java/com/google/android/exoplayer2/demo)
 
 ### `rvItemPreview`
 
