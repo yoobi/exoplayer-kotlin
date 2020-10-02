@@ -1,2 +1,2 @@
-include(":app", ":fullscreendialog")
+include(":app", ":fullscreendialog", ":fullscreenlayoutparams")
 rootProject.name = "Exoplayer-kotlin"

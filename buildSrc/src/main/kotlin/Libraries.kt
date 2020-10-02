@@ -30,7 +30,7 @@ object Libraries {
     }
 
     object AndroidTestLibraries {
-        const val runner = "androidx.test:runner:1.3.0"
+        const val runner = "androidx.test.ext:junit:1.1.1"
 
         object Espresso {
             private const val version = "3.3.0"
