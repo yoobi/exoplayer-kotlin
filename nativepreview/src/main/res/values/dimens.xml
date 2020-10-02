@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="video_frame_width">2dp</dimen>
+    <dimen name="scrubber_dragged_size">24dp</dimen>
+    <dimen name="scrubber_enabled_size">16dp</dimen>
+    <dimen name="scrubber_disabled_size">12dp</dimen>
+</resources>

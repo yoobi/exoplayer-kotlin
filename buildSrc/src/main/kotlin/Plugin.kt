@@ -11,5 +11,8 @@ fun PluginDependenciesSpec.kotlinAndroid(): PluginDependencySpec =
 fun PluginDependenciesSpec.kotlinAndroidExt(): PluginDependencySpec =
     kotlin("android.extensions")
 
+fun PluginDependenciesSpec.kotlinKaptExt(): PluginDependencySpec =
+    kotlin("kapt")
+
 fun PluginDependenciesSpec.dependencyUpdates(): PluginDependencySpec =
     id("com.github.ben-manes.versions").version("0.33.0")
