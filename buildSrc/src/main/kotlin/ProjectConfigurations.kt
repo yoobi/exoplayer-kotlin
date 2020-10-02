@@ -1,8 +1,8 @@
 object ProjectConfiguration {
     const val applicationId = "com.app.exoplayer_kotlin"
 
-    const val compileSdk = 30
-    const val targetSdk = 30
+    const val compileSdk = 29
+    const val targetSdk = 29
     const val minSdk = 19
     const val buildTools = "29.0.3"
     const val testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

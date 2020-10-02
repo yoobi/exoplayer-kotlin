@@ -18,6 +18,7 @@ Added Fullscreen thanks to [this repository](https://github.com/GeoffLedak/Exopl
 ### `fullscreenLayoutParams`
 
 Player + fullscreen via modifying LayoutParams
+Added Fullscreen thanks to [this repository](https://github.com/danyalstd/fullscreen-exoplayer)
 
 ### `qualitySelector`
 
