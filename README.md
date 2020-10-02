@@ -4,14 +4,33 @@ Example of Exoplayer v2.11.4 in Kotlin
 
 This example is for HLS video
 
-# Project branch
+# Project Module
 
-1. Master -> Only Player
-2. feature/fullscreenDialog -> Player + fullscreen via Dialog
-3. feature/fullscreenLayoutParams -> Player + fullscreen via modifying LayoutParams
-4. feature/qualitySelector -> Player + Quality Selector
-5. feature/rvItemPreview -> Exoplayer in a recyclerview allowing a preview onLongClick
-6. feature/nativePreview -> Small thumb above progress bar
+### `App`
+
+Simple implementation of ExoPlayer with HLS video
+   
+### `fullscreenDialog`
+ 
+Player + fullscreen via Dialog
+Added Fullscreen thanks to [this repository](https://github.com/GeoffLedak/ExoplayerFullscreen)
+
+### `fullscreenLayoutParams`
+
+Player + fullscreen via modifying LayoutParams
+
+### `qualitySelector`
+
+Player + Quality Selector
+
+### `rvItemPreview`
+
+Exoplayer in a recyclerview allowing a preview onLongClick
+
+### `nativePreview`
+
+Small thumb above progress bar
+
 
 # Resources
 
