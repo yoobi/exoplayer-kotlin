@@ -3,16 +3,16 @@ package io.github.yoobi.fullscreendialog
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.pm.ActivityInfo
-import android.net.Uri
 import android.os.Bundle
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
-import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
+import com.google.android.exoplayer2.util.MimeTypes
 import com.google.android.exoplayer2.util.Util
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.exo_playback_control_view.*
@@ -33,6 +33,10 @@ class MainActivity : AppCompatActivity() {
     private var playbackPosition: Long = 0
     private var isFullscreen = false
     private var isPlayerPlaying = true
+    private val mediaItem = MediaItem.Builder()
+        .setUri(HLS_STATIC_URL)
+        .setMimeType(MimeTypes.APPLICATION_M3U8)
+        .build()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,14 +57,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initPlayer(){
-        exoPlayer = SimpleExoPlayer.Builder(this).build()
-        val videoSource = HlsMediaSource.Factory(dataSourceFactory)
-            .createMediaSource(Uri.parse(HLS_STATIC_URL))
-
-        with(exoPlayer) {
+        exoPlayer = SimpleExoPlayer.Builder(this).build().apply{
             playWhenReady = isPlayerPlaying
             seekTo(currentWindow, playbackPosition)
-            prepare(videoSource, false, false)
+            setMediaItem(mediaItem, false)
+            prepare()
         }
         player_view.player = exoPlayer
 

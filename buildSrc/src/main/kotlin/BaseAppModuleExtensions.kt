@@ -10,6 +10,7 @@ fun BaseAppModuleExtension.setAppConfig() {
         minSdkVersion(ProjectConfiguration.minSdk)
         targetSdkVersion(ProjectConfiguration.targetSdk)
 
+        vectorDrawables.useSupportLibrary = true
         applicationId = ProjectConfiguration.applicationId
         versionCode = ProjectConfiguration.versionCode
         versionName = ProjectConfiguration.versionName
@@ -31,6 +32,10 @@ fun BaseExtension.setDefaultConfig() {
 
 fun BaseExtension.useDefaultBuildTypes() = buildTypes {
     getByName("release") {
+        isMinifyEnabled = true
+        proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+    }
+    getByName("debug") {
         isMinifyEnabled = true
         proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
     }

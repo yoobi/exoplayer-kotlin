@@ -1,16 +1,16 @@
 package com.app.exoplayer_kotlin
 
-import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
-import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
+import com.google.android.exoplayer2.util.MimeTypes
 import com.google.android.exoplayer2.util.Util
 import kotlinx.android.synthetic.main.activity_main.*
 
-    const val HLS_STATIC_URL = "https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8"
+const val HLS_STATIC_URL = "https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8"
     const val STATE_RESUME_WINDOW = "resumeWindow"
     const val STATE_RESUME_POSITION = "resumePosition"
     const val STATE_PLAYER_FULLSCREEN = "playerFullscreen"
@@ -25,6 +25,10 @@ class MainActivity : AppCompatActivity() {
     private var playbackPosition: Long = 0
     private var isFullscreen = false
     private var isPlayerPlaying = true
+    private val mediaItem = MediaItem.Builder()
+        .setUri(HLS_STATIC_URL)
+        .setMimeType(MimeTypes.APPLICATION_M3U8)
+        .build()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,17 +46,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initPlayer(){
-        exoPlayer = SimpleExoPlayer.Builder(this).build()
-        val videoSource = HlsMediaSource.Factory(dataSourceFactory)
-            .createMediaSource(Uri.parse(HLS_STATIC_URL))
-
-        with(exoPlayer) {
+        exoPlayer = SimpleExoPlayer.Builder(this).build().apply {
             playWhenReady = isPlayerPlaying
             seekTo(currentWindow, playbackPosition)
-            prepare(videoSource, false, false)
+            setMediaItem(mediaItem, false)
+            prepare()
         }
         player_view.player = exoPlayer
-
     }
 
     private fun releasePlayer(){

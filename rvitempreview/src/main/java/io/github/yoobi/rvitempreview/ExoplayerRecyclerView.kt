@@ -1,7 +1,6 @@
 package io.github.yoobi.rvitempreview
 
 import android.content.Context
-import android.net.Uri
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
@@ -120,11 +119,10 @@ class ExoplayerRecyclerView : RecyclerView {
             Util.getUserAgent(context, "RecyclerView VideoPlayer")
         )
 
-        val mediaUrl: String? = holder.videoPreview
-        if (mediaUrl != null) {
-            val videoSource: MediaSource = ProgressiveMediaSource.Factory(dataSourceFactory)
-                .createMediaSource(Uri.parse(mediaUrl))
-            videoPlayer?.prepare(videoSource)
+        holder.videoPreview.let {
+            val videoSource: MediaSource = ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(it)
+            videoPlayer?.setMediaSource(videoSource)
+            videoPlayer?.prepare()
             videoPlayer?.playWhenReady = true
         }
     }
