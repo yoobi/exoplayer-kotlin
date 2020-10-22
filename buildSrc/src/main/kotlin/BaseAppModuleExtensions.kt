@@ -37,6 +37,7 @@ fun BaseExtension.useDefaultBuildTypes() = buildTypes {
     }
     getByName("debug") {
         isMinifyEnabled = true
+        isUseProguard = false
         proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
     }
 }
