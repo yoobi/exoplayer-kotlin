@@ -10,10 +10,10 @@ fun BaseAppModuleExtension.setAppConfig() {
         minSdkVersion(ProjectConfiguration.minSdk)
         targetSdkVersion(ProjectConfiguration.targetSdk)
 
-        vectorDrawables.useSupportLibrary = true
         applicationId = ProjectConfiguration.applicationId
         versionCode = ProjectConfiguration.versionCode
         versionName = ProjectConfiguration.versionName
+        vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner = ProjectConfiguration.testInstrumentationRunner
     }
 }

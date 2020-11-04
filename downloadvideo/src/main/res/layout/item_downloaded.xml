@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="right"
+        app:constraint_referenced_ids="item_download_title,item_download_status, item_download_percentage"
+        tools:layout_editor_absoluteX="387dp" />
+
+    <ImageView
+        android:id="@+id/item_download_image"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/ic_launcher"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="16:9"
+        app:layout_constraintEnd_toStartOf="@id/item_download_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/item_download_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:maxLines="2"
+        android:ellipsize="start"
+        app:layout_constraintStart_toEndOf="@id/item_download_image"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/item_download_overflow"
+        app:layout_constraintBottom_toTopOf="@id/item_download_percentage"
+        tools:text="This is a title is really really really really really really really really really really really really long" />
+
+    <TextView
+        android:id="@+id/item_download_percentage"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:maxLines="2"
+        app:layout_constraintTop_toBottomOf="@id/item_download_title"
+        app:layout_constraintStart_toEndOf="@id/item_download_image"
+        app:layout_constraintEnd_toStartOf="@id/item_download_overflow"
+        app:layout_constraintBottom_toTopOf="@id/item_download_status"
+        tools:text="Size: 55,92 MB | Current Progress: 100%"
+        />
+
+    <TextView
+        android:id="@+id/item_download_status"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/item_download_percentage"
+        app:layout_constraintStart_toEndOf="@id/item_download_image"
+        app:layout_constraintEnd_toStartOf="@id/item_download_overflow"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:text="Downloading" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/item_download_overflow"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:srcCompat="@drawable/ic_download_done"
+        app:tint="@android:color/black"
+        app:layout_constraintWidth_max="50dp"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintStart_toStartOf ="@id/barrier"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
