@@ -53,6 +53,10 @@ class OfflineVideoAdapter: ListAdapter<Download, OfflineVideoAdapter.DownloadedV
         }
     }
 
+    fun setProgress(download: Download) {
+
+    }
+
     class DownloadedVideoViewHolder(view: View): RecyclerView.ViewHolder(view) {
 
         private val title: TextView = view.findViewById(R.id.item_download_title)
@@ -61,10 +65,10 @@ class OfflineVideoAdapter: ListAdapter<Download, OfflineVideoAdapter.DownloadedV
         val imageMenu: ImageView = view.findViewById(R.id.item_download_overflow)
 
         fun bind(download: Download) {
-//            Log.e("DownloadAdapter",
-//                "status: ${download.state} - ${DownloadUtil.getDownloadString(status.context, download.state)} " +
-//                        "progress: ${download.percentDownloaded}"
-//            )
+            Log.e("OfflineAdapter",
+                "status: ${download.state} - ${DownloadUtil.getDownloadString(status.context, download.state)} " +
+                        "progress: ${download.percentDownloaded}"
+            )
 
             imageMenu.apply ImageView@ {
                 when(download.state) {
@@ -107,7 +111,7 @@ class OfflineVideoAdapter: ListAdapter<Download, OfflineVideoAdapter.DownloadedV
 
     object DownloadDiffCallback: DiffUtil.ItemCallback<Download>() {
         override fun areItemsTheSame(oldItem: Download, newItem: Download): Boolean {
-            return oldItem.request.id == newItem.request.id
+            return oldItem.request == newItem.request
         }
 
         override fun areContentsTheSame(oldItem: Download, newItem: Download): Boolean {

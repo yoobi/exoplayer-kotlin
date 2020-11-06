@@ -177,9 +177,19 @@ class DownloadTracker(context: Context, private val httpDataSourceFactory: HttpD
         }
     }
 
-    suspend fun getAllDownloadProgressFlow(): Flow<HashMap<Uri, Download>> = callbackFlow {
+//    suspend fun getAllDownloadProgressFlow(): Flow<HashMap<Uri, Download>> = callbackFlow {
+//        while(isActive) {
+//            offer(downloads)
+//            withContext(Dispatchers.IO) {
+//                delay(1000)
+//            }
+//        }
+//    }
+
+    suspend fun getAllDownloadProgressFlow(): Flow<List<Download>> = callbackFlow {
         while(isActive) {
-            offer(downloads)
+            loadDownloads()
+            offer(downloads.values.toList())
             withContext(Dispatchers.IO) {
                 delay(1000)
             }

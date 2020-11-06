@@ -1,9 +1,11 @@
 package io.github.yoobi.downloadvideo.offlineVideo
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.github.yoobi.downloadvideo.R
 import io.github.yoobi.downloadvideo.common.PieProgressDrawable
@@ -26,8 +28,8 @@ class OfflineVideoActivity: AppCompatActivity() {
         }
 
         recyclerView = findViewById(R.id.rv_downloaded_video)
+        recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = downloadAdapter
-        downloadAdapter.submitList(offlineVideoViewModel.downloads.value)
 
         offlineVideoViewModel.downloads.observe(this) { possibleList ->
             possibleList?.let { listDownload ->

@@ -12,30 +12,23 @@ import kotlinx.coroutines.flow.collect
 
 class OfflineVideoViewModel(application: Application): AndroidViewModel(application) {
 
-    private val _downloads: MutableLiveData<List<Download>> =
-        MutableLiveData(DownloadUtil.getDownloadTracker(application).downloads.values.toMutableList())
+    private val _downloads: MutableLiveData<List<Download>> = MutableLiveData()
     val downloads: LiveData<List<Download>>
         get() = _downloads
 
-    private var job: CompletableJob? = null
-    private var coroutineScope: CoroutineScope? = null
+    private var job: CompletableJob = SupervisorJob()
+    private var coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.IO + job)
 
     fun startFlow(context: Context) {
-        job = SupervisorJob()
-        coroutineScope = CoroutineScope(Dispatchers.Main + job!!).apply {
-            launch {
-//                DownloadUtil.getAllCurrentDownload(context).collect {
-//                    _downloads.postValue(it)
-//                }
-                DownloadUtil.getDownloadTracker(context).getAllDownloadProgressFlow().collect {
-                    _downloads.postValue(it.values.toMutableList())
-                }
+        coroutineScope.launch {
+            DownloadUtil.getDownloadTracker(context).getAllDownloadProgressFlow().collect {
+                _downloads.postValue(it)
             }
         }
     }
 
     fun stopFlow() {
-        coroutineScope?.cancel()
+        coroutineScope.cancel()
     }
 
 }
