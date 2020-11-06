@@ -22,7 +22,6 @@
         </activity>
         <activity android:name=".offlineVideo.OfflineVideoActivity" />
         <activity android:name=".player.PlayerActivity" />
-        <activity android:name=".offlineVideo.offlineVideoPlayer.OfflineVideoPlayerActivity" />
 
         <service android:name=".common.MyDownloadService" android:exported="false">
             <!-- This is needed for Scheduler -->

@@ -33,6 +33,31 @@ class MainActivity : AppCompatActivity() {
             .setMediaMetadata(MediaMetadata.Builder().setTitle("Animation Movie Example").build())
             .build(),
         MediaItem.Builder()
+            .setUri("http://sample.vodobox.com/big_buck_bunny_4k/big_buck_bunny_4k.m3u8")
+            .setMimeType(MimeTypes.APPLICATION_M3U8)
+            .setMediaMetadata(MediaMetadata.Builder().setTitle("Big Bunny").build())
+            .build(),
+        MediaItem.Builder()
+            .setUri("http://sample.vodobox.com/pipe_dream_tahiti/pipe_dream_tahiti.m3u8")
+            .setMimeType(MimeTypes.APPLICATION_M3U8)
+            .setMediaMetadata(MediaMetadata.Builder().setTitle("Pipe Dream Haiti").build())
+            .build(),
+        MediaItem.Builder()
+            .setUri("http://sample.vodobox.com/caminandes_1_4k/caminandes_1_4k.m3u8")
+            .setMimeType(MimeTypes.APPLICATION_M3U8)
+            .setMediaMetadata(MediaMetadata.Builder().setTitle("Caminandes 4k").build())
+            .build(),
+        MediaItem.Builder()
+            .setUri("http://sample.vodobox.com/skate_phantom_flex_4k/skate_phantom_flex_4k.m3u8")
+            .setMimeType(MimeTypes.APPLICATION_M3U8)
+            .setMediaMetadata(MediaMetadata.Builder().setTitle("Skate Phantom 4k").build())
+            .build(),
+        MediaItem.Builder()
+            .setUri("http://sample.vodobox.com/planete_interdite_hevc/planete_interdite_hevc.m3u8")
+            .setMimeType(MimeTypes.APPLICATION_M3U8)
+            .setMediaMetadata(MediaMetadata.Builder().setTitle("Planete Interdite").build())
+            .build(),
+        MediaItem.Builder()
             .setUri("http://playertest.longtailvideo.com/adaptive/oceans_aes/oceans_aes.m3u8")
             .setMimeType(MimeTypes.APPLICATION_M3U8)
             .setMediaMetadata(MediaMetadata.Builder().setTitle("Ocean Example").build())

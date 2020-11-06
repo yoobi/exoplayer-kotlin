@@ -2,9 +2,7 @@ package io.github.yoobi.downloadvideo.common
 
 import android.content.Context
 import android.net.Uri
-import android.os.Environment
 import android.os.StatFs
-import android.view.MenuInflater
 import android.view.View
 import android.widget.PopupMenu
 import android.widget.Toast
@@ -51,8 +49,8 @@ class DownloadTracker(context: Context, private val httpDataSourceFactory: HttpD
     private val applicationContext: Context = context.applicationContext
     private val listeners: CopyOnWriteArraySet<Listener> = CopyOnWriteArraySet()
     private val downloadIndex: DownloadIndex = downloadManager.downloadIndex
-    private val trackSelectorParameters: DefaultTrackSelector.Parameters = DownloadHelper.getDefaultTrackSelectorParameters(context)
     private var startDownloadDialogHelper: StartDownloadDialogHelper? = null
+    private var availableBytesLeft: Long = StatFs(DownloadUtil.getDownloadDirectory(context).path).availableBytes
 
     val downloads: HashMap<Uri, Download> = HashMap()
 
@@ -209,12 +207,23 @@ class DownloadTracker(context: Context, private val httpDataSourceFactory: HttpD
             for (listener in listeners) {
                 listener.onDownloadsChanged(download)
             }
+            if(download.state == Download.STATE_COMPLETED) {
+                // Add delta between estimation and reality to have a better availableBytesLeft
+                availableBytesLeft += Util.fromUtf8Bytes(download.request.data).toLong() - download.bytesDownloaded
+            }
         }
 
         override fun onDownloadRemoved(downloadManager: DownloadManager, download: Download) {
             downloads.remove(download.request.uri)
             for (listener in listeners) {
                 listener.onDownloadsChanged(download)
+            }
+
+            // Add the estimated or downloaded bytes to the availableBytes
+            availableBytesLeft += if(download.percentDownloaded == 100f) {
+                download.bytesDownloaded
+            } else {
+                Util.fromUtf8Bytes(download.request.data).toLong()
             }
         }
     }
@@ -273,8 +282,10 @@ class DownloadTracker(context: Context, private val httpDataSourceFactory: HttpD
                 return
             }
 
+            // We sort here because later we use formatDownloadable to select track
+            formatDownloadable.sortBy { it.height }
             val mediaItemTag: MediaItemTag = mediaItem.playbackProperties?.tag as MediaItemTag
-            val optionsDownload: List<String> = formatDownloadable.sortedBy { it.height }.map {
+            val optionsDownload: List<String> = formatDownloadable.map {
                 context.getString(
                     R.string.dialog_option, it.height,
                     (it.bitrate * mediaItemTag.duration).div(8000).formatFileSize()
@@ -298,18 +309,23 @@ class DownloadTracker(context: Context, private val httpDataSourceFactory: HttpD
                         .setMaxVideoSize(format.width, format.height)
                         .setMaxVideoBitrate(format.bitrate)
                         .build()
+                    Log.e(TAG, "format Selected= width: ${format.width}, height: ${format.height}")
                 }.setPositiveButton("Download") { _, _ ->
                     helper.clearTrackSelections(0)
                     helper.addTrackSelection(0, qualitySelected)
-                    Log.e(TAG, "availableBytes: ${StatFs(DownloadUtil.getDownloadDirectory(context).path).availableBytes}" +
-                            "in Mb : ${StatFs(DownloadUtil.getDownloadDirectory(context).path).availableBytes.formatFileSize()}")
-                    if(StatFs(DownloadUtil.getDownloadDirectory(context).path).availableBytes >
-                        (qualitySelected.maxVideoBitrate*mediaItemTag.duration).div(8000)) {
-                        startDownload()
+                    val estimatedContentLength: Long =
+                        (qualitySelected.maxVideoBitrate * mediaItemTag.duration).div(C.MILLIS_PER_SECOND).div(C.BITS_PER_BYTE)
+                    if(availableBytesLeft > estimatedContentLength) {
+                        val downloadRequest: DownloadRequest = downloadHelper.getDownloadRequest(
+                            (mediaItem.playbackProperties?.tag as MediaItemTag).title,
+                            Util.getUtf8Bytes(estimatedContentLength.toString())
+                        )
+                        startDownload(downloadRequest)
+                        availableBytesLeft -= estimatedContentLength
+                        Log.e(TAG, "availableBytesLeft after calculation: $availableBytesLeft")
                     } else {
                         Toast.makeText(context, "Not enough space to download this file", Toast.LENGTH_LONG).show()
                     }
-
                     positiveCallback?.invoke()
                 }.setOnDismissListener {
                     trackSelectionDialog = null

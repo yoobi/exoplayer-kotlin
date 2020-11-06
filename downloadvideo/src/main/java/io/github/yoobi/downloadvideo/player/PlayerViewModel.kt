@@ -25,10 +25,7 @@ class PlayerViewModel(application: Application): AndroidViewModel(application) {
         job = SupervisorJob()
         coroutineScope = CoroutineScope(Dispatchers.Main + job!!).apply {
             launch {
-                DownloadUtil.getCurrentProgressDownload(context, uri).collect {
-                    Log.e("PlayerVM", "Flow $coroutineScope")
-                    _downloadPercent.postValue(it)
-                }
+                DownloadUtil.getCurrentProgressDownload(context, uri).collect { _downloadPercent.postValue(it) }
             }
         }
     }
