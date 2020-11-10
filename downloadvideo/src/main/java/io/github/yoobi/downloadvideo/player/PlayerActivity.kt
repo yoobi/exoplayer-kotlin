@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.exoplayer2.MediaItem
@@ -184,13 +185,13 @@ class PlayerActivity : AppCompatActivity(), DownloadTracker.Listener {
                 playerViewModel.startFlow(this, download.request.uri)
             }
             Download.STATE_QUEUED, Download.STATE_STOPPED -> {
-                progressDrawable.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_pause))
+                progressDrawable.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.ic_pause))
             }
             Download.STATE_COMPLETED -> {
-                progressDrawable.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_download_done))
+                progressDrawable.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.ic_download_done))
             }
             Download.STATE_REMOVING -> {
-                progressDrawable.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_download))
+                progressDrawable.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.ic_download))
             }
             Download.STATE_FAILED, Download.STATE_RESTARTING -> { }
         }
