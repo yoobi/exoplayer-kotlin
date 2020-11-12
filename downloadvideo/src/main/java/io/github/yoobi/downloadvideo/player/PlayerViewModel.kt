@@ -16,13 +16,12 @@ class PlayerViewModel(application: Application): AndroidViewModel(application) {
     val downloadPercent: LiveData<Float>
         get() = _downloadPercent
 
-    private var job: CompletableJob? = null
     private var coroutineScope: CoroutineScope? = null
 
     fun startFlow(context: Context, uri: Uri) {
         coroutineScope?.cancel()
-        job = SupervisorJob()
-        coroutineScope = CoroutineScope(Dispatchers.Main + job!!).apply {
+        val job = SupervisorJob()
+        coroutineScope = CoroutineScope(Dispatchers.Main + job).apply {
             launch {
                 DownloadUtil.getDownloadTracker(context).getCurrentProgressDownload(uri).collect {
                     _downloadPercent.postValue(it)
