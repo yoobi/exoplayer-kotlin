@@ -105,19 +105,6 @@ object DownloadUtil {
         }
     }
 
-    suspend fun getCurrentProgressDownload(context: Context, uri: Uri?): Flow<Float?> {
-        var percent: Float? = getDownloadManager(context).currentDownloads.find { it.request.uri == uri }?.percentDownloaded
-        return callbackFlow {
-            while(percent != null) {
-                percent = getDownloadManager(context).currentDownloads.find { it.request.uri == uri }?.percentDownloaded
-                offer(percent)
-                withContext(Dispatchers.IO) {
-                    delay(1000)
-                }
-            }
-        }
-    }
-
     @Synchronized
     private fun getDownloadCache(context: Context): Cache {
         if (!DownloadUtil::downloadCache.isInitialized) {

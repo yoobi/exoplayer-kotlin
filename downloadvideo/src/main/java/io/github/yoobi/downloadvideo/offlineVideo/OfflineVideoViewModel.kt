@@ -30,5 +30,4 @@ class OfflineVideoViewModel(application: Application): AndroidViewModel(applicat
     fun stopFlow() {
         coroutineScope.cancel()
     }
-
 }

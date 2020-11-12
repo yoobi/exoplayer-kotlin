@@ -3,7 +3,6 @@ package io.github.yoobi.downloadvideo.player
 import android.app.Application
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -25,7 +24,9 @@ class PlayerViewModel(application: Application): AndroidViewModel(application) {
         job = SupervisorJob()
         coroutineScope = CoroutineScope(Dispatchers.Main + job!!).apply {
             launch {
-                DownloadUtil.getCurrentProgressDownload(context, uri).collect { _downloadPercent.postValue(it) }
+                DownloadUtil.getDownloadTracker(context).getCurrentProgressDownload(uri).collect {
+                    _downloadPercent.postValue(it)
+                }
             }
         }
     }

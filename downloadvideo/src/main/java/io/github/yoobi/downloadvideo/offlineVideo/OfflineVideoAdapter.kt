@@ -1,21 +1,22 @@
 package io.github.yoobi.downloadvideo.offlineVideo
 
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.exoplayer2.offline.Download
-import io.github.yoobi.downloadvideo.*
+import io.github.yoobi.downloadvideo.BUNDLE_MIME_TYPES
+import io.github.yoobi.downloadvideo.BUNDLE_TITLE
+import io.github.yoobi.downloadvideo.BUNDLE_URL
+import io.github.yoobi.downloadvideo.R
 import io.github.yoobi.downloadvideo.common.DownloadUtil
 import io.github.yoobi.downloadvideo.common.PieProgressDrawable
 import io.github.yoobi.downloadvideo.common.formatFileSize
@@ -53,15 +54,59 @@ class OfflineVideoAdapter: ListAdapter<Download, OfflineVideoAdapter.DownloadedV
         }
     }
 
-    fun setProgress(download: Download) {
+    override fun onBindViewHolder(holder: DownloadedVideoViewHolder, position: Int, payloads: MutableList<Any>) {
+        if (payloads.isEmpty()) {
+            super.onBindViewHolder(holder, position, payloads)
+            return
+        }
+
+        if(payloads[0] is Bundle) {
+            val diffBundle: Bundle = payloads[0] as Bundle
+            Log.e("OfflineAdapter", diffBundle.toString())
+            diffBundle.getInt(BUNDLE_STATE, -1).let {
+                if(it != -1) holder.status.text = DownloadUtil.getDownloadString(holder.status.context, it)
+                holder.imageMenu.apply ImageView@ {
+                    when(it) {
+                        Download.STATE_DOWNLOADING -> {
+                            holder.percentage.visibility = View.VISIBLE
+                            if(drawable !is PieProgressDrawable) setImageDrawable(PieProgressDrawable().apply {
+                                setColor(ContextCompat.getColor(this@ImageView.context, R.color.colorAccent))
+                            })
+                        }
+                        Download.STATE_QUEUED, Download.STATE_STOPPED -> {
+                            holder.percentage.visibility = View.INVISIBLE
+                            setImageDrawable(ContextCompat.getDrawable(this.context, R.drawable.ic_pause))
+                        }
+                        Download.STATE_COMPLETED -> {
+                            holder.percentage.visibility = View.VISIBLE
+                            setImageDrawable(ContextCompat.getDrawable(this.context, R.drawable.ic_download_done))
+                        }
+                        else -> { }
+                    }
+                }
+            }
+
+            val bytesDownload = diffBundle.getLong(BUNDLE_BYTES_DOWNLOADED, -1)
+            diffBundle.getFloat(BUNDLE_PERCENTAGE).let {
+                if(holder.imageMenu.drawable is PieProgressDrawable) {
+                    holder.imageMenu.drawable.level = it.roundToInt()
+                    holder.imageMenu.invalidate()
+                }
+                if(it != -1f && bytesDownload != -1L) {
+                    holder.percentage.apply{
+                        text = context.resources.getString(R.string.item_download_percentage, bytesDownload.formatFileSize(), it.roundToInt())
+                    }
+                }
+            }
+        }
 
     }
 
     class DownloadedVideoViewHolder(view: View): RecyclerView.ViewHolder(view) {
 
         private val title: TextView = view.findViewById(R.id.item_download_title)
-        private val percentage: TextView = view.findViewById(R.id.item_download_percentage)
-        private val status: TextView = view.findViewById(R.id.item_download_status)
+        val percentage: TextView = view.findViewById(R.id.item_download_percentage)
+        val status: TextView = view.findViewById(R.id.item_download_status)
         val imageMenu: ImageView = view.findViewById(R.id.item_download_overflow)
 
         fun bind(download: Download) {
@@ -69,14 +114,12 @@ class OfflineVideoAdapter: ListAdapter<Download, OfflineVideoAdapter.DownloadedV
                 "status: ${download.state} - ${DownloadUtil.getDownloadString(status.context, download.state)} " +
                         "progress: ${download.percentDownloaded}"
             )
-
             imageMenu.apply ImageView@ {
                 when(download.state) {
                     Download.STATE_DOWNLOADING -> {
                         if(drawable !is PieProgressDrawable) setImageDrawable(PieProgressDrawable().apply {
                             setColor(ContextCompat.getColor(this@ImageView.context, R.color.colorAccent))
                         })
-
                     }
                     Download.STATE_QUEUED, Download.STATE_STOPPED -> {
                         setImageDrawable(ContextCompat.getDrawable(this.context, R.drawable.ic_pause))
@@ -115,11 +158,17 @@ class OfflineVideoAdapter: ListAdapter<Download, OfflineVideoAdapter.DownloadedV
         }
 
         override fun areContentsTheSame(oldItem: Download, newItem: Download): Boolean {
-            return (oldItem.request == newItem.request
-                    && oldItem.state == newItem.state
-                    && oldItem.updateTimeMs == newItem.updateTimeMs
-                    && oldItem.bytesDownloaded == newItem.bytesDownloaded
-                    && oldItem.percentDownloaded == newItem.percentDownloaded)
+            return false
+        }
+
+        override fun getChangePayload(oldItem: Download, newItem: Download): Any {
+            val diffBundle = Bundle()
+
+            diffBundle.putInt(BUNDLE_STATE, newItem.state)
+            diffBundle.putFloat(BUNDLE_PERCENTAGE, newItem.percentDownloaded)
+            diffBundle.putLong(BUNDLE_BYTES_DOWNLOADED, newItem.bytesDownloaded)
+
+            return diffBundle
         }
     }
 }

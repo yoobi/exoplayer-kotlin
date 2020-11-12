@@ -34,7 +34,7 @@ import java.util.concurrent.CopyOnWriteArraySet
 
 private const val TAG = "DownloadTracker"
 /** Tracks media that has been downloaded.  */
-class DownloadTracker(context: Context, private val httpDataSourceFactory: HttpDataSource.Factory, downloadManager: DownloadManager) {
+class DownloadTracker(context: Context, private val httpDataSourceFactory: HttpDataSource.Factory, private val downloadManager: DownloadManager) {
     /**
      * Listens for changes in the tracked downloads.
      */
@@ -177,21 +177,22 @@ class DownloadTracker(context: Context, private val httpDataSourceFactory: HttpD
         }
     }
 
-//    suspend fun getAllDownloadProgressFlow(): Flow<HashMap<Uri, Download>> = callbackFlow {
-//        while(isActive) {
-//            offer(downloads)
-//            withContext(Dispatchers.IO) {
-//                delay(1000)
-//            }
-//        }
-//    }
-
     suspend fun getAllDownloadProgressFlow(): Flow<List<Download>> = callbackFlow {
-        while(isActive) {
-            loadDownloads()
+        while(coroutineContext.isActive) {
             offer(downloads.values.toList())
-            withContext(Dispatchers.IO) {
-                delay(1000)
+            delay(1000)
+        }
+    }
+
+    suspend fun getCurrentProgressDownload(uri: Uri?): Flow<Float?> {
+        var percent: Float? = downloadManager.currentDownloads.find { it.request.uri == uri }?.percentDownloaded
+        return callbackFlow {
+            while(percent != null) {
+                percent = downloadManager.currentDownloads.find { it.request.uri == uri }?.percentDownloaded
+                offer(percent)
+                withContext(Dispatchers.IO) {
+                    delay(1000)
+                }
             }
         }
     }
