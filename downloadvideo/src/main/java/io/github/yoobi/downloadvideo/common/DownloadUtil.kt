@@ -2,8 +2,6 @@ package io.github.yoobi.downloadvideo.common
 
 
 import android.content.Context
-import android.net.Uri
-import android.util.Log
 import com.google.android.exoplayer2.database.DatabaseProvider
 import com.google.android.exoplayer2.database.ExoDatabaseProvider
 import com.google.android.exoplayer2.ext.cronet.CronetDataSourceFactory
@@ -19,12 +17,6 @@ import com.google.android.exoplayer2.upstream.cache.CacheDataSource
 import com.google.android.exoplayer2.upstream.cache.NoOpCacheEvictor
 import com.google.android.exoplayer2.upstream.cache.SimpleCache
 import io.github.yoobi.downloadvideo.R
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.isActive
-import kotlinx.coroutines.withContext
 import java.io.File
 import java.util.concurrent.Executors
 
@@ -90,18 +82,6 @@ object DownloadUtil {
             Download.STATE_RESTARTING -> context.resources.getString(R.string.exo_download_restarting)
             Download.STATE_STOPPED -> context.resources.getString(R.string.exo_download_stopped)
             else -> throw IllegalArgumentException()
-        }
-    }
-
-    suspend fun getAllCurrentDownload(context: Context): Flow<List<Download>> {
-        val downloadManager = getDownloadManager(context)
-        return callbackFlow {
-            while(isActive) {
-                offer(downloadManager.currentDownloads)
-                withContext(Dispatchers.IO) {
-                    delay(1000)
-                }
-            }
         }
     }
 
