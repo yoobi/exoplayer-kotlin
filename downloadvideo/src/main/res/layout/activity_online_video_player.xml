@@ -24,6 +24,7 @@
         android:layout_height="50dp"
         android:layout_gravity="center"
         app:srcCompat="@drawable/ic_download"
+        app:tint="@android:color/black"
         />
 
     <TextView
