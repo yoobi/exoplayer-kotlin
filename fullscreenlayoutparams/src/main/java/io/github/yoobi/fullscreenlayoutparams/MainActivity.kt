@@ -2,21 +2,21 @@ package io.github.yoobi.fullscreenlayoutparams
 
 import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
+import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
-import com.google.android.exoplayer2.source.hls.HlsMediaSource
+import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.MimeTypes
 import com.google.android.exoplayer2.util.Util
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.exo_playback_control_view.*
 
 const val HLS_STATIC_URL = "https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8"
 const val STATE_RESUME_WINDOW = "resumeWindow"
@@ -28,6 +28,9 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var exoPlayer: SimpleExoPlayer
     private lateinit var dataSourceFactory: DataSource.Factory
+    private lateinit var playerView: PlayerView
+    private lateinit var exoFullScreenIcon: ImageView
+    private lateinit var exoFullScreenBtn: FrameLayout
 
     private var currentWindow = 0
     private var playbackPosition: Long = 0
@@ -41,9 +44,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        dataSourceFactory = DefaultDataSourceFactory(this,
-            Util.getUserAgent(this, "testapp"))
+        playerView = findViewById(R.id.player_view)
+        exoFullScreenBtn = playerView.findViewById(R.id.exo_fullscreen_button)
+        exoFullScreenIcon = playerView.findViewById(R.id.exo_fullscreen_icon)
+        dataSourceFactory = DefaultDataSourceFactory(this, Util.getUserAgent(this, "testapp"))
 
         initFullScreenButton()
 
@@ -55,18 +59,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun initPlayer(){
+    private fun initPlayer() {
         exoPlayer = SimpleExoPlayer.Builder(this).build().apply {
             playWhenReady = isPlayerPlaying
             seekTo(currentWindow, playbackPosition)
             setMediaItem(mediaItem, false)
             prepare()
         }
-        player_view.player = exoPlayer
+        playerView.player = exoPlayer
 
-        if (isFullscreen) {
-            openFullscreen()
-        }
+        if(isFullscreen) openFullscreen()
     }
 
     private fun releasePlayer(){
@@ -88,7 +90,7 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
         if (Util.SDK_INT > 23) {
             initPlayer()
-            if (player_view != null) player_view.onResume()
+            playerView.onResume()
         }
     }
 
@@ -96,14 +98,14 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         if (Util.SDK_INT <= 23) {
             initPlayer()
-            if (player_view != null) player_view.onResume()
+            playerView.onResume()
         }
     }
 
     override fun onPause() {
         super.onPause()
         if (Util.SDK_INT <= 23) {
-            if (player_view != null) player_view.onPause()
+            playerView.onPause()
             releasePlayer()
         }
     }
@@ -111,7 +113,7 @@ class MainActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         if (Util.SDK_INT > 23) {
-            if (player_view != null) player_view.onPause()
+            playerView.onPause()
             releasePlayer()
         }
     }
@@ -126,8 +128,8 @@ class MainActivity : AppCompatActivity() {
 
     // FULLSCREEN PART
 
-    private fun initFullScreenButton(){
-        exo_fullscreen_button.setOnClickListener {
+    private fun initFullScreenButton() {
+        exoFullScreenBtn.setOnClickListener {
             if (!isFullscreen) {
                 openFullscreen()
             } else {
@@ -137,14 +139,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     @SuppressLint("SourceLockedOrientationActivity")
-    private fun openFullscreen(){
+    private fun openFullscreen() {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-        exo_fullscreen_icon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_fullscreen_shrink))
-        player_view.setBackgroundColor(ContextCompat.getColor(this, R.color.colorBlack))
-        val params: LinearLayout.LayoutParams = player_view.layoutParams as LinearLayout.LayoutParams
+        exoFullScreenIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_fullscreen_shrink))
+        playerView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorBlack))
+        val params: LinearLayout.LayoutParams = playerView.layoutParams as LinearLayout.LayoutParams
         params.width = LinearLayout.LayoutParams.MATCH_PARENT
         params.height = LinearLayout.LayoutParams.MATCH_PARENT
-        player_view.layoutParams = params
+        playerView.layoutParams = params
         supportActionBar?.hide()
         hideSystemUi()
         isFullscreen = true
@@ -152,21 +154,22 @@ class MainActivity : AppCompatActivity() {
 
     private fun closeFullscreen() {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR
-        exo_fullscreen_icon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_fullscreen_expand))
-        player_view.setBackgroundColor(ContextCompat.getColor(this, R.color.colorWhite))
-        val params: LinearLayout.LayoutParams = player_view.layoutParams as LinearLayout.LayoutParams
+        exoFullScreenIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_fullscreen_expand))
+        playerView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorWhite))
+        val params: LinearLayout.LayoutParams = playerView.layoutParams as LinearLayout.LayoutParams
         params.width = LinearLayout.LayoutParams.MATCH_PARENT
         params.height = 0
-        player_view.layoutParams = params
+        playerView.layoutParams = params
         supportActionBar?.show()
-        player_view.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
+        playerView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
         isFullscreen = false
     }
 
     private fun hideSystemUi() {
-        player_view?.systemUiVisibility = (
+        playerView.systemUiVisibility = (
                 View.SYSTEM_UI_FLAG_IMMERSIVE
-                        or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                        or View.SYSTEM_UI_FLAG_FULLSCREEN)
+                or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                or View.SYSTEM_UI_FLAG_FULLSCREEN
+        )
     }
 }

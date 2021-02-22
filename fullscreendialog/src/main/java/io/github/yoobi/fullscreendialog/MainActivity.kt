@@ -6,16 +6,16 @@ import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.MimeTypes
 import com.google.android.exoplayer2.util.Util
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.exo_playback_control_view.*
 
 const val HLS_STATIC_URL = "https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8"
 const val STATE_RESUME_WINDOW = "resumeWindow"
@@ -27,6 +27,10 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var exoPlayer: SimpleExoPlayer
     private lateinit var dataSourceFactory: DataSource.Factory
+    private lateinit var playerView: PlayerView
+    private lateinit var exoFullScreenIcon: ImageView
+    private lateinit var exoFullScreenBtn: FrameLayout
+    private lateinit var mainFrameLayout: FrameLayout
 
     private var fullscreenDialog: Dialog? = null
     private var currentWindow = 0
@@ -42,8 +46,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        dataSourceFactory = DefaultDataSourceFactory(this,
-            Util.getUserAgent(this, "testapp"))
+        playerView = findViewById(R.id.player_view)
+        mainFrameLayout = findViewById(R.id.main_media_frame)
+        exoFullScreenBtn = playerView.findViewById(R.id.exo_fullscreen_button)
+        exoFullScreenIcon = playerView.findViewById(R.id.exo_fullscreen_icon)
+
+        dataSourceFactory = DefaultDataSourceFactory(this, Util.getUserAgent(this, "testapp"))
 
         initFullScreenDialog()
         initFullScreenButton()
@@ -63,7 +71,7 @@ class MainActivity : AppCompatActivity() {
             setMediaItem(mediaItem, false)
             prepare()
         }
-        player_view.player = exoPlayer
+        playerView.player = exoPlayer
 
         if (isFullscreen) {
             openFullscreenDialog()
@@ -89,7 +97,7 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
         if (Util.SDK_INT > 23) {
             initPlayer()
-            if (player_view != null) player_view.onResume()
+            playerView.onResume()
         }
     }
 
@@ -97,14 +105,14 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         if (Util.SDK_INT <= 23) {
             initPlayer()
-            if (player_view != null) player_view.onResume()
+            playerView.onResume()
         }
     }
 
     override fun onPause() {
         super.onPause()
         if (Util.SDK_INT <= 23) {
-            if (player_view != null) player_view.onPause()
+            playerView.onPause()
             releasePlayer()
         }
     }
@@ -112,7 +120,7 @@ class MainActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         if (Util.SDK_INT > 23) {
-            if (player_view != null) player_view.onPause()
+            playerView.onPause()
             releasePlayer()
         }
     }
@@ -129,7 +137,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initFullScreenButton(){
-        exo_fullscreen_button.setOnClickListener {
+        exoFullScreenBtn.setOnClickListener {
             if (!isFullscreen) {
                 openFullscreenDialog()
             } else {
@@ -140,19 +148,19 @@ class MainActivity : AppCompatActivity() {
 
     @SuppressLint("SourceLockedOrientationActivity")
     private fun openFullscreenDialog() {
-        exo_fullscreen_icon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_fullscreen_shrink))
+        exoFullScreenIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_fullscreen_shrink))
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-        (player_view.parent as ViewGroup).removeView(player_view)
-        fullscreenDialog?.addContentView(player_view, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
+        (playerView.parent as ViewGroup).removeView(playerView)
+        fullscreenDialog?.addContentView(playerView, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
         isFullscreen = true
         fullscreenDialog?.show()
     }
 
     private fun closeFullscreenDialog() {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR
-        (player_view.parent as ViewGroup).removeView(player_view)
-        (main_media_frame as FrameLayout).addView(player_view)
-        exo_fullscreen_icon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_fullscreen_expand))
+        (playerView.parent as ViewGroup).removeView(playerView)
+        mainFrameLayout.addView(playerView)
+        exoFullScreenIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_fullscreen_expand))
         isFullscreen = false
         fullscreenDialog?.dismiss()
     }

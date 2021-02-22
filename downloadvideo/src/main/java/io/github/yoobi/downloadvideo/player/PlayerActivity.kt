@@ -14,6 +14,7 @@ import com.google.android.exoplayer2.offline.Download
 import com.google.android.exoplayer2.offline.DownloadHelper
 import com.google.android.exoplayer2.offline.DownloadRequest
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
+import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.util.Util
 import com.google.android.material.snackbar.Snackbar
 import io.github.yoobi.downloadvideo.BUNDLE_MIME_TYPES
@@ -24,7 +25,6 @@ import io.github.yoobi.downloadvideo.common.DownloadTracker
 import io.github.yoobi.downloadvideo.common.DownloadUtil
 import io.github.yoobi.downloadvideo.common.MediaItemTag
 import io.github.yoobi.downloadvideo.common.PieProgressDrawable
-import kotlinx.android.synthetic.main.activity_online_video_player.*
 import kotlin.math.roundToInt
 
 const val STATE_RESUME_WINDOW = "resumeWindow"
@@ -36,6 +36,7 @@ class PlayerActivity : AppCompatActivity(), DownloadTracker.Listener {
 
     private lateinit var exoPlayer: SimpleExoPlayer
     private lateinit var progressDrawable: ImageView
+    private lateinit var playerView: PlayerView
 
     private var currentWindow = 0
     private var playbackPosition: Long = 0
@@ -61,6 +62,7 @@ class PlayerActivity : AppCompatActivity(), DownloadTracker.Listener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_online_video_player)
+        playerView = findViewById(R.id.player_view)
         if (savedInstanceState != null) {
             currentWindow = savedInstanceState.getInt(STATE_RESUME_WINDOW)
             playbackPosition = savedInstanceState.getLong(STATE_RESUME_POSITION)
@@ -117,7 +119,7 @@ class PlayerActivity : AppCompatActivity(), DownloadTracker.Listener {
                 setMediaSource(mediaSource, false)
                 prepare()
             }
-        player_view.player = exoPlayer
+        playerView.player = exoPlayer
     }
     
     private fun releasePlayer(){
@@ -144,7 +146,7 @@ class PlayerActivity : AppCompatActivity(), DownloadTracker.Listener {
         }
         if (Util.SDK_INT > 23) {
             initPlayer()
-            if (player_view != null) player_view.onResume()
+            playerView.onResume()
         }
     }
 
@@ -152,14 +154,14 @@ class PlayerActivity : AppCompatActivity(), DownloadTracker.Listener {
         super.onResume()
         if (Util.SDK_INT <= 23) {
             initPlayer()
-            if (player_view != null) player_view.onResume()
+            playerView.onResume()
         }
     }
 
     override fun onPause() {
         super.onPause()
         if (Util.SDK_INT <= 23) {
-            if (player_view != null) player_view.onPause()
+            playerView.onPause()
             releasePlayer()
         }
     }
@@ -168,7 +170,7 @@ class PlayerActivity : AppCompatActivity(), DownloadTracker.Listener {
         playerViewModel.stopFlow()
         super.onStop()
         if (Util.SDK_INT > 23) {
-            if (player_view != null) player_view.onPause()
+            playerView.onPause()
             releasePlayer()
         }
     }

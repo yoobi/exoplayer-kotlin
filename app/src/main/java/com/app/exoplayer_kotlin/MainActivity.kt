@@ -4,11 +4,11 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.MimeTypes
 import com.google.android.exoplayer2.util.Util
-import kotlinx.android.synthetic.main.activity_main.*
 
 const val HLS_STATIC_URL = "https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8"
     const val STATE_RESUME_WINDOW = "resumeWindow"
@@ -20,6 +20,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var exoPlayer: SimpleExoPlayer
     private lateinit var dataSourceFactory: DataSource.Factory
+    private lateinit var playerView: PlayerView
 
     private var currentWindow = 0
     private var playbackPosition: Long = 0
@@ -34,8 +35,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        dataSourceFactory = DefaultDataSourceFactory(this,
-            Util.getUserAgent(this, "testapp"))
+        playerView = findViewById(R.id.player_view)
+        dataSourceFactory = DefaultDataSourceFactory(this, Util.getUserAgent(this, "testapp"))
 
         if (savedInstanceState != null) {
             currentWindow = savedInstanceState.getInt(STATE_RESUME_WINDOW)
@@ -52,7 +53,7 @@ class MainActivity : AppCompatActivity() {
             setMediaItem(mediaItem, false)
             prepare()
         }
-        player_view.player = exoPlayer
+        playerView.player = exoPlayer
     }
 
     private fun releasePlayer(){
@@ -74,7 +75,7 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
         if (Util.SDK_INT > 23) {
             initPlayer()
-            if (player_view != null) player_view.onResume()
+            playerView.onResume()
         }
     }
 
@@ -82,14 +83,14 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         if (Util.SDK_INT <= 23) {
             initPlayer()
-            if (player_view != null) player_view.onResume()
+            playerView.onResume()
         }
     }
 
     override fun onPause() {
         super.onPause()
         if (Util.SDK_INT <= 23) {
-            if (player_view != null) player_view.onPause()
+            playerView.onPause()
             releasePlayer()
         }
     }
@@ -97,7 +98,7 @@ class MainActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         if (Util.SDK_INT > 23) {
-            if (player_view != null) player_view.onPause()
+            playerView.onPause()
             releasePlayer()
         }
     }

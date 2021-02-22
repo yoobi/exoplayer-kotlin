@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
+import android.widget.FrameLayout
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -11,13 +13,13 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.ui.DefaultTimeBar
+import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.ui.TimeBar
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.MimeTypes
 import com.google.android.exoplayer2.util.Util
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.exo_playback_control_view.*
 
 const val HLS_STATIC_URL = "https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8"
 const val THUMBNAIL_MOSAIQUE = "https://bitdash-a.akamaihd.net/content/MI201109210084_1/thumbnails/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.jpg"
@@ -30,6 +32,10 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var exoPlayer: SimpleExoPlayer
     private lateinit var dataSourceFactory: DataSource.Factory
+    private lateinit var playerView: PlayerView
+    private lateinit var exoProgress: DefaultTimeBar
+    private lateinit var previewFrameLayout: FrameLayout
+    private lateinit var previewImage: ImageView
 
     private var currentWindow = 0
     private var playbackPosition: Long = 0
@@ -43,6 +49,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        playerView = findViewById(R.id.player_view)
+        exoProgress = playerView.findViewById(R.id.exo_progress)
+        previewFrameLayout = playerView.findViewById(R.id.preview_frame_layout)
+        previewImage = playerView.findViewById(R.id.preview_image)
 
         dataSourceFactory = DefaultDataSourceFactory(this,
             Util.getUserAgent(this, "testapp"))
@@ -62,26 +73,26 @@ class MainActivity : AppCompatActivity() {
             setMediaItem(mediaItem, false)
             prepare()
         }
-        player_view.player = exoPlayer
+        playerView.player = exoPlayer
 
-        exo_progress.addListener(object : TimeBar.OnScrubListener {
+        exoProgress.addListener(object : TimeBar.OnScrubListener {
             override fun onScrubMove(timeBar: TimeBar, position: Long) {
                 previewFrameLayout.visibility = View.VISIBLE
                 previewFrameLayout.x = updatePreviewX(position.toInt(), exoPlayer.duration.toInt()).toFloat()
 
-                val drawable = imageView.drawable
+                val drawable = previewImage.drawable
                 var glideOptions = RequestOptions().dontAnimate().skipMemoryCache(false)
                 if (drawable != null) {
                     glideOptions = glideOptions.placeholder(drawable)
                 }
 
-                Glide.with(imageView).asBitmap()
+                Glide.with(previewImage).asBitmap()
                     .apply(glideOptions)
                     .load(THUMBNAIL_MOSAIQUE)
                     .override(Target.SIZE_ORIGINAL ,Target.SIZE_ORIGINAL)
                     .transform(GlideThumbnailTransformation(position))
                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                    .into(imageView)
+                    .into(previewImage)
             }
 
             override fun onScrubStop(timeBar: TimeBar, position: Long, canceled: Boolean) {
@@ -103,8 +114,8 @@ class MainActivity : AppCompatActivity() {
         val maximumX = (parent.width - parent.paddingRight - layoutParams.rightMargin)
 
         val previewPaddingRadius: Int = resources.getDimensionPixelSize(R.dimen.scrubber_dragged_size).div(2)
-        val previewLeftX = (exo_progress as View).left.toFloat()
-        val previewRightX = (exo_progress as View).right.toFloat()
+        val previewLeftX = (exoProgress as View).left.toFloat()
+        val previewRightX = (exoProgress as View).right.toFloat()
         val previewSeekBarStartX: Float = previewLeftX + previewPaddingRadius
         val previewSeekBarEndX: Float = previewRightX - previewPaddingRadius
         val currentX = (previewSeekBarStartX + (previewSeekBarEndX - previewSeekBarStartX) * offset)
@@ -140,7 +151,7 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
         if (Util.SDK_INT > 23) {
             initPlayer()
-            if (player_view != null) player_view.onResume()
+            playerView.onResume()
         }
     }
 
@@ -148,14 +159,14 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         if (Util.SDK_INT <= 23) {
             initPlayer()
-            if (player_view != null) player_view.onResume()
+            playerView.onResume()
         }
     }
 
     override fun onPause() {
         super.onPause()
         if (Util.SDK_INT <= 23) {
-            if (player_view != null) player_view.onPause()
+            playerView.onPause()
             releasePlayer()
         }
     }
@@ -163,7 +174,7 @@ class MainActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         if (Util.SDK_INT > 23) {
-            if (player_view != null) player_view.onPause()
+            playerView.onPause()
             releasePlayer()
         }
     }

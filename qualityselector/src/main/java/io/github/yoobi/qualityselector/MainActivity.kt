@@ -3,6 +3,9 @@ package io.github.yoobi.qualityselector
 import android.app.Dialog
 import android.os.Bundle
 import android.view.View
+import android.widget.FrameLayout
+import android.widget.ImageButton
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.MediaItem
@@ -10,13 +13,12 @@ import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector
+import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.ui.TrackSelectionDialogBuilder
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.MimeTypes
 import com.google.android.exoplayer2.util.Util
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.exo_player_control_view.*
 
 const val HLS_STATIC_URL = "https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8"
 const val STATE_RESUME_WINDOW = "resumeWindow"
@@ -31,6 +33,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var exoPlayer: SimpleExoPlayer
     private lateinit var dataSourceFactory: DataSource.Factory
     private lateinit var trackSelector: DefaultTrackSelector
+    private lateinit var playerView: PlayerView
+    private lateinit var exoQuality: ImageButton
 
     private var currentWindow = 0
     private var playbackPosition: Long = 0
@@ -46,10 +50,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        playerView = findViewById(R.id.player_view)
+        exoQuality = playerView.findViewById(R.id.exo_quality)
+
         dataSourceFactory = DefaultDataSourceFactory(this,
             Util.getUserAgent(this, "testapp"))
 
-        exo_quality.setOnClickListener{
+        exoQuality.setOnClickListener{
             if(trackDialog == null){
                 initPopupQuality()
             }
@@ -75,13 +82,13 @@ class MainActivity : AppCompatActivity() {
             setMediaItem(mediaItem)
             prepare()
         }
-        player_view.player = exoPlayer
+        playerView.player = exoPlayer
 
         //Listener on player
         exoPlayer.addListener(object: Player.EventListener{
             override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
                 if(playbackState == Player.STATE_READY){
-                    exo_quality.visibility = View.VISIBLE
+                    exoQuality.visibility = View.VISIBLE
                 }
             }
         })
@@ -106,7 +113,7 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
         if (Util.SDK_INT > 23) {
             initPlayer()
-            if (player_view != null) player_view.onResume()
+            playerView.onResume()
         }
     }
 
@@ -114,14 +121,14 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         if (Util.SDK_INT <= 23) {
             initPlayer()
-            if (player_view != null) player_view.onResume()
+            playerView.onResume()
         }
     }
 
     override fun onPause() {
         super.onPause()
         if (Util.SDK_INT <= 23) {
-            if (player_view != null) player_view.onPause()
+            playerView.onPause()
             releasePlayer()
         }
     }
@@ -129,7 +136,7 @@ class MainActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         if (Util.SDK_INT > 23) {
-            if (player_view != null) player_view.onPause()
+            playerView.onPause()
             releasePlayer()
         }
     }
@@ -140,7 +147,7 @@ class MainActivity : AppCompatActivity() {
         val mappedTrackInfo = trackSelector.currentMappedTrackInfo
         var videoRenderer : Int? = null
 
-        if(mappedTrackInfo == null) return else exo_quality.visibility = View.VISIBLE
+        if(mappedTrackInfo == null) return else exoQuality.visibility = View.VISIBLE
 
         for(i in 0 until mappedTrackInfo.rendererCount){
             if(isVideoRenderer(mappedTrackInfo, i)){
@@ -149,7 +156,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         if(videoRenderer == null){
-            exo_quality.visibility = View.GONE
+            exoQuality.visibility = View.GONE
             return
         }
 
