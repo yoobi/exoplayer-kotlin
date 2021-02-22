@@ -4,7 +4,7 @@ package io.github.yoobi.downloadvideo.common
 import android.content.Context
 import com.google.android.exoplayer2.database.DatabaseProvider
 import com.google.android.exoplayer2.database.ExoDatabaseProvider
-import com.google.android.exoplayer2.ext.cronet.CronetDataSourceFactory
+import com.google.android.exoplayer2.ext.cronet.CronetDataSource
 import com.google.android.exoplayer2.ext.cronet.CronetEngineWrapper
 import com.google.android.exoplayer2.offline.Download
 import com.google.android.exoplayer2.offline.DownloadManager
@@ -37,7 +37,7 @@ object DownloadUtil {
     @Synchronized
     fun getHttpDataSourceFactory(context: Context): HttpDataSource.Factory {
         if (!DownloadUtil::httpDataSourceFactory.isInitialized) {
-            httpDataSourceFactory = CronetDataSourceFactory(CronetEngineWrapper(context), Executors.newSingleThreadExecutor())
+            httpDataSourceFactory = CronetDataSource.Factory(CronetEngineWrapper(context), Executors.newSingleThreadExecutor())
         }
         return httpDataSourceFactory
     }

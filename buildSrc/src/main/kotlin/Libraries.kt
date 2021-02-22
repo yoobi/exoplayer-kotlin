@@ -25,9 +25,7 @@ object Libraries {
     }
 
     object Exoplayer {
-        private const val version = "2.12.0"
-
-        const val exoplayerOld = "com.google.android.exoplayer:exoplayer:2.11.4"
+        private const val version = "2.13.1"
 
         const val exoplayer = "com.google.android.exoplayer:exoplayer:$version"
         const val exoplayercore = "com.google.android.exoplayer:exoplayer-core:$version"
