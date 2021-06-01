@@ -15,4 +15,4 @@ fun PluginDependenciesSpec.kotlinKaptExt(): PluginDependencySpec =
     kotlin("kapt")
 
 fun PluginDependenciesSpec.dependencyUpdates(): PluginDependencySpec =
-    id("com.github.ben-manes.versions").version("0.33.0")
+    id("com.github.ben-manes.versions").version("0.39.0")

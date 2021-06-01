@@ -10,7 +10,6 @@ import com.google.android.exoplayer2.MediaMetadata
 import com.google.android.exoplayer2.offline.DownloadService
 import com.google.android.exoplayer2.util.MimeTypes
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import io.github.yoobi.downloadvideo.common.MediaItemTag
 import io.github.yoobi.downloadvideo.common.MyDownloadService
 import io.github.yoobi.downloadvideo.offlineVideo.OfflineVideoActivity
 

@@ -1,22 +1,24 @@
 object Libraries {
 
     object Kotlin {
-        private const val version = "1.4.10" // Don't forget to update the version in buildSrc too !
+        private const val version = "1.5.10" // Don't forget to update the version in buildSrc too !
 
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$version"
     }
 
     object Androidx {
-        const val appcompat = "androidx.appcompat:appcompat:1.2.0"
-        const val constraintlayout = "androidx.constraintlayout:constraintlayout:2.0.1"
+        private const val lifecycle_version = "2.2.0"
+
+        const val appcompat = "androidx.appcompat:appcompat:1.3.0"
+        const val constraintlayout = "androidx.constraintlayout:constraintlayout:2.0.4"
         const val coordinatorlayout = "androidx.coordinatorlayout:coordinatorlayout:1.1.0"
-        const val material = "com.google.android.material:material:1.2.1"
-        const val recyclerview = "androidx.recyclerview:recyclerview:1.1.0"
-        const val lifecycle = "androidx.lifecycle:lifecycle-extensions:2.2.0"
-        const val viewmodel = "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
+        const val material = "com.google.android.material:material:1.3.0"
+        const val recyclerview = "androidx.recyclerview:recyclerview:1.2.0"
+        const val lifecycle = "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+        const val viewmodel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
 
         object Ktx {
-            const val core = "androidx.core:core-ktx:1.3.1"
+            const val core = "androidx.core:core-ktx:1.5.0"
         }
     }
 
@@ -25,7 +27,7 @@ object Libraries {
     }
 
     object Exoplayer {
-        private const val version = "2.13.1"
+        private const val version = "2.14.0"
 
         const val exoplayer = "com.google.android.exoplayer:exoplayer:$version"
         const val exoplayercore = "com.google.android.exoplayer:exoplayer-core:$version"
@@ -36,7 +38,7 @@ object Libraries {
     }
 
     object TestLibraries {
-        const val junit = "junit:junit:4.13"
+        const val junit = "junit:junit:4.13.2"
     }
 
     object AndroidTestLibraries {

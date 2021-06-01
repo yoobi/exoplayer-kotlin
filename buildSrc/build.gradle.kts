@@ -2,7 +2,7 @@ plugins {
     `kotlin-dsl`
 }
 
-val kotlinVersion = "1.4.10"
+val kotlinVersion = "1.5.10"
 
 repositories {
     google()

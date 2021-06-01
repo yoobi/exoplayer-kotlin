@@ -5,14 +5,14 @@ plugins {
 }
 
 buildscript {
-    val kotlin_version by extra("1.4.10")
+    val kotlin_version by extra("1.5.10")
     repositories {
         google()
         jcenter()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:4.1.0")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.10")
+        classpath("com.android.tools.build:gradle:4.2.1")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.10")
     }
 }
 
@@ -36,4 +36,14 @@ tasks.named("dependencyUpdates", com.github.benmanes.gradle.versions.updates.Dep
     outputFormatter = "json"
     outputDir = "build/dependencyUpdates"
     reportfileName = "report"
+    rejectVersionIf {
+        isNonStable(candidate.version)
+    }
+}
+
+fun isNonStable(version: String): Boolean {
+    val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.toUpperCase().contains(it) }
+    val regex = "^[0-9,.v-]+(-r)?$".toRegex()
+    val isStable = stableKeyword || regex.matches(version)
+    return isStable.not()
 }

@@ -76,7 +76,7 @@ class ExoplayerRecyclerView : RecyclerView {
                 }
             }
         })
-        videoPlayer?.addListener(object : Player.EventListener {
+        videoPlayer?.addListener(object : Player.Listener {
             override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
                 when (playbackState) {
                     Player.STATE_BUFFERING -> {

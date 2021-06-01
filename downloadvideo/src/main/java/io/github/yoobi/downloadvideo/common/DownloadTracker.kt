@@ -22,12 +22,9 @@ import com.google.android.exoplayer2.util.Log
 import com.google.android.exoplayer2.util.MimeTypes
 import com.google.android.exoplayer2.util.Util
 import io.github.yoobi.downloadvideo.R
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.isActive
-import kotlinx.coroutines.withContext
 import java.io.IOException
 import java.util.*
 import java.util.concurrent.CopyOnWriteArraySet
@@ -79,36 +76,6 @@ class DownloadTracker(context: Context, private val httpDataSourceFactory: HttpD
         uri ?: return null
         val download = downloads[uri]
         return if (download != null && download.state != Download.STATE_FAILED) download.request else null
-    }
-
-    fun toggleDownload(
-        context: Context, mediaItem: MediaItem,
-        positiveCallback: (() -> Unit)? = null, dismissCallback: (() -> Unit)? = null
-    ) {
-        val download = downloads[mediaItem.playbackProperties?.uri]
-        if (download != null) {
-            if(download.state == Download.STATE_STOPPED) {
-                DownloadService.sendSetStopReason(
-                    context,
-                    MyDownloadService::class.java,
-                    download.request.id,
-                    Download.STOP_REASON_NONE,
-                    true
-                )
-            } else {
-                DownloadService.sendSetStopReason(
-                    context,
-                    MyDownloadService::class.java,
-                    download.request.id,
-                    Download.STATE_STOPPED,
-                    false
-                )
-            }
-        } else {
-            startDownloadDialogHelper?.release()
-            startDownloadDialogHelper =
-                StartDownloadDialogHelper(context, getDownloadHelper(mediaItem), mediaItem, positiveCallback, dismissCallback)
-        }
     }
 
     fun toggleDownloadDialogHelper(context: Context, mediaItem: MediaItem,
@@ -177,6 +144,7 @@ class DownloadTracker(context: Context, private val httpDataSourceFactory: HttpD
         }
     }
 
+    @ExperimentalCoroutinesApi
     suspend fun getAllDownloadProgressFlow(): Flow<List<Download>> = callbackFlow {
         while(coroutineContext.isActive) {
             offer(downloads.values.toList())
@@ -184,6 +152,7 @@ class DownloadTracker(context: Context, private val httpDataSourceFactory: HttpD
         }
     }
 
+    @ExperimentalCoroutinesApi
     suspend fun getCurrentProgressDownload(uri: Uri?): Flow<Float?> {
         var percent: Float? = downloadManager.currentDownloads.find { it.request.uri == uri }?.percentDownloaded
         return callbackFlow {

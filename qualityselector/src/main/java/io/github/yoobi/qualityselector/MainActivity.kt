@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity() {
         playerView.player = exoPlayer
 
         //Listener on player
-        exoPlayer.addListener(object: Player.EventListener{
+        exoPlayer.addListener(object: Player.Listener{
             override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
                 if(playbackState == Player.STATE_READY){
                     exoQuality.visibility = View.VISIBLE

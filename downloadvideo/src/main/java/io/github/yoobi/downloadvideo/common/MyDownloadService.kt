@@ -54,8 +54,8 @@ class MyDownloadService: DownloadService(
      * Creates and displays notifications for downloads when they complete or fail.
      *
      *
-     * This helper will outlive the lifespan of a single instance of [DemoDownloadService].
-     * It is static to avoid leaking the first [DemoDownloadService] instance.
+     * This helper will outlive the lifespan of a single instance of [MyDownloadService].
+     * It is static to avoid leaking the first [MyDownloadService] instance.
      */
     private class TerminalStateNotificationHelper(
         context: Context,
