@@ -70,6 +70,7 @@ class ExoplayerRecyclerView : RecyclerView {
                     true
                 }
             }
+
             override fun onChildViewDetachedFromWindow(view: View) {
                 if (viewHolderParent != null && viewHolderParent == view) {
                     resetVideoView()
@@ -115,12 +116,14 @@ class ExoplayerRecyclerView : RecyclerView {
         viewHolderParent = holder.itemView
         frameLayout = holder.videoContainer
         videoSurfaceView.player = videoPlayer
-        val dataSourceFactory: DataSource.Factory = DefaultDataSourceFactory( context,
+        val dataSourceFactory: DataSource.Factory = DefaultDataSourceFactory(
+            context,
             Util.getUserAgent(context, "RecyclerView VideoPlayer")
         )
 
         holder.videoPreview.let {
-            val videoSource: MediaSource = ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(it)
+            val videoSource: MediaSource =
+                ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(it)
             videoPlayer?.setMediaSource(videoSource)
             videoPlayer?.prepare()
             videoPlayer?.playWhenReady = true
@@ -165,7 +168,7 @@ class ExoplayerRecyclerView : RecyclerView {
     }
 
     fun createPlayer() {
-        if(videoPlayer == null) {
+        if (videoPlayer == null) {
             init(context)
         }
     }

@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.exoplayer2.MediaItem
 
-class ExoplayerVideoAdapter(private val listener: ExoplayerOnClickListener)
-    : RecyclerView.Adapter<ExoplayerVideoAdapter.VideoViewHolder>() {
+class ExoplayerVideoAdapter(private val listener: ExoplayerOnClickListener) :
+    RecyclerView.Adapter<ExoplayerVideoAdapter.VideoViewHolder>() {
 
     var data = listOf<VideoCard>()
 
@@ -28,7 +28,7 @@ class ExoplayerVideoAdapter(private val listener: ExoplayerOnClickListener)
         }
     }
 
-    class VideoViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+    class VideoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private val parent: View = itemView
         private val title: TextView = itemView.findViewById(R.id.video_title)
@@ -47,7 +47,7 @@ class ExoplayerVideoAdapter(private val listener: ExoplayerOnClickListener)
         }
 
         companion object {
-            fun from(parent: ViewGroup) : VideoViewHolder {
+            fun from(parent: ViewGroup): VideoViewHolder {
                 val inflater = LayoutInflater.from(parent.context)
                 return VideoViewHolder(inflater.inflate(R.layout.item_video, parent, false))
             }
