@@ -21,13 +21,6 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.MimeTypes
 import com.google.android.exoplayer2.util.Util
 
-const val HLS_STATIC_URL = "https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8"
-const val THUMBNAIL_MOSAIQUE = "https://bitdash-a.akamaihd.net/content/MI201109210084_1/thumbnails/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.jpg"
-const val STATE_RESUME_WINDOW = "resumeWindow"
-const val STATE_RESUME_POSITION = "resumePosition"
-const val STATE_PLAYER_FULLSCREEN = "playerFullscreen"
-const val STATE_PLAYER_PLAYING = "playerOnPlay"
-
 class MainActivity : AppCompatActivity() {
 
     private lateinit var exoPlayer: SimpleExoPlayer
@@ -55,8 +48,10 @@ class MainActivity : AppCompatActivity() {
         previewFrameLayout = playerView.findViewById(R.id.preview_frame_layout)
         previewImage = playerView.findViewById(R.id.preview_image)
 
-        dataSourceFactory = DefaultDataSourceFactory(this,
-            Util.getUserAgent(this, "testapp"))
+        dataSourceFactory = DefaultDataSourceFactory(
+            this,
+            Util.getUserAgent(this, "testapp")
+        )
 
         if (savedInstanceState != null) {
             currentWindow = savedInstanceState.getInt(STATE_RESUME_WINDOW)
@@ -66,7 +61,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun initPlayer(){
+    private fun initPlayer() {
         exoPlayer = SimpleExoPlayer.Builder(this).build().apply {
             playWhenReady = isPlayerPlaying
             seekTo(currentWindow, playbackPosition)
@@ -78,7 +73,8 @@ class MainActivity : AppCompatActivity() {
         exoProgress.addListener(object : TimeBar.OnScrubListener {
             override fun onScrubMove(timeBar: TimeBar, position: Long) {
                 previewFrameLayout.visibility = View.VISIBLE
-                previewFrameLayout.x = updatePreviewX(position.toInt(), exoPlayer.duration.toInt()).toFloat()
+                previewFrameLayout.x =
+                    updatePreviewX(position.toInt(), exoPlayer.duration.toInt()).toFloat()
 
                 val drawable = previewImage.drawable
                 var glideOptions = RequestOptions().dontAnimate().skipMemoryCache(false)
@@ -89,7 +85,7 @@ class MainActivity : AppCompatActivity() {
                 Glide.with(previewImage).asBitmap()
                     .apply(glideOptions)
                     .load(THUMBNAIL_MOSAIQUE)
-                    .override(Target.SIZE_ORIGINAL ,Target.SIZE_ORIGINAL)
+                    .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
                     .transform(GlideThumbnailTransformation(position))
                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                     .into(previewImage)
@@ -105,7 +101,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updatePreviewX(progress: Int, max: Int): Int {
-        if (max == 0) { return 0 }
+        if (max == 0) {
+            return 0
+        }
 
         val parent = previewFrameLayout.parent as ViewGroup
         val layoutParams = previewFrameLayout.layoutParams as MarginLayoutParams
@@ -113,7 +111,8 @@ class MainActivity : AppCompatActivity() {
         val minimumX: Int = previewFrameLayout.left
         val maximumX = (parent.width - parent.paddingRight - layoutParams.rightMargin)
 
-        val previewPaddingRadius: Int = resources.getDimensionPixelSize(R.dimen.scrubber_dragged_size).div(2)
+        val previewPaddingRadius: Int =
+            resources.getDimensionPixelSize(R.dimen.scrubber_dragged_size).div(2)
         val previewLeftX = (exoProgress as View).left.toFloat()
         val previewRightX = (exoProgress as View).right.toFloat()
         val previewSeekBarStartX: Float = previewLeftX + previewPaddingRadius
@@ -132,7 +131,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun releasePlayer(){
+    private fun releasePlayer() {
         isPlayerPlaying = exoPlayer.playWhenReady
         playbackPosition = exoPlayer.currentPosition
         currentWindow = exoPlayer.currentWindowIndex
@@ -177,5 +176,16 @@ class MainActivity : AppCompatActivity() {
             playerView.onPause()
             releasePlayer()
         }
+    }
+
+    companion object {
+        const val HLS_STATIC_URL =
+            "https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8"
+        const val THUMBNAIL_MOSAIQUE =
+            "https://bitdash-a.akamaihd.net/content/MI201109210084_1/thumbnails/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.jpg"
+        const val STATE_RESUME_WINDOW = "resumeWindow"
+        const val STATE_RESUME_POSITION = "resumePosition"
+        const val STATE_PLAYER_FULLSCREEN = "playerFullscreen"
+        const val STATE_PLAYER_PLAYING = "playerOnPlay"
     }
 }
