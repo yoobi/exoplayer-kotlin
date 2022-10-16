@@ -37,17 +37,24 @@ object DownloadUtil {
     @Synchronized
     fun getHttpDataSourceFactory(context: Context): HttpDataSource.Factory {
         if (!DownloadUtil::httpDataSourceFactory.isInitialized) {
-            httpDataSourceFactory = CronetDataSource.Factory(CronetEngineWrapper(context), Executors.newSingleThreadExecutor())
+            httpDataSourceFactory = CronetDataSource.Factory(
+                CronetEngineWrapper(context),
+                Executors.newSingleThreadExecutor()
+            )
         }
         return httpDataSourceFactory
     }
 
     @Synchronized
     fun getReadOnlyDataSourceFactory(context: Context): DataSource.Factory {
-        if (!DownloadUtil::dataSourceFactory.isInitialized ) {
+        if (!DownloadUtil::dataSourceFactory.isInitialized) {
             val contextApplication = context.applicationContext
-            val upstreamFactory = DefaultDataSourceFactory(contextApplication, getHttpDataSourceFactory(contextApplication))
-            dataSourceFactory = buildReadOnlyCacheDataSource(upstreamFactory, getDownloadCache(contextApplication))
+            val upstreamFactory = DefaultDataSourceFactory(
+                contextApplication,
+                getHttpDataSourceFactory(contextApplication)
+            )
+            dataSourceFactory =
+                buildReadOnlyCacheDataSource(upstreamFactory, getDownloadCache(contextApplication))
         }
         return dataSourceFactory
     }
@@ -55,7 +62,8 @@ object DownloadUtil {
     @Synchronized
     fun getDownloadNotificationHelper(context: Context?): DownloadNotificationHelper {
         if (!DownloadUtil::downloadNotificationHelper.isInitialized) {
-            downloadNotificationHelper = DownloadNotificationHelper(context!!, DOWNLOAD_NOTIFICATION_CHANNEL_ID)
+            downloadNotificationHelper =
+                DownloadNotificationHelper(context!!, DOWNLOAD_NOTIFICATION_CHANNEL_ID)
         }
         return downloadNotificationHelper
     }
@@ -73,7 +81,7 @@ object DownloadUtil {
     }
 
     fun getDownloadString(context: Context, @Download.State downloadState: Int): String {
-        return when(downloadState) {
+        return when (downloadState) {
             Download.STATE_COMPLETED -> context.resources.getString(R.string.exo_download_completed)
             Download.STATE_DOWNLOADING -> context.resources.getString(R.string.exo_download_downloading)
             Download.STATE_FAILED -> context.resources.getString(R.string.exo_download_failed)
@@ -88,8 +96,13 @@ object DownloadUtil {
     @Synchronized
     private fun getDownloadCache(context: Context): Cache {
         if (!DownloadUtil::downloadCache.isInitialized) {
-            val downloadContentDirectory = File(getDownloadDirectory(context), DOWNLOAD_CONTENT_DIRECTORY)
-            downloadCache = SimpleCache(downloadContentDirectory, NoOpCacheEvictor(), getDatabaseProvider(context))
+            val downloadContentDirectory =
+                File(getDownloadDirectory(context), DOWNLOAD_CONTENT_DIRECTORY)
+            downloadCache = SimpleCache(
+                downloadContentDirectory,
+                NoOpCacheEvictor(),
+                getDatabaseProvider(context)
+            )
         }
         return downloadCache
     }
@@ -106,13 +119,15 @@ object DownloadUtil {
             ).apply {
                 maxParallelDownloads = 2
             }
-            downloadTracker = DownloadTracker(context, getHttpDataSourceFactory(context), downloadManager)
+            downloadTracker =
+                DownloadTracker(context, getHttpDataSourceFactory(context), downloadManager)
         }
     }
 
     @Synchronized
     private fun getDatabaseProvider(context: Context): DatabaseProvider {
-        if (!DownloadUtil::databaseProvider.isInitialized) databaseProvider = ExoDatabaseProvider(context)
+        if (!DownloadUtil::databaseProvider.isInitialized) databaseProvider =
+            ExoDatabaseProvider(context)
         return databaseProvider
     }
 
@@ -124,7 +139,10 @@ object DownloadUtil {
         return downloadDirectory
     }
 
-    private fun buildReadOnlyCacheDataSource(upstreamFactory: DataSource.Factory, cache: Cache): CacheDataSource.Factory {
+    private fun buildReadOnlyCacheDataSource(
+        upstreamFactory: DataSource.Factory,
+        cache: Cache
+    ): CacheDataSource.Factory {
         return CacheDataSource.Factory()
             .setCache(cache)
             .setUpstreamDataSourceFactory(upstreamFactory)

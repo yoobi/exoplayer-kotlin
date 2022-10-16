@@ -10,7 +10,7 @@ import io.github.yoobi.downloadvideo.common.DownloadUtil
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
 
-class PlayerViewModel(application: Application): AndroidViewModel(application) {
+class PlayerViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _downloadPercent = MutableLiveData<Float>()
     val downloadPercent: LiveData<Float>

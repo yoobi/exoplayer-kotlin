@@ -26,11 +26,6 @@ import io.github.yoobi.downloadvideo.common.MediaItemTag
 import io.github.yoobi.downloadvideo.common.PieProgressDrawable
 import kotlin.math.roundToInt
 
-const val STATE_RESUME_WINDOW = "resumeWindow"
-const val STATE_RESUME_POSITION = "resumePosition"
-const val STATE_PLAYER_FULLSCREEN = "playerFullscreen"
-const val STATE_PLAYER_PLAYING = "playerOnPlay"
-
 class PlayerActivity : AppCompatActivity(), DownloadTracker.Listener {
 
     private lateinit var exoPlayer: SimpleExoPlayer
@@ -45,7 +40,9 @@ class PlayerActivity : AppCompatActivity(), DownloadTracker.Listener {
         MediaItem.Builder()
             .setUri(intent.getStringExtra(BUNDLE_URL))
             .setMimeType(intent.getStringExtra(BUNDLE_MIME_TYPES))
-            .setMediaMetadata(MediaMetadata.Builder().setTitle(intent.getStringExtra(BUNDLE_TITLE)).build())
+            .setMediaMetadata(
+                MediaMetadata.Builder().setTitle(intent.getStringExtra(BUNDLE_TITLE)).build()
+            )
             .setTag(MediaItemTag(-1, intent.getStringExtra(BUNDLE_TITLE)!!))
             .build()
     }
@@ -73,20 +70,32 @@ class PlayerActivity : AppCompatActivity(), DownloadTracker.Listener {
 
         progressDrawable = findViewById<ImageView>(R.id.download_state).apply {
             setOnClickListener {
-                if(DownloadUtil.getDownloadTracker(context).isDownloaded(mediaItem)) {
-                    Snackbar.make(this.rootView, "You've already downloaded the video", Snackbar.LENGTH_SHORT)
+                if (DownloadUtil.getDownloadTracker(context).isDownloaded(mediaItem)) {
+                    Snackbar.make(
+                        this.rootView,
+                        "You've already downloaded the video",
+                        Snackbar.LENGTH_SHORT
+                    )
                         .setAction("Delete") {
-                            DownloadUtil.getDownloadTracker(this@PlayerActivity).removeDownload(mediaItem.playbackProperties?.uri)
+                            DownloadUtil.getDownloadTracker(this@PlayerActivity)
+                                .removeDownload(mediaItem.playbackProperties?.uri)
                         }.show()
                 } else {
                     val item = mediaItem.buildUpon()
                         .setTag((mediaItem.playbackProperties?.tag as MediaItemTag).copy(duration = exoPlayer.duration))
                         .build()
-                    if(!DownloadUtil.getDownloadTracker(this@PlayerActivity).hasDownload(item.playbackProperties?.uri)) {
-                        DownloadUtil.getDownloadTracker(this@PlayerActivity).toggleDownloadDialogHelper(this@PlayerActivity, item)
+                    if (!DownloadUtil.getDownloadTracker(this@PlayerActivity)
+                            .hasDownload(item.playbackProperties?.uri)
+                    ) {
+                        DownloadUtil.getDownloadTracker(this@PlayerActivity)
+                            .toggleDownloadDialogHelper(this@PlayerActivity, item)
                     } else {
                         DownloadUtil.getDownloadTracker(this@PlayerActivity)
-                            .toggleDownloadPopupMenu(this@PlayerActivity, this, item.playbackProperties?.uri)
+                            .toggleDownloadPopupMenu(
+                                this@PlayerActivity,
+                                this,
+                                item.playbackProperties?.uri
+                            )
                     }
                 }
             }
@@ -100,15 +109,20 @@ class PlayerActivity : AppCompatActivity(), DownloadTracker.Listener {
         }
     }
 
-    private fun initPlayer(){
+    private fun initPlayer() {
         val downloadRequest: DownloadRequest? =
-            DownloadUtil.getDownloadTracker(this).getDownloadRequest(mediaItem.playbackProperties?.uri)
-        val mediaSource = if(downloadRequest == null) {
+            DownloadUtil.getDownloadTracker(this)
+                .getDownloadRequest(mediaItem.playbackProperties?.uri)
+        val mediaSource = if (downloadRequest == null) {
             // Online content
-            HlsMediaSource.Factory(DownloadUtil.getHttpDataSourceFactory(this)).createMediaSource(mediaItem)
+            HlsMediaSource.Factory(DownloadUtil.getHttpDataSourceFactory(this))
+                .createMediaSource(mediaItem)
         } else {
             // Offline content
-            DownloadHelper.createMediaSource(downloadRequest, DownloadUtil.getReadOnlyDataSourceFactory(this))
+            DownloadHelper.createMediaSource(
+                downloadRequest,
+                DownloadUtil.getReadOnlyDataSourceFactory(this)
+            )
         }
 
         exoPlayer = SimpleExoPlayer.Builder(this).build()
@@ -120,8 +134,8 @@ class PlayerActivity : AppCompatActivity(), DownloadTracker.Listener {
             }
         playerView.player = exoPlayer
     }
-    
-    private fun releasePlayer(){
+
+    private fun releasePlayer() {
         isPlayerPlaying = exoPlayer.playWhenReady
         playbackPosition = exoPlayer.currentPosition
         currentWindow = exoPlayer.currentWindowIndex
@@ -180,21 +194,45 @@ class PlayerActivity : AppCompatActivity(), DownloadTracker.Listener {
     }
 
     override fun onDownloadsChanged(download: Download) {
-        when(download.state) {
+        when (download.state) {
             Download.STATE_DOWNLOADING -> {
-                if(progressDrawable.drawable !is PieProgressDrawable) progressDrawable.setImageDrawable(pieProgressDrawable)
+                if (progressDrawable.drawable !is PieProgressDrawable) progressDrawable.setImageDrawable(
+                    pieProgressDrawable
+                )
                 playerViewModel.startFlow(this, download.request.uri)
             }
             Download.STATE_QUEUED, Download.STATE_STOPPED -> {
-                progressDrawable.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.ic_pause))
+                progressDrawable.setImageDrawable(
+                    AppCompatResources.getDrawable(
+                        this,
+                        R.drawable.ic_pause
+                    )
+                )
             }
             Download.STATE_COMPLETED -> {
-                progressDrawable.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.ic_download_done))
+                progressDrawable.setImageDrawable(
+                    AppCompatResources.getDrawable(
+                        this,
+                        R.drawable.ic_download_done
+                    )
+                )
             }
             Download.STATE_REMOVING -> {
-                progressDrawable.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.ic_download))
+                progressDrawable.setImageDrawable(
+                    AppCompatResources.getDrawable(
+                        this,
+                        R.drawable.ic_download
+                    )
+                )
             }
-            Download.STATE_FAILED, Download.STATE_RESTARTING -> { }
+            Download.STATE_FAILED, Download.STATE_RESTARTING -> {}
         }
+    }
+
+    companion object {
+        const val STATE_RESUME_WINDOW = "resumeWindow"
+        const val STATE_RESUME_POSITION = "resumePosition"
+        const val STATE_PLAYER_FULLSCREEN = "playerFullscreen"
+        const val STATE_PLAYER_PLAYING = "playerOnPlay"
     }
 }
