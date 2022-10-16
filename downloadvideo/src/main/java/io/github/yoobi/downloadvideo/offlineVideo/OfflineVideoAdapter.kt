@@ -13,9 +13,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.exoplayer2.offline.Download
-import io.github.yoobi.downloadvideo.BUNDLE_MIME_TYPES
-import io.github.yoobi.downloadvideo.BUNDLE_TITLE
-import io.github.yoobi.downloadvideo.BUNDLE_URL
+import io.github.yoobi.downloadvideo.OnlineAdapter.Companion.BUNDLE_MIME_TYPES
+import io.github.yoobi.downloadvideo.OnlineAdapter.Companion.BUNDLE_TITLE
+import io.github.yoobi.downloadvideo.OnlineAdapter.Companion.BUNDLE_URL
 import io.github.yoobi.downloadvideo.R
 import io.github.yoobi.downloadvideo.common.DownloadUtil
 import io.github.yoobi.downloadvideo.common.PieProgressDrawable

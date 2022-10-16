@@ -16,9 +16,9 @@ import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.util.Util
 import com.google.android.material.snackbar.Snackbar
-import io.github.yoobi.downloadvideo.BUNDLE_MIME_TYPES
-import io.github.yoobi.downloadvideo.BUNDLE_TITLE
-import io.github.yoobi.downloadvideo.BUNDLE_URL
+import io.github.yoobi.downloadvideo.OnlineAdapter.Companion.BUNDLE_MIME_TYPES
+import io.github.yoobi.downloadvideo.OnlineAdapter.Companion.BUNDLE_TITLE
+import io.github.yoobi.downloadvideo.OnlineAdapter.Companion.BUNDLE_URL
 import io.github.yoobi.downloadvideo.R
 import io.github.yoobi.downloadvideo.common.DownloadTracker
 import io.github.yoobi.downloadvideo.common.DownloadUtil
