@@ -36,7 +36,7 @@ object DownloadUtil {
 
     @Synchronized
     fun getHttpDataSourceFactory(context: Context): HttpDataSource.Factory {
-        if (!DownloadUtil::httpDataSourceFactory.isInitialized) {
+        if(!DownloadUtil::httpDataSourceFactory.isInitialized) {
             httpDataSourceFactory = CronetDataSource.Factory(
                 CronetEngineWrapper(context),
                 Executors.newSingleThreadExecutor()
@@ -47,7 +47,7 @@ object DownloadUtil {
 
     @Synchronized
     fun getReadOnlyDataSourceFactory(context: Context): DataSource.Factory {
-        if (!DownloadUtil::dataSourceFactory.isInitialized) {
+        if(!DownloadUtil::dataSourceFactory.isInitialized) {
             val contextApplication = context.applicationContext
             val upstreamFactory = DefaultDataSourceFactory(
                 contextApplication,
@@ -61,7 +61,7 @@ object DownloadUtil {
 
     @Synchronized
     fun getDownloadNotificationHelper(context: Context?): DownloadNotificationHelper {
-        if (!DownloadUtil::downloadNotificationHelper.isInitialized) {
+        if(!DownloadUtil::downloadNotificationHelper.isInitialized) {
             downloadNotificationHelper =
                 DownloadNotificationHelper(context!!, DOWNLOAD_NOTIFICATION_CHANNEL_ID)
         }
@@ -95,7 +95,7 @@ object DownloadUtil {
 
     @Synchronized
     private fun getDownloadCache(context: Context): Cache {
-        if (!DownloadUtil::downloadCache.isInitialized) {
+        if(!DownloadUtil::downloadCache.isInitialized) {
             val downloadContentDirectory =
                 File(getDownloadDirectory(context), DOWNLOAD_CONTENT_DIRECTORY)
             downloadCache = SimpleCache(
@@ -109,7 +109,7 @@ object DownloadUtil {
 
     @Synchronized
     private fun ensureDownloadManagerInitialized(context: Context) {
-        if (!DownloadUtil::downloadManager.isInitialized) {
+        if(!DownloadUtil::downloadManager.isInitialized) {
             downloadManager = DownloadManager(
                 context,
                 getDatabaseProvider(context),
@@ -126,14 +126,14 @@ object DownloadUtil {
 
     @Synchronized
     private fun getDatabaseProvider(context: Context): DatabaseProvider {
-        if (!DownloadUtil::databaseProvider.isInitialized) databaseProvider =
+        if(!DownloadUtil::databaseProvider.isInitialized) databaseProvider =
             ExoDatabaseProvider(context)
         return databaseProvider
     }
 
     @Synchronized
     fun getDownloadDirectory(context: Context): File {
-        if (!DownloadUtil::downloadDirectory.isInitialized) {
+        if(!DownloadUtil::downloadDirectory.isInitialized) {
             downloadDirectory = context.getExternalFilesDir(null) ?: context.filesDir
         }
         return downloadDirectory

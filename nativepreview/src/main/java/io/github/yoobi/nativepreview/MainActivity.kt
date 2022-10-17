@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
             Util.getUserAgent(this, "testapp")
         )
 
-        if (savedInstanceState != null) {
+        if(savedInstanceState != null) {
             currentWindow = savedInstanceState.getInt(STATE_RESUME_WINDOW)
             playbackPosition = savedInstanceState.getLong(STATE_RESUME_POSITION)
             isFullscreen = savedInstanceState.getBoolean(STATE_PLAYER_FULLSCREEN)
@@ -78,7 +78,7 @@ class MainActivity : AppCompatActivity() {
 
                 val drawable = previewImage.drawable
                 var glideOptions = RequestOptions().dontAnimate().skipMemoryCache(false)
-                if (drawable != null) {
+                if(drawable != null) {
                     glideOptions = glideOptions.placeholder(drawable)
                 }
 
@@ -101,9 +101,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updatePreviewX(progress: Int, max: Int): Int {
-        if (max == 0) {
-            return 0
-        }
+        if(max == 0) return 0
 
         val parent = previewFrameLayout.parent as ViewGroup
         val layoutParams = previewFrameLayout.layoutParams as MarginLayoutParams
@@ -111,8 +109,7 @@ class MainActivity : AppCompatActivity() {
         val minimumX: Int = previewFrameLayout.left
         val maximumX = (parent.width - parent.paddingRight - layoutParams.rightMargin)
 
-        val previewPaddingRadius: Int =
-            resources.getDimensionPixelSize(R.dimen.scrubber_dragged_size).div(2)
+        val previewPaddingRadius: Int = resources.getDimensionPixelSize(R.dimen.scrubber_dragged_size).div(2)
         val previewLeftX = (exoProgress as View).left.toFloat()
         val previewRightX = (exoProgress as View).right.toFloat()
         val previewSeekBarStartX: Float = previewLeftX + previewPaddingRadius
@@ -122,9 +119,9 @@ class MainActivity : AppCompatActivity() {
         val endX: Float = startX + previewFrameLayout.width
 
         // Clamp the moves
-        return if (startX >= minimumX && endX <= maximumX) {
+        return if(startX >= minimumX && endX <= maximumX) {
             startX.toInt()
-        } else if (startX < minimumX) {
+        } else if(startX < minimumX) {
             minimumX
         } else {
             maximumX - previewFrameLayout.width
@@ -148,7 +145,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        if (Util.SDK_INT > 23) {
+        if(Util.SDK_INT > 23) {
             initPlayer()
             playerView.onResume()
         }
@@ -156,7 +153,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (Util.SDK_INT <= 23) {
+        if(Util.SDK_INT <= 23) {
             initPlayer()
             playerView.onResume()
         }
@@ -164,7 +161,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        if (Util.SDK_INT <= 23) {
+        if(Util.SDK_INT <= 23) {
             playerView.onPause()
             releasePlayer()
         }
@@ -172,7 +169,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-        if (Util.SDK_INT > 23) {
+        if(Util.SDK_INT > 23) {
             playerView.onPause()
             releasePlayer()
         }

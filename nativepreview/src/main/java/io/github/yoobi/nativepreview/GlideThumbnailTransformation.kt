@@ -43,9 +43,7 @@ class GlideThumbnailTransformation(position: Long) : BitmapTransformation() {
     }
 
     override fun equals(other: Any?): Boolean {
-        if (other !is GlideThumbnailTransformation) {
-            return false
-        }
+        if(other !is GlideThumbnailTransformation) return false
         return other.x == x && other.y == y
     }
 }

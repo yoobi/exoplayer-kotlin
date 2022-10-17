@@ -49,13 +49,11 @@ class MainActivity : AppCompatActivity() {
         )
 
         exoQuality.setOnClickListener {
-            if (trackDialog == null) {
-                initPopupQuality()
-            }
+            if(trackDialog == null) initPopupQuality()
             trackDialog?.show()
         }
 
-        if (savedInstanceState != null) {
+        if(savedInstanceState != null) {
             currentWindow = savedInstanceState.getInt(STATE_RESUME_WINDOW)
             playbackPosition = savedInstanceState.getLong(STATE_RESUME_POSITION)
             isFullscreen = savedInstanceState.getBoolean(STATE_PLAYER_FULLSCREEN)
@@ -81,7 +79,7 @@ class MainActivity : AppCompatActivity() {
         //Listener on player
         exoPlayer.addListener(object : Player.Listener {
             override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-                if (playbackState == Player.STATE_READY) {
+                if(playbackState == Player.STATE_READY) {
                     exoQuality.visibility = View.VISIBLE
                 }
             }
@@ -105,7 +103,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        if (Util.SDK_INT > 23) {
+        if(Util.SDK_INT > 23) {
             initPlayer()
             playerView.onResume()
         }
@@ -113,7 +111,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (Util.SDK_INT <= 23) {
+        if(Util.SDK_INT <= 23) {
             initPlayer()
             playerView.onResume()
         }
@@ -121,7 +119,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        if (Util.SDK_INT <= 23) {
+        if(Util.SDK_INT <= 23) {
             playerView.onPause()
             releasePlayer()
         }
@@ -129,7 +127,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-        if (Util.SDK_INT > 23) {
+        if(Util.SDK_INT > 23) {
             playerView.onPause()
             releasePlayer()
         }
@@ -141,15 +139,13 @@ class MainActivity : AppCompatActivity() {
         val mappedTrackInfo = trackSelector.currentMappedTrackInfo
         var videoRenderer: Int? = null
 
-        if (mappedTrackInfo == null) return else exoQuality.visibility = View.VISIBLE
+        if(mappedTrackInfo == null) return else exoQuality.visibility = View.VISIBLE
 
         for (i in 0 until mappedTrackInfo.rendererCount) {
-            if (isVideoRenderer(mappedTrackInfo, i)) {
-                videoRenderer = i
-            }
+            if(isVideoRenderer(mappedTrackInfo, i)) videoRenderer = i
         }
 
-        if (videoRenderer == null) {
+        if(videoRenderer == null) {
             exoQuality.visibility = View.GONE
             return
         }
@@ -172,9 +168,7 @@ class MainActivity : AppCompatActivity() {
         rendererIndex: Int
     ): Boolean {
         val trackGroupArray = mappedTrackInfo.getTrackGroups(rendererIndex)
-        if (trackGroupArray.length == 0) {
-            return false
-        }
+        if(trackGroupArray.length == 0) return false
         val trackType = mappedTrackInfo.getRendererType(rendererIndex)
         return C.TRACK_TYPE_VIDEO == trackType
     }

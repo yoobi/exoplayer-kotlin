@@ -19,23 +19,23 @@ class MainActivity : AppCompatActivity() {
         val adapter = ExoplayerVideoAdapter(ExoplayerVideoAdapter.ExoplayerOnClickListener {
             Toast.makeText(this, "Clicked on: ${it.title}", Toast.LENGTH_SHORT).show()
         })
-        adapter.data = listOfVids
+        adapter.data = listOfVideos
         recyclerView.adapter = adapter
     }
 
 
     override fun onResume() {
-        if (::recyclerView.isInitialized) recyclerView.createPlayer()
+        if(::recyclerView.isInitialized) recyclerView.createPlayer()
         super.onResume()
     }
 
     override fun onStop() {
-        if (::recyclerView.isInitialized) recyclerView.releasePlayer()
+        if(::recyclerView.isInitialized) recyclerView.releasePlayer()
         super.onStop()
     }
 }
 
-val listOfVids: List<VideoCard> = listOf(
+private val listOfVideos: List<VideoCard> = listOf(
     VideoCard(
         "Big Buck Bunny0",
         "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",

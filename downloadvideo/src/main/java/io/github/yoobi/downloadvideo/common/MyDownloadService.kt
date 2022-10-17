@@ -40,7 +40,7 @@ class MyDownloadService : DownloadService(
     }
 
     override fun getScheduler(): PlatformScheduler? {
-        return if (Util.SDK_INT >= 21) PlatformScheduler(this, JOB_ID) else null
+        return if(Util.SDK_INT >= 21) PlatformScheduler(this, JOB_ID) else null
     }
 
     override fun getForegroundNotification(downloads: MutableList<Download>): Notification {
@@ -88,9 +88,7 @@ class MyDownloadService : DownloadService(
                         Util.fromUtf8Bytes(download.request.data)
                     )
                 }
-                else -> {
-                    return
-                }
+                else -> return
             }
             NotificationUtil.setNotification(context, nextNotificationId++, notification)
         }

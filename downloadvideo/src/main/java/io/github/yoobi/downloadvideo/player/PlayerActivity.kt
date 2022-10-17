@@ -59,7 +59,7 @@ class PlayerActivity : AppCompatActivity(), DownloadTracker.Listener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_online_video_player)
         playerView = findViewById(R.id.player_view)
-        if (savedInstanceState != null) {
+        if(savedInstanceState != null) {
             currentWindow = savedInstanceState.getInt(STATE_RESUME_WINDOW)
             playbackPosition = savedInstanceState.getLong(STATE_RESUME_POSITION)
             isFullscreen = savedInstanceState.getBoolean(STATE_PLAYER_FULLSCREEN)
@@ -70,21 +70,20 @@ class PlayerActivity : AppCompatActivity(), DownloadTracker.Listener {
 
         progressDrawable = findViewById<ImageView>(R.id.download_state).apply {
             setOnClickListener {
-                if (DownloadUtil.getDownloadTracker(context).isDownloaded(mediaItem)) {
+                if(DownloadUtil.getDownloadTracker(context).isDownloaded(mediaItem)) {
                     Snackbar.make(
                         this.rootView,
                         "You've already downloaded the video",
                         Snackbar.LENGTH_SHORT
-                    )
-                        .setAction("Delete") {
-                            DownloadUtil.getDownloadTracker(this@PlayerActivity)
-                                .removeDownload(mediaItem.playbackProperties?.uri)
-                        }.show()
+                    ).setAction("Delete") {
+                        DownloadUtil.getDownloadTracker(this@PlayerActivity)
+                            .removeDownload(mediaItem.playbackProperties?.uri)
+                    }.show()
                 } else {
                     val item = mediaItem.buildUpon()
                         .setTag((mediaItem.playbackProperties?.tag as MediaItemTag).copy(duration = exoPlayer.duration))
                         .build()
-                    if (!DownloadUtil.getDownloadTracker(this@PlayerActivity)
+                    if(!DownloadUtil.getDownloadTracker(this@PlayerActivity)
                             .hasDownload(item.playbackProperties?.uri)
                     ) {
                         DownloadUtil.getDownloadTracker(this@PlayerActivity)
@@ -113,7 +112,7 @@ class PlayerActivity : AppCompatActivity(), DownloadTracker.Listener {
         val downloadRequest: DownloadRequest? =
             DownloadUtil.getDownloadTracker(this)
                 .getDownloadRequest(mediaItem.playbackProperties?.uri)
-        val mediaSource = if (downloadRequest == null) {
+        val mediaSource = if(downloadRequest == null) {
             // Online content
             HlsMediaSource.Factory(DownloadUtil.getHttpDataSourceFactory(this))
                 .createMediaSource(mediaItem)
@@ -157,7 +156,7 @@ class PlayerActivity : AppCompatActivity(), DownloadTracker.Listener {
             // And start the Flow if the download is in progress
             onDownloadsChanged(it)
         }
-        if (Util.SDK_INT > 23) {
+        if(Util.SDK_INT > 23) {
             initPlayer()
             playerView.onResume()
         }
@@ -165,7 +164,7 @@ class PlayerActivity : AppCompatActivity(), DownloadTracker.Listener {
 
     override fun onResume() {
         super.onResume()
-        if (Util.SDK_INT <= 23) {
+        if(Util.SDK_INT <= 23) {
             initPlayer()
             playerView.onResume()
         }
@@ -173,7 +172,7 @@ class PlayerActivity : AppCompatActivity(), DownloadTracker.Listener {
 
     override fun onPause() {
         super.onPause()
-        if (Util.SDK_INT <= 23) {
+        if(Util.SDK_INT <= 23) {
             playerView.onPause()
             releasePlayer()
         }
@@ -182,7 +181,7 @@ class PlayerActivity : AppCompatActivity(), DownloadTracker.Listener {
     override fun onStop() {
         playerViewModel.stopFlow()
         super.onStop()
-        if (Util.SDK_INT > 23) {
+        if(Util.SDK_INT > 23) {
             playerView.onPause()
             releasePlayer()
         }
@@ -196,33 +195,24 @@ class PlayerActivity : AppCompatActivity(), DownloadTracker.Listener {
     override fun onDownloadsChanged(download: Download) {
         when (download.state) {
             Download.STATE_DOWNLOADING -> {
-                if (progressDrawable.drawable !is PieProgressDrawable) progressDrawable.setImageDrawable(
-                    pieProgressDrawable
-                )
+                if(progressDrawable.drawable !is PieProgressDrawable) {
+                    progressDrawable.setImageDrawable(pieProgressDrawable)
+                }
                 playerViewModel.startFlow(this, download.request.uri)
             }
             Download.STATE_QUEUED, Download.STATE_STOPPED -> {
                 progressDrawable.setImageDrawable(
-                    AppCompatResources.getDrawable(
-                        this,
-                        R.drawable.ic_pause
-                    )
+                    AppCompatResources.getDrawable(this, R.drawable.ic_pause)
                 )
             }
             Download.STATE_COMPLETED -> {
                 progressDrawable.setImageDrawable(
-                    AppCompatResources.getDrawable(
-                        this,
-                        R.drawable.ic_download_done
-                    )
+                    AppCompatResources.getDrawable(this, R.drawable.ic_download_done)
                 )
             }
             Download.STATE_REMOVING -> {
                 progressDrawable.setImageDrawable(
-                    AppCompatResources.getDrawable(
-                        this,
-                        R.drawable.ic_download
-                    )
+                    AppCompatResources.getDrawable(this, R.drawable.ic_download)
                 )
             }
             Download.STATE_FAILED, Download.STATE_RESTARTING -> {}

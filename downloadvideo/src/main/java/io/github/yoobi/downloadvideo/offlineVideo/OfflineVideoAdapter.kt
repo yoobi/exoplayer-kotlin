@@ -36,7 +36,7 @@ class OfflineVideoAdapter :
         val download = getItem(position)
         holder.bind(download)
 
-        if (download.state == Download.STATE_COMPLETED && download.percentDownloaded > 99f) {
+        if(download.state == Download.STATE_COMPLETED && download.percentDownloaded > 99f) {
             holder.itemView.setOnClickListener {
                 it.context.startActivity(
                     Intent(it.context, PlayerActivity::class.java)
@@ -58,22 +58,22 @@ class OfflineVideoAdapter :
         position: Int,
         payloads: MutableList<Any>
     ) {
-        if (payloads.isEmpty()) {
+        if(payloads.isEmpty()) {
             super.onBindViewHolder(holder, position, payloads)
             return
         }
 
-        if (payloads[0] is Bundle) {
+        if(payloads[0] is Bundle) {
             val diffBundle: Bundle = payloads[0] as Bundle
             Log.e("OfflineAdapter", diffBundle.toString())
             diffBundle.getInt(BUNDLE_STATE, -1).let {
-                if (it != -1) holder.status.text =
+                if(it != -1) holder.status.text =
                     DownloadUtil.getDownloadString(holder.status.context, it)
                 holder.imageMenu.apply ImageView@{
                     when (it) {
                         Download.STATE_DOWNLOADING -> {
                             holder.percentage.visibility = View.VISIBLE
-                            if (drawable !is PieProgressDrawable) setImageDrawable(
+                            if(drawable !is PieProgressDrawable) setImageDrawable(
                                 PieProgressDrawable().apply {
                                     setColor(
                                         ContextCompat.getColor(
@@ -86,19 +86,13 @@ class OfflineVideoAdapter :
                         Download.STATE_QUEUED, Download.STATE_STOPPED -> {
                             holder.percentage.visibility = View.INVISIBLE
                             setImageDrawable(
-                                ContextCompat.getDrawable(
-                                    this.context,
-                                    R.drawable.ic_pause
-                                )
+                                ContextCompat.getDrawable(this.context, R.drawable.ic_pause)
                             )
                         }
                         Download.STATE_COMPLETED -> {
                             holder.percentage.visibility = View.VISIBLE
                             setImageDrawable(
-                                ContextCompat.getDrawable(
-                                    this.context,
-                                    R.drawable.ic_download_done
-                                )
+                                ContextCompat.getDrawable(this.context, R.drawable.ic_download_done)
                             )
                         }
                         else -> {}
@@ -108,11 +102,11 @@ class OfflineVideoAdapter :
 
             val bytesDownload = diffBundle.getLong(BUNDLE_BYTES_DOWNLOADED, -1)
             diffBundle.getFloat(BUNDLE_PERCENTAGE).let {
-                if (holder.imageMenu.drawable is PieProgressDrawable) {
+                if(holder.imageMenu.drawable is PieProgressDrawable) {
                     holder.imageMenu.drawable.level = it.roundToInt()
                     holder.imageMenu.invalidate()
                 }
-                if (it != -1f && bytesDownload != -1L) {
+                if(it != -1f && bytesDownload != -1L) {
                     holder.percentage.apply {
                         text = context.resources.getString(
                             R.string.item_download_percentage,
@@ -136,18 +130,12 @@ class OfflineVideoAdapter :
         fun bind(download: Download) {
             Log.e(
                 "OfflineAdapter",
-                "status: ${download.state} - ${
-                    DownloadUtil.getDownloadString(
-                        status.context,
-                        download.state
-                    )
-                } " +
-                        "progress: ${download.percentDownloaded}"
+                "status: ${download.state} - ${DownloadUtil.getDownloadString(status.context, download.state)} progress: ${download.percentDownloaded}"
             )
             imageMenu.apply ImageView@{
                 when (download.state) {
                     Download.STATE_DOWNLOADING -> {
-                        if (drawable !is PieProgressDrawable) setImageDrawable(PieProgressDrawable().apply {
+                        if(drawable !is PieProgressDrawable) setImageDrawable(PieProgressDrawable().apply {
                             setColor(
                                 ContextCompat.getColor(
                                     this@ImageView.context,
@@ -158,25 +146,19 @@ class OfflineVideoAdapter :
                     }
                     Download.STATE_QUEUED, Download.STATE_STOPPED -> {
                         setImageDrawable(
-                            ContextCompat.getDrawable(
-                                this.context,
-                                R.drawable.ic_pause
-                            )
+                            ContextCompat.getDrawable(this.context, R.drawable.ic_pause)
                         )
                     }
                     Download.STATE_COMPLETED -> {
                         setImageDrawable(
-                            ContextCompat.getDrawable(
-                                this.context,
-                                R.drawable.ic_download_done
-                            )
+                            ContextCompat.getDrawable(this.context, R.drawable.ic_download_done)
                         )
                     }
                     else -> {}
                 }
             }
 
-            if (imageMenu.drawable is PieProgressDrawable) {
+            if(imageMenu.drawable is PieProgressDrawable) {
                 imageMenu.drawable.level = download.percentDownloaded.roundToInt()
                 imageMenu.invalidate()
             }
@@ -185,7 +167,7 @@ class OfflineVideoAdapter :
 
             status.text = DownloadUtil.getDownloadString(status.context, download.state)
 
-            if (download.state == Download.STATE_DOWNLOADING || download.state == Download.STATE_COMPLETED) {
+            if(download.state == Download.STATE_DOWNLOADING || download.state == Download.STATE_COMPLETED) {
                 percentage.visibility = View.VISIBLE
                 percentage.text = percentage.context.resources.getString(
                     R.string.item_download_percentage,

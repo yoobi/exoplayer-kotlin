@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
         initFullScreenDialog()
         initFullScreenButton()
 
-        if (savedInstanceState != null) {
+        if(savedInstanceState != null) {
             currentWindow = savedInstanceState.getInt(STATE_RESUME_WINDOW)
             playbackPosition = savedInstanceState.getLong(STATE_RESUME_POSITION)
             isFullscreen = savedInstanceState.getBoolean(STATE_PLAYER_FULLSCREEN)
@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity() {
         }
         playerView.player = exoPlayer
 
-        if (isFullscreen) {
+        if(isFullscreen) {
             openFullscreenDialog()
         }
     }
@@ -89,7 +89,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        if (Util.SDK_INT > 23) {
+        if(Util.SDK_INT > 23) {
             initPlayer()
             playerView.onResume()
         }
@@ -97,7 +97,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (Util.SDK_INT <= 23) {
+        if(Util.SDK_INT <= 23) {
             initPlayer()
             playerView.onResume()
         }
@@ -105,7 +105,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        if (Util.SDK_INT <= 23) {
+        if(Util.SDK_INT <= 23) {
             playerView.onPause()
             releasePlayer()
         }
@@ -113,7 +113,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-        if (Util.SDK_INT > 23) {
+        if(Util.SDK_INT > 23) {
             playerView.onPause()
             releasePlayer()
         }
@@ -125,7 +125,7 @@ class MainActivity : AppCompatActivity() {
         fullscreenDialog =
             object : Dialog(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen) {
                 override fun onBackPressed() {
-                    if (isFullscreen) closeFullscreenDialog()
+                    if(isFullscreen) closeFullscreenDialog()
                     super.onBackPressed()
                 }
             }
@@ -133,7 +133,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initFullScreenButton() {
         exoFullScreenBtn.setOnClickListener {
-            if (!isFullscreen) {
+            if(!isFullscreen) {
                 openFullscreenDialog()
             } else {
                 closeFullscreenDialog()
@@ -144,10 +144,7 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("SourceLockedOrientationActivity")
     private fun openFullscreenDialog() {
         exoFullScreenIcon.setImageDrawable(
-            ContextCompat.getDrawable(
-                this,
-                R.drawable.ic_fullscreen_shrink
-            )
+            ContextCompat.getDrawable(this, R.drawable.ic_fullscreen_shrink)
         )
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         (playerView.parent as ViewGroup).removeView(playerView)
@@ -167,10 +164,7 @@ class MainActivity : AppCompatActivity() {
         (playerView.parent as ViewGroup).removeView(playerView)
         mainFrameLayout.addView(playerView)
         exoFullScreenIcon.setImageDrawable(
-            ContextCompat.getDrawable(
-                this,
-                R.drawable.ic_fullscreen_expand
-            )
+            ContextCompat.getDrawable(this, R.drawable.ic_fullscreen_expand)
         )
         isFullscreen = false
         fullscreenDialog?.dismiss()

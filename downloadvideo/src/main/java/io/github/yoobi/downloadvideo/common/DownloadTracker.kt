@@ -26,7 +26,6 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import java.io.IOException
-import java.util.*
 import java.util.concurrent.CopyOnWriteArraySet
 
 private const val TAG = "DownloadTracker"
@@ -81,7 +80,7 @@ class DownloadTracker(
     fun getDownloadRequest(uri: Uri?): DownloadRequest? {
         uri ?: return null
         val download = downloads[uri]
-        return if (download != null && download.state != Download.STATE_FAILED) download.request else null
+        return if(download != null && download.state != Download.STATE_FAILED) download.request else null
     }
 
     fun toggleDownloadDialogHelper(
@@ -184,8 +183,7 @@ class DownloadTracker(
             downloadManager.currentDownloads.find { it.request.uri == uri }?.percentDownloaded
         return callbackFlow {
             while (percent != null) {
-                percent =
-                    downloadManager.currentDownloads.find { it.request.uri == uri }?.percentDownloaded
+                percent = downloadManager.currentDownloads.find { it.request.uri == uri }?.percentDownloaded
                 offer(percent)
                 withContext(Dispatchers.IO) {
                     delay(1000)
@@ -219,10 +217,10 @@ class DownloadTracker(
             for (listener in listeners) {
                 listener.onDownloadsChanged(download)
             }
-            if (download.state == Download.STATE_COMPLETED) {
+            if(download.state == Download.STATE_COMPLETED) {
                 // Add delta between estimation and reality to have a better availableBytesLeft
-                availableBytesLeft += Util.fromUtf8Bytes(download.request.data)
-                    .toLong() - download.bytesDownloaded
+                availableBytesLeft +=
+                    Util.fromUtf8Bytes(download.request.data).toLong() - download.bytesDownloaded
             }
         }
 
@@ -233,7 +231,7 @@ class DownloadTracker(
             }
 
             // Add the estimated or downloaded bytes to the availableBytes
-            availableBytesLeft += if (download.percentDownloaded == 100f) {
+            availableBytesLeft += if(download.percentDownloaded == 100f) {
                 download.bytesDownloaded
             } else {
                 Util.fromUtf8Bytes(download.request.data).toLong()
@@ -264,9 +262,8 @@ class DownloadTracker(
 
         // DownloadHelper.Callback implementation.
         override fun onPrepared(helper: DownloadHelper) {
-            if (helper.periodCount == 0) {
+            if(helper.periodCount == 0) {
                 Log.d(TAG, "No periods found. Downloading entire stream.")
-//                startDownload()
                 downloadHelper.release()
                 return
             }
@@ -277,7 +274,7 @@ class DownloadTracker(
             val mappedTrackInfo = downloadHelper.getMappedTrackInfo(0)
 
             for (i in 0 until mappedTrackInfo.rendererCount) {
-                if (C.TRACK_TYPE_VIDEO == mappedTrackInfo.getRendererType(i)) {
+                if(C.TRACK_TYPE_VIDEO == mappedTrackInfo.getRendererType(i)) {
                     val trackGroups: TrackGroupArray = mappedTrackInfo.getTrackGroups(i)
                     for (j in 0 until trackGroups.length) {
                         val trackGroup: TrackGroup = trackGroups[j]
@@ -288,7 +285,7 @@ class DownloadTracker(
                 }
             }
 
-            if (formatDownloadable.isEmpty()) {
+            if(formatDownloadable.isEmpty()) {
                 dialogBuilder.setTitle("An error occurred")
                     .setPositiveButton("OK", null)
                     .show()
@@ -327,9 +324,9 @@ class DownloadTracker(
                     helper.clearTrackSelections(0)
                     helper.addTrackSelection(0, qualitySelected)
                     val estimatedContentLength: Long =
-                        (qualitySelected.maxVideoBitrate * mediaItemTag.duration).div(C.MILLIS_PER_SECOND)
-                            .div(C.BITS_PER_BYTE)
-                    if (availableBytesLeft > estimatedContentLength) {
+                        (qualitySelected.maxVideoBitrate * mediaItemTag.duration)
+                            .div(C.MILLIS_PER_SECOND).div(C.BITS_PER_BYTE)
+                    if(availableBytesLeft > estimatedContentLength) {
                         val downloadRequest: DownloadRequest = downloadHelper.getDownloadRequest(
                             (mediaItem.playbackProperties?.tag as MediaItemTag).title,
                             Util.getUtf8Bytes(estimatedContentLength.toString())
@@ -358,7 +355,7 @@ class DownloadTracker(
                 .show()
             Log.e(
                 TAG,
-                if (e is LiveContentUnsupportedException) "Downloading live content unsupported" else "Failed to start download",
+                if(e is LiveContentUnsupportedException) "Downloading live content unsupported" else "Failed to start download",
                 e
             )
         }

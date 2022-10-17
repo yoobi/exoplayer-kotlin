@@ -55,8 +55,8 @@ class ExoplayerRecyclerView : RecyclerView {
         addOnScrollListener(object : OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
-                if (newState == SCROLL_STATE_IDLE) {
-                    if (thumbnail != null) { // show the old thumbnail
+                if(newState == SCROLL_STATE_IDLE) {
+                    if(thumbnail != null) { // show the old thumbnail
                         thumbnail?.visibility = View.VISIBLE
                     }
                 }
@@ -72,7 +72,7 @@ class ExoplayerRecyclerView : RecyclerView {
             }
 
             override fun onChildViewDetachedFromWindow(view: View) {
-                if (viewHolderParent != null && viewHolderParent == view) {
+                if(viewHolderParent != null && viewHolderParent == view) {
                     resetVideoView()
                 }
             }
@@ -85,9 +85,7 @@ class ExoplayerRecyclerView : RecyclerView {
                     }
                     Player.STATE_READY -> {
                         progressBar?.visibility = View.GONE
-                        if (!isVideoViewAdded) {
-                            addVideoView()
-                        }
+                        if(!isVideoViewAdded) addVideoView()
                     }
                     else -> {}
                 }
@@ -97,7 +95,7 @@ class ExoplayerRecyclerView : RecyclerView {
 
     fun playVideo(view: View) {
         // video is already playing so return
-        if (viewHolderParent != null && viewHolderParent == view) {
+        if(viewHolderParent != null && viewHolderParent == view) {
             return
         } else {
             // remove any old surface views from previously playing videos
@@ -106,9 +104,7 @@ class ExoplayerRecyclerView : RecyclerView {
         }
 
         // set the position of the list-item that is to be played
-        if (!::videoSurfaceView.isInitialized) {
-            return
-        }
+        if(!::videoSurfaceView.isInitialized) return
 
         val holder = view.tag as ExoplayerVideoAdapter.VideoViewHolder? ?: return
         thumbnail = holder.imageView
@@ -134,7 +130,7 @@ class ExoplayerRecyclerView : RecyclerView {
     private fun removeVideoView(videoView: PlayerView?) {
         val parent = videoView?.parent as ViewGroup?
         val index = parent?.indexOfChild(videoView)
-        if (index != null && index >= 0) {
+        if(index != null && index >= 0) {
             parent.removeViewAt(index)
             isVideoViewAdded = false
         }
@@ -150,7 +146,7 @@ class ExoplayerRecyclerView : RecyclerView {
     }
 
     private fun resetVideoView() {
-        if (isVideoViewAdded) {
+        if(isVideoViewAdded) {
             removeVideoView(videoSurfaceView)
             progressBar?.visibility = View.INVISIBLE
             videoSurfaceView.visibility = View.INVISIBLE
@@ -159,7 +155,7 @@ class ExoplayerRecyclerView : RecyclerView {
     }
 
     fun releasePlayer() {
-        if (videoPlayer != null) {
+        if(videoPlayer != null) {
             videoPlayer?.release()
             videoPlayer = null
         }
@@ -168,8 +164,6 @@ class ExoplayerRecyclerView : RecyclerView {
     }
 
     fun createPlayer() {
-        if (videoPlayer == null) {
-            init(context)
-        }
+        if(videoPlayer == null) init(context)
     }
 }
