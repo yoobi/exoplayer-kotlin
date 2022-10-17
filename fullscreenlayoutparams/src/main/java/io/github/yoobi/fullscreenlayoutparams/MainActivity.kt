@@ -17,12 +17,6 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.MimeTypes
 import com.google.android.exoplayer2.util.Util
 
-const val HLS_STATIC_URL = "https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8"
-const val STATE_RESUME_WINDOW = "resumeWindow"
-const val STATE_RESUME_POSITION = "resumePosition"
-const val STATE_PLAYER_FULLSCREEN = "playerFullscreen"
-const val STATE_PLAYER_PLAYING = "playerOnPlay"
-
 class MainActivity : AppCompatActivity() {
 
     private lateinit var exoPlayer: SimpleExoPlayer
@@ -50,7 +44,7 @@ class MainActivity : AppCompatActivity() {
 
         initFullScreenButton()
 
-        if (savedInstanceState != null) {
+        if(savedInstanceState != null) {
             currentWindow = savedInstanceState.getInt(STATE_RESUME_WINDOW)
             playbackPosition = savedInstanceState.getLong(STATE_RESUME_POSITION)
             isFullscreen = savedInstanceState.getBoolean(STATE_PLAYER_FULLSCREEN)
@@ -70,7 +64,7 @@ class MainActivity : AppCompatActivity() {
         if(isFullscreen) openFullscreen()
     }
 
-    private fun releasePlayer(){
+    private fun releasePlayer() {
         isPlayerPlaying = exoPlayer.playWhenReady
         playbackPosition = exoPlayer.currentPosition
         currentWindow = exoPlayer.currentWindowIndex
@@ -87,7 +81,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        if (Util.SDK_INT > 23) {
+        if(Util.SDK_INT > 23) {
             initPlayer()
             playerView.onResume()
         }
@@ -95,7 +89,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (Util.SDK_INT <= 23) {
+        if(Util.SDK_INT <= 23) {
             initPlayer()
             playerView.onResume()
         }
@@ -103,7 +97,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        if (Util.SDK_INT <= 23) {
+        if(Util.SDK_INT <= 23) {
             playerView.onPause()
             releasePlayer()
         }
@@ -111,14 +105,14 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-        if (Util.SDK_INT > 23) {
+        if(Util.SDK_INT > 23) {
             playerView.onPause()
             releasePlayer()
         }
     }
 
     override fun onBackPressed() {
-        if(isFullscreen){
+        if(isFullscreen) {
             closeFullscreen()
             return
         }
@@ -129,7 +123,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initFullScreenButton() {
         exoFullScreenBtn.setOnClickListener {
-            if (!isFullscreen) {
+            if(!isFullscreen) {
                 openFullscreen()
             } else {
                 closeFullscreen()
@@ -140,7 +134,9 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("SourceLockedOrientationActivity")
     private fun openFullscreen() {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-        exoFullScreenIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_fullscreen_shrink))
+        exoFullScreenIcon.setImageDrawable(
+            ContextCompat.getDrawable(this, R.drawable.ic_fullscreen_shrink)
+        )
         playerView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorBlack))
         val params: LinearLayout.LayoutParams = playerView.layoutParams as LinearLayout.LayoutParams
         params.width = LinearLayout.LayoutParams.MATCH_PARENT
@@ -153,7 +149,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun closeFullscreen() {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR
-        exoFullScreenIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_fullscreen_expand))
+        exoFullScreenIcon.setImageDrawable(
+            ContextCompat.getDrawable(this, R.drawable.ic_fullscreen_expand)
+        )
         playerView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorWhite))
         val params: LinearLayout.LayoutParams = playerView.layoutParams as LinearLayout.LayoutParams
         params.width = LinearLayout.LayoutParams.MATCH_PARENT
@@ -167,8 +165,17 @@ class MainActivity : AppCompatActivity() {
     private fun hideSystemUi() {
         playerView.systemUiVisibility = (
                 View.SYSTEM_UI_FLAG_IMMERSIVE
-                or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                or View.SYSTEM_UI_FLAG_FULLSCREEN
-        )
+                        or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        or View.SYSTEM_UI_FLAG_FULLSCREEN
+                )
+    }
+
+    companion object {
+        const val HLS_STATIC_URL =
+            "https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8"
+        const val STATE_RESUME_WINDOW = "resumeWindow"
+        const val STATE_RESUME_POSITION = "resumePosition"
+        const val STATE_PLAYER_FULLSCREEN = "playerFullscreen"
+        const val STATE_PLAYER_PLAYING = "playerOnPlay"
     }
 }

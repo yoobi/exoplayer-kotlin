@@ -86,5 +86,4 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, OfflineVideoActivity::class.java))
         }
     }
-
 }

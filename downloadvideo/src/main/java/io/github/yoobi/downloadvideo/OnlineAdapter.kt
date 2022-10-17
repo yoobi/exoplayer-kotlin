@@ -9,15 +9,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.exoplayer2.MediaItem
-import io.github.yoobi.downloadvideo.common.MediaItemTag
 import io.github.yoobi.downloadvideo.player.PlayerActivity
 
-const val BUNDLE_TITLE = "MEDIA_ITEM_TITLE"
-const val BUNDLE_URL = "MEDIA_ITEM_URL"
-const val BUNDLE_MIME_TYPES = "MEDIA_MIME_TYPES"
-const val BUNDLE_TAG = "MEDIA_ITEM_TAG"
-
-class OnlineAdapter : ListAdapter<MediaItem, OnlineAdapter.OnlineViewHolder>(DiffUtilOnlineAdapter) {
+class OnlineAdapter :
+    ListAdapter<MediaItem, OnlineAdapter.OnlineViewHolder>(DiffUtilOnlineAdapter) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OnlineViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -38,7 +33,7 @@ class OnlineAdapter : ListAdapter<MediaItem, OnlineAdapter.OnlineViewHolder>(Dif
         }
     }
 
-    class OnlineViewHolder(view: View): RecyclerView.ViewHolder(view) {
+    class OnlineViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         private val title: TextView = view.findViewById(R.id.item_online_title)
         private val url: TextView = view.findViewById(R.id.item_online_url)
@@ -49,7 +44,7 @@ class OnlineAdapter : ListAdapter<MediaItem, OnlineAdapter.OnlineViewHolder>(Dif
         }
     }
 
-    object DiffUtilOnlineAdapter: DiffUtil.ItemCallback<MediaItem>() {
+    object DiffUtilOnlineAdapter : DiffUtil.ItemCallback<MediaItem>() {
         override fun areItemsTheSame(oldItem: MediaItem, newItem: MediaItem): Boolean {
             return oldItem.mediaId == newItem.mediaId
         }
@@ -59,4 +54,10 @@ class OnlineAdapter : ListAdapter<MediaItem, OnlineAdapter.OnlineViewHolder>(Dif
         }
     }
 
+    companion object {
+        const val BUNDLE_TITLE = "MEDIA_ITEM_TITLE"
+        const val BUNDLE_URL = "MEDIA_ITEM_URL"
+        const val BUNDLE_MIME_TYPES = "MEDIA_MIME_TYPES"
+        const val BUNDLE_TAG = "MEDIA_ITEM_TAG"
+    }
 }

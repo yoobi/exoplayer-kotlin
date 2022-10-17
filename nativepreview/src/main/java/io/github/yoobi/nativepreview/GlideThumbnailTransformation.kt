@@ -21,7 +21,12 @@ class GlideThumbnailTransformation(position: Long) : BitmapTransformation() {
         y = square / MAX_COLUMNS
     }
 
-    override fun transform(pool: BitmapPool, toTransform: Bitmap, outWidth: Int, outHeight: Int): Bitmap {
+    override fun transform(
+        pool: BitmapPool,
+        toTransform: Bitmap,
+        outWidth: Int,
+        outHeight: Int
+    ): Bitmap {
         val width = toTransform.width / MAX_COLUMNS
         val height = toTransform.height / MAX_LINES
 
@@ -38,9 +43,7 @@ class GlideThumbnailTransformation(position: Long) : BitmapTransformation() {
     }
 
     override fun equals(other: Any?): Boolean {
-        if (other !is GlideThumbnailTransformation) {
-            return false
-        }
+        if(other !is GlideThumbnailTransformation) return false
         return other.x == x && other.y == y
     }
 }

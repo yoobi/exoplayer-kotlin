@@ -10,7 +10,7 @@ import io.github.yoobi.downloadvideo.common.DownloadUtil
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
 
-class OfflineVideoViewModel(application: Application): AndroidViewModel(application) {
+class OfflineVideoViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _downloads: MutableLiveData<List<Download>> = MutableLiveData()
     val downloads: LiveData<List<Download>>

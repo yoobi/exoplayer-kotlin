@@ -15,7 +15,7 @@ import io.github.yoobi.downloadvideo.common.DownloadUtil.DOWNLOAD_NOTIFICATION_C
 private const val JOB_ID = 8888
 private const val FOREGROUND_NOTIFICATION_ID = 8989
 
-class MyDownloadService: DownloadService(
+class MyDownloadService : DownloadService(
     FOREGROUND_NOTIFICATION_ID,
     DEFAULT_FOREGROUND_NOTIFICATION_UPDATE_INTERVAL,
     DOWNLOAD_NOTIFICATION_CHANNEL_ID,
@@ -40,7 +40,7 @@ class MyDownloadService: DownloadService(
     }
 
     override fun getScheduler(): PlatformScheduler? {
-        return if (Util.SDK_INT >= 21) PlatformScheduler(this, JOB_ID) else null
+        return if(Util.SDK_INT >= 21) PlatformScheduler(this, JOB_ID) else null
     }
 
     override fun getForegroundNotification(downloads: MutableList<Download>): Notification {
@@ -88,7 +88,7 @@ class MyDownloadService: DownloadService(
                         Util.fromUtf8Bytes(download.request.data)
                     )
                 }
-                else -> { return }
+                else -> return
             }
             NotificationUtil.setNotification(context, nextNotificationId++, notification)
         }

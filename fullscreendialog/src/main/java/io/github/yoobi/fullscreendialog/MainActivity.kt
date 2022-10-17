@@ -17,12 +17,6 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.MimeTypes
 import com.google.android.exoplayer2.util.Util
 
-const val HLS_STATIC_URL = "https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8"
-const val STATE_RESUME_WINDOW = "resumeWindow"
-const val STATE_RESUME_POSITION = "resumePosition"
-const val STATE_PLAYER_FULLSCREEN = "playerFullscreen"
-const val STATE_PLAYER_PLAYING = "playerOnPlay"
-
 class MainActivity : AppCompatActivity() {
 
     private lateinit var exoPlayer: SimpleExoPlayer
@@ -56,7 +50,7 @@ class MainActivity : AppCompatActivity() {
         initFullScreenDialog()
         initFullScreenButton()
 
-        if (savedInstanceState != null) {
+        if(savedInstanceState != null) {
             currentWindow = savedInstanceState.getInt(STATE_RESUME_WINDOW)
             playbackPosition = savedInstanceState.getLong(STATE_RESUME_POSITION)
             isFullscreen = savedInstanceState.getBoolean(STATE_PLAYER_FULLSCREEN)
@@ -64,8 +58,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun initPlayer(){
-        exoPlayer = SimpleExoPlayer.Builder(this).build().apply{
+    private fun initPlayer() {
+        exoPlayer = SimpleExoPlayer.Builder(this).build().apply {
             playWhenReady = isPlayerPlaying
             seekTo(currentWindow, playbackPosition)
             setMediaItem(mediaItem, false)
@@ -73,12 +67,12 @@ class MainActivity : AppCompatActivity() {
         }
         playerView.player = exoPlayer
 
-        if (isFullscreen) {
+        if(isFullscreen) {
             openFullscreenDialog()
         }
     }
 
-    private fun releasePlayer(){
+    private fun releasePlayer() {
         isPlayerPlaying = exoPlayer.playWhenReady
         playbackPosition = exoPlayer.currentPosition
         currentWindow = exoPlayer.currentWindowIndex
@@ -95,7 +89,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        if (Util.SDK_INT > 23) {
+        if(Util.SDK_INT > 23) {
             initPlayer()
             playerView.onResume()
         }
@@ -103,7 +97,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (Util.SDK_INT <= 23) {
+        if(Util.SDK_INT <= 23) {
             initPlayer()
             playerView.onResume()
         }
@@ -111,7 +105,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        if (Util.SDK_INT <= 23) {
+        if(Util.SDK_INT <= 23) {
             playerView.onPause()
             releasePlayer()
         }
@@ -119,7 +113,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-        if (Util.SDK_INT > 23) {
+        if(Util.SDK_INT > 23) {
             playerView.onPause()
             releasePlayer()
         }
@@ -128,17 +122,18 @@ class MainActivity : AppCompatActivity() {
     // FULLSCREEN PART
 
     private fun initFullScreenDialog() {
-        fullscreenDialog = object: Dialog(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen) {
-            override fun onBackPressed() {
-                if(isFullscreen) closeFullscreenDialog()
-                super.onBackPressed()
+        fullscreenDialog =
+            object : Dialog(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen) {
+                override fun onBackPressed() {
+                    if(isFullscreen) closeFullscreenDialog()
+                    super.onBackPressed()
+                }
             }
-        }
     }
 
-    private fun initFullScreenButton(){
+    private fun initFullScreenButton() {
         exoFullScreenBtn.setOnClickListener {
-            if (!isFullscreen) {
+            if(!isFullscreen) {
                 openFullscreenDialog()
             } else {
                 closeFullscreenDialog()
@@ -148,10 +143,18 @@ class MainActivity : AppCompatActivity() {
 
     @SuppressLint("SourceLockedOrientationActivity")
     private fun openFullscreenDialog() {
-        exoFullScreenIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_fullscreen_shrink))
+        exoFullScreenIcon.setImageDrawable(
+            ContextCompat.getDrawable(this, R.drawable.ic_fullscreen_shrink)
+        )
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         (playerView.parent as ViewGroup).removeView(playerView)
-        fullscreenDialog?.addContentView(playerView, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
+        fullscreenDialog?.addContentView(
+            playerView,
+            ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+        )
         isFullscreen = true
         fullscreenDialog?.show()
     }
@@ -160,8 +163,19 @@ class MainActivity : AppCompatActivity() {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR
         (playerView.parent as ViewGroup).removeView(playerView)
         mainFrameLayout.addView(playerView)
-        exoFullScreenIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_fullscreen_expand))
+        exoFullScreenIcon.setImageDrawable(
+            ContextCompat.getDrawable(this, R.drawable.ic_fullscreen_expand)
+        )
         isFullscreen = false
         fullscreenDialog?.dismiss()
+    }
+
+    companion object {
+        const val HLS_STATIC_URL =
+            "https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8"
+        const val STATE_RESUME_WINDOW = "resumeWindow"
+        const val STATE_RESUME_POSITION = "resumePosition"
+        const val STATE_PLAYER_FULLSCREEN = "playerFullscreen"
+        const val STATE_PLAYER_PLAYING = "playerOnPlay"
     }
 }

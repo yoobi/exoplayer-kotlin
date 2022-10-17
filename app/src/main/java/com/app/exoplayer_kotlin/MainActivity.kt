@@ -10,12 +10,6 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.MimeTypes
 import com.google.android.exoplayer2.util.Util
 
-const val HLS_STATIC_URL = "https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8"
-    const val STATE_RESUME_WINDOW = "resumeWindow"
-    const val STATE_RESUME_POSITION = "resumePosition"
-    const val STATE_PLAYER_FULLSCREEN = "playerFullscreen"
-    const val STATE_PLAYER_PLAYING = "playerOnPlay"
-
 class MainActivity : AppCompatActivity() {
 
     private lateinit var exoPlayer: SimpleExoPlayer
@@ -36,9 +30,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         playerView = findViewById(R.id.player_view)
-        dataSourceFactory = DefaultDataSourceFactory(this, Util.getUserAgent(this, "testapp"))
+        dataSourceFactory = DefaultDataSourceFactory(
+            this,
+            Util.getUserAgent(this, "testapp")
+        )
 
-        if (savedInstanceState != null) {
+        if(savedInstanceState != null) {
             currentWindow = savedInstanceState.getInt(STATE_RESUME_WINDOW)
             playbackPosition = savedInstanceState.getLong(STATE_RESUME_POSITION)
             isFullscreen = savedInstanceState.getBoolean(STATE_PLAYER_FULLSCREEN)
@@ -46,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun initPlayer(){
+    private fun initPlayer() {
         exoPlayer = SimpleExoPlayer.Builder(this).build().apply {
             playWhenReady = isPlayerPlaying
             seekTo(currentWindow, playbackPosition)
@@ -56,7 +53,7 @@ class MainActivity : AppCompatActivity() {
         playerView.player = exoPlayer
     }
 
-    private fun releasePlayer(){
+    private fun releasePlayer() {
         isPlayerPlaying = exoPlayer.playWhenReady
         playbackPosition = exoPlayer.currentPosition
         currentWindow = exoPlayer.currentWindowIndex
@@ -73,7 +70,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        if (Util.SDK_INT > 23) {
+        if(Util.SDK_INT > 23) {
             initPlayer()
             playerView.onResume()
         }
@@ -81,7 +78,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (Util.SDK_INT <= 23) {
+        if(Util.SDK_INT <= 23) {
             initPlayer()
             playerView.onResume()
         }
@@ -89,7 +86,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        if (Util.SDK_INT <= 23) {
+        if(Util.SDK_INT <= 23) {
             playerView.onPause()
             releasePlayer()
         }
@@ -97,9 +94,17 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-        if (Util.SDK_INT > 23) {
+        if(Util.SDK_INT > 23) {
             playerView.onPause()
             releasePlayer()
         }
+    }
+
+    companion object {
+        const val HLS_STATIC_URL = "https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8"
+        const val STATE_RESUME_WINDOW = "resumeWindow"
+        const val STATE_RESUME_POSITION = "resumePosition"
+        const val STATE_PLAYER_FULLSCREEN = "playerFullscreen"
+        const val STATE_PLAYER_PLAYING = "playerOnPlay"
     }
 }

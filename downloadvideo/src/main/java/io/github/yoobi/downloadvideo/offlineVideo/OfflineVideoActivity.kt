@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.github.yoobi.downloadvideo.R
 
-class OfflineVideoActivity: AppCompatActivity() {
+class OfflineVideoActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private val offlineVideoViewModel by lazy {
