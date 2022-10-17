@@ -43,6 +43,8 @@ Added and forked from [this repo](https://github.com/mitchtabian/Video-Player-Re
 
 Small thumb above progress bar
 
+<img src="https://github.com/halilozel1903/exoplayer-kotlin/blob/master/Screenshots/native_preview.png" width="300" />
+
 
 # Resources
 
