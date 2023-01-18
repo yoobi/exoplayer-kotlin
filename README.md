@@ -13,11 +13,13 @@ Simple implementation of ExoPlayer with HLS video
 ### `fullscreenDialog`
  
 Player + fullscreen via Dialog
+
 Added Fullscreen thanks to [this repository](https://github.com/GeoffLedak/ExoplayerFullscreen)
 
 ### `fullscreenLayoutParams`
 
 Player + fullscreen via modifying LayoutParams
+
 Added Fullscreen thanks to [this repository](https://github.com/danyalstd/fullscreen-exoplayer)
 
 <img src="https://github.com/yoobi/exoplayer-kotlin/blob/master/Screenshots/fullscreen_layout_params.png" width="300" />
@@ -26,6 +28,7 @@ Added Fullscreen thanks to [this repository](https://github.com/danyalstd/fullsc
 ### `qualitySelector`
 
 Player + Quality Selector
+
 Added quality selector thanks to [Exoplayer demo](https://github.com/google/ExoPlayer/tree/release-v2/demos/main/src/main/java/com/google/android/exoplayer2/demo)
 
 <img src="https://github.com/yoobi/exoplayer-kotlin/blob/master/Screenshots/quality_selector.png" width="300" />
