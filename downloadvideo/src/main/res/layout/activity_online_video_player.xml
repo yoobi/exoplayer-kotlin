@@ -11,7 +11,7 @@
         android:layout_height="0dp"
         android:layout_weight="0.5"
         android:background="#000000">
-        <com.google.android.exoplayer2.ui.PlayerView
+        <com.google.android.exoplayer2.ui.StyledPlayerView
             android:id="@+id/player_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

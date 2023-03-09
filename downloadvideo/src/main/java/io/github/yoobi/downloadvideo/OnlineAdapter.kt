@@ -26,9 +26,9 @@ class OnlineAdapter :
             it.context.startActivity(
                 Intent(it.context, PlayerActivity::class.java)
                     .putExtra(BUNDLE_TITLE, mediaItem.mediaMetadata.title ?: "No title")
-                    .putExtra(BUNDLE_URL, mediaItem.playbackProperties?.uri.toString())
-                    .putExtra(BUNDLE_MIME_TYPES, mediaItem.playbackProperties?.mimeType)
-//                    .putExtra(BUNDLE_TAG, mediaItem.playbackProperties?.tag as MediaItemTag)
+                    .putExtra(BUNDLE_URL, mediaItem.localConfiguration?.uri.toString())
+                    .putExtra(BUNDLE_MIME_TYPES, mediaItem.localConfiguration?.mimeType)
+//                    .putExtra(BUNDLE_TAG, mediaItem.localConfiguration?.tag as MediaItemTag)
             )
         }
     }
@@ -40,7 +40,7 @@ class OnlineAdapter :
 
         fun bind(mediaItem: MediaItem) {
             title.text = mediaItem.mediaMetadata.title ?: "No title set"
-            url.text = mediaItem.playbackProperties?.uri.toString()
+            url.text = mediaItem.localConfiguration?.uri.toString()
         }
     }
 

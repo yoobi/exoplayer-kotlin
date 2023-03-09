@@ -3,7 +3,10 @@ package io.github.yoobi.rvitempreview
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.FrameLayout
+import android.widget.ImageView
+import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.exoplayer2.MediaItem

@@ -71,7 +71,7 @@ class DownloadTracker(
     }
 
     fun isDownloaded(mediaItem: MediaItem): Boolean {
-        val download = downloads[mediaItem.playbackProperties?.uri]
+        val download = downloads[mediaItem.localConfiguration?.uri]
         return download != null && download.state == Download.STATE_COMPLETED
     }
 
@@ -194,7 +194,7 @@ class DownloadTracker(
 
 
     private fun getDownloadHelper(mediaItem: MediaItem): DownloadHelper {
-        return when (mediaItem.playbackProperties?.mimeType) {
+        return when (mediaItem.localConfiguration?.mimeType) {
             MimeTypes.APPLICATION_MPD, MimeTypes.APPLICATION_M3U8, MimeTypes.APPLICATION_SS -> {
                 DownloadHelper.forMediaItem(
                     applicationContext,
@@ -294,7 +294,7 @@ class DownloadTracker(
 
             // We sort here because later we use formatDownloadable to select track
             formatDownloadable.sortBy { it.height }
-            val mediaItemTag: MediaItemTag = mediaItem.playbackProperties?.tag as MediaItemTag
+            val mediaItemTag: MediaItemTag = mediaItem.localConfiguration?.tag as MediaItemTag
             val optionsDownload: List<String> = formatDownloadable.map {
                 context.getString(
                     R.string.dialog_option, it.height,
@@ -328,7 +328,7 @@ class DownloadTracker(
                             .div(C.MILLIS_PER_SECOND).div(C.BITS_PER_BYTE)
                     if(availableBytesLeft > estimatedContentLength) {
                         val downloadRequest: DownloadRequest = downloadHelper.getDownloadRequest(
-                            (mediaItem.playbackProperties?.tag as MediaItemTag).title,
+                            (mediaItem.localConfiguration?.tag as MediaItemTag).title,
                             Util.getUtf8Bytes(estimatedContentLength.toString())
                         )
                         startDownload(downloadRequest)
@@ -372,8 +372,8 @@ class DownloadTracker(
 
         private fun buildDownloadRequest(): DownloadRequest {
             return downloadHelper.getDownloadRequest(
-                (mediaItem.playbackProperties?.tag as MediaItemTag).title,
-                Util.getUtf8Bytes(mediaItem.playbackProperties?.uri.toString())
+                (mediaItem.localConfiguration?.tag as MediaItemTag).title,
+                Util.getUtf8Bytes(mediaItem.localConfiguration?.uri.toString())
             )
         }
     }

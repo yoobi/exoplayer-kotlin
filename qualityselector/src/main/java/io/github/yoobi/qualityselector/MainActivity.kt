@@ -6,12 +6,12 @@ import android.view.View
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.exoplayer2.C
+import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector
-import com.google.android.exoplayer2.ui.PlayerView
+import com.google.android.exoplayer2.ui.StyledPlayerView
 import com.google.android.exoplayer2.ui.TrackSelectionDialogBuilder
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
@@ -20,10 +20,10 @@ import com.google.android.exoplayer2.util.Util
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var exoPlayer: SimpleExoPlayer
+    private lateinit var exoPlayer: ExoPlayer
     private lateinit var dataSourceFactory: DataSource.Factory
     private lateinit var trackSelector: DefaultTrackSelector
-    private lateinit var playerView: PlayerView
+    private lateinit var playerView: StyledPlayerView
     private lateinit var exoQuality: ImageButton
 
     private var currentWindow = 0
@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity() {
         trackSelector.setParameters(
             trackSelector.buildUponParameters().setMaxVideoSize(MAX_WIDTH, MAX_HEIGHT)
         )
-        exoPlayer = SimpleExoPlayer.Builder(this).setTrackSelector(trackSelector).build().apply {
+        exoPlayer = ExoPlayer.Builder(this).setTrackSelector(trackSelector).build().apply {
             playWhenReady = isPlayerPlaying
             seekTo(currentWindow, playbackPosition)
             setMediaItem(mediaItem)
@@ -89,12 +89,12 @@ class MainActivity : AppCompatActivity() {
     private fun releasePlayer() {
         isPlayerPlaying = exoPlayer.playWhenReady
         playbackPosition = exoPlayer.currentPosition
-        currentWindow = exoPlayer.currentWindowIndex
+        currentWindow = exoPlayer.currentMediaItemIndex
         exoPlayer.release()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putInt(STATE_RESUME_WINDOW, exoPlayer.currentWindowIndex)
+        outState.putInt(STATE_RESUME_WINDOW, exoPlayer.currentMediaItemIndex)
         outState.putLong(STATE_RESUME_POSITION, exoPlayer.currentPosition)
         outState.putBoolean(STATE_PLAYER_FULLSCREEN, isFullscreen)
         outState.putBoolean(STATE_PLAYER_PLAYING, isPlayerPlaying)
@@ -153,7 +153,7 @@ class MainActivity : AppCompatActivity() {
         val trackSelectionDialogBuilder = TrackSelectionDialogBuilder(
             this,
             getString(R.string.qualitySelector),
-            trackSelector,
+            exoPlayer,
             videoRenderer
         )
         trackSelectionDialogBuilder.setTrackNameProvider {

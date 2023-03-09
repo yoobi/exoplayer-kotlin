@@ -8,15 +8,14 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
-import com.google.android.exoplayer2.ui.PlayerView
+import com.google.android.exoplayer2.ui.StyledPlayerView
 import com.google.android.exoplayer2.upstream.DataSource
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
-import com.google.android.exoplayer2.util.Util
+import com.google.android.exoplayer2.upstream.DefaultDataSource
 
 class ExoplayerRecyclerView : RecyclerView {
 
@@ -25,8 +24,8 @@ class ExoplayerRecyclerView : RecyclerView {
     private var progressBar: ProgressBar? = null
     private var viewHolderParent: View? = null
     private var frameLayout: FrameLayout? = null
-    private lateinit var videoSurfaceView: PlayerView
-    private var videoPlayer: SimpleExoPlayer? = null
+    private lateinit var videoSurfaceView: StyledPlayerView
+    private var videoPlayer: ExoPlayer? = null
 
     // vars
     private var isVideoViewAdded = false
@@ -40,12 +39,12 @@ class ExoplayerRecyclerView : RecyclerView {
     }
 
     private fun init(context: Context) {
-        videoSurfaceView = PlayerView(context)
+        videoSurfaceView = StyledPlayerView(context)
         videoSurfaceView.videoSurfaceView
         videoSurfaceView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_ZOOM
 
         // 2. Create the player
-        videoPlayer = SimpleExoPlayer.Builder(context).build()
+        videoPlayer = ExoPlayer.Builder(context).build()
         // Bind the player to the view.
         videoSurfaceView.useController = false
         videoSurfaceView.player = videoPlayer
@@ -78,7 +77,7 @@ class ExoplayerRecyclerView : RecyclerView {
             }
         })
         videoPlayer?.addListener(object : Player.Listener {
-            override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+            override fun onPlaybackStateChanged(playbackState: Int) {
                 when (playbackState) {
                     Player.STATE_BUFFERING -> {
                         progressBar?.visibility = View.VISIBLE
@@ -87,7 +86,7 @@ class ExoplayerRecyclerView : RecyclerView {
                         progressBar?.visibility = View.GONE
                         if(!isVideoViewAdded) addVideoView()
                     }
-                    else -> {}
+                    else -> super.onPlaybackStateChanged(playbackState)
                 }
             }
         })
@@ -112,10 +111,7 @@ class ExoplayerRecyclerView : RecyclerView {
         viewHolderParent = holder.itemView
         frameLayout = holder.videoContainer
         videoSurfaceView.player = videoPlayer
-        val dataSourceFactory: DataSource.Factory = DefaultDataSourceFactory(
-            context,
-            Util.getUserAgent(context, "RecyclerView VideoPlayer")
-        )
+        val dataSourceFactory: DataSource.Factory = DefaultDataSource.Factory(context)
 
         holder.videoPreview.let {
             val videoSource: MediaSource =
@@ -127,7 +123,7 @@ class ExoplayerRecyclerView : RecyclerView {
     }
 
     // Remove the old player
-    private fun removeVideoView(videoView: PlayerView?) {
+    private fun removeVideoView(videoView: StyledPlayerView?) {
         val parent = videoView?.parent as ViewGroup?
         val index = parent?.indexOfChild(videoView)
         if(index != null && index >= 0) {

@@ -11,21 +11,21 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
+import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.ui.DefaultTimeBar
-import com.google.android.exoplayer2.ui.PlayerView
+import com.google.android.exoplayer2.ui.StyledPlayerView
 import com.google.android.exoplayer2.ui.TimeBar
 import com.google.android.exoplayer2.upstream.DataSource
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
+import com.google.android.exoplayer2.upstream.DefaultDataSource
 import com.google.android.exoplayer2.util.MimeTypes
 import com.google.android.exoplayer2.util.Util
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var exoPlayer: SimpleExoPlayer
+    private lateinit var exoPlayer: ExoPlayer
     private lateinit var dataSourceFactory: DataSource.Factory
-    private lateinit var playerView: PlayerView
+    private lateinit var playerView: StyledPlayerView
     private lateinit var exoProgress: DefaultTimeBar
     private lateinit var previewFrameLayout: FrameLayout
     private lateinit var previewImage: ImageView
@@ -48,10 +48,7 @@ class MainActivity : AppCompatActivity() {
         previewFrameLayout = playerView.findViewById(R.id.preview_frame_layout)
         previewImage = playerView.findViewById(R.id.preview_image)
 
-        dataSourceFactory = DefaultDataSourceFactory(
-            this,
-            Util.getUserAgent(this, "testapp")
-        )
+        dataSourceFactory = DefaultDataSource.Factory(this)
 
         if(savedInstanceState != null) {
             currentWindow = savedInstanceState.getInt(STATE_RESUME_WINDOW)
@@ -62,7 +59,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initPlayer() {
-        exoPlayer = SimpleExoPlayer.Builder(this).build().apply {
+        exoPlayer = ExoPlayer.Builder(this).build().apply {
             playWhenReady = isPlayerPlaying
             seekTo(currentWindow, playbackPosition)
             setMediaItem(mediaItem, false)
@@ -131,12 +128,12 @@ class MainActivity : AppCompatActivity() {
     private fun releasePlayer() {
         isPlayerPlaying = exoPlayer.playWhenReady
         playbackPosition = exoPlayer.currentPosition
-        currentWindow = exoPlayer.currentWindowIndex
+        currentWindow = exoPlayer.currentMediaItemIndex
         exoPlayer.release()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putInt(STATE_RESUME_WINDOW, exoPlayer.currentWindowIndex)
+        outState.putInt(STATE_RESUME_WINDOW, exoPlayer.currentMediaItemIndex)
         outState.putLong(STATE_RESUME_POSITION, exoPlayer.currentPosition)
         outState.putBoolean(STATE_PLAYER_FULLSCREEN, isFullscreen)
         outState.putBoolean(STATE_PLAYER_PLAYING, isPlayerPlaying)

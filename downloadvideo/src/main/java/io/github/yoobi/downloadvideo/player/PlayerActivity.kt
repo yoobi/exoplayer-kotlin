@@ -6,14 +6,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.MediaMetadata
-import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.offline.Download
 import com.google.android.exoplayer2.offline.DownloadHelper
 import com.google.android.exoplayer2.offline.DownloadRequest
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
-import com.google.android.exoplayer2.ui.PlayerView
+import com.google.android.exoplayer2.ui.StyledPlayerView
 import com.google.android.exoplayer2.util.Util
 import com.google.android.material.snackbar.Snackbar
 import io.github.yoobi.downloadvideo.OnlineAdapter.Companion.BUNDLE_MIME_TYPES
@@ -28,9 +28,9 @@ import kotlin.math.roundToInt
 
 class PlayerActivity : AppCompatActivity(), DownloadTracker.Listener {
 
-    private lateinit var exoPlayer: SimpleExoPlayer
+    private lateinit var exoPlayer: ExoPlayer
     private lateinit var progressDrawable: ImageView
-    private lateinit var playerView: PlayerView
+    private lateinit var playerView: StyledPlayerView
 
     private var currentWindow = 0
     private var playbackPosition: Long = 0
@@ -77,14 +77,14 @@ class PlayerActivity : AppCompatActivity(), DownloadTracker.Listener {
                         Snackbar.LENGTH_SHORT
                     ).setAction("Delete") {
                         DownloadUtil.getDownloadTracker(this@PlayerActivity)
-                            .removeDownload(mediaItem.playbackProperties?.uri)
+                            .removeDownload(mediaItem.localConfiguration?.uri)
                     }.show()
                 } else {
                     val item = mediaItem.buildUpon()
-                        .setTag((mediaItem.playbackProperties?.tag as MediaItemTag).copy(duration = exoPlayer.duration))
+                        .setTag((mediaItem.localConfiguration?.tag as MediaItemTag).copy(duration = exoPlayer.duration))
                         .build()
                     if(!DownloadUtil.getDownloadTracker(this@PlayerActivity)
-                            .hasDownload(item.playbackProperties?.uri)
+                            .hasDownload(item.localConfiguration?.uri)
                     ) {
                         DownloadUtil.getDownloadTracker(this@PlayerActivity)
                             .toggleDownloadDialogHelper(this@PlayerActivity, item)
@@ -93,7 +93,7 @@ class PlayerActivity : AppCompatActivity(), DownloadTracker.Listener {
                             .toggleDownloadPopupMenu(
                                 this@PlayerActivity,
                                 this,
-                                item.playbackProperties?.uri
+                                item.localConfiguration?.uri
                             )
                     }
                 }
@@ -111,7 +111,7 @@ class PlayerActivity : AppCompatActivity(), DownloadTracker.Listener {
     private fun initPlayer() {
         val downloadRequest: DownloadRequest? =
             DownloadUtil.getDownloadTracker(this)
-                .getDownloadRequest(mediaItem.playbackProperties?.uri)
+                .getDownloadRequest(mediaItem.localConfiguration?.uri)
         val mediaSource = if(downloadRequest == null) {
             // Online content
             HlsMediaSource.Factory(DownloadUtil.getHttpDataSourceFactory(this))
@@ -124,7 +124,7 @@ class PlayerActivity : AppCompatActivity(), DownloadTracker.Listener {
             )
         }
 
-        exoPlayer = SimpleExoPlayer.Builder(this).build()
+        exoPlayer = ExoPlayer.Builder(this).build()
             .apply {
                 playWhenReady = isPlayerPlaying
                 seekTo(currentWindow, playbackPosition)
@@ -137,12 +137,12 @@ class PlayerActivity : AppCompatActivity(), DownloadTracker.Listener {
     private fun releasePlayer() {
         isPlayerPlaying = exoPlayer.playWhenReady
         playbackPosition = exoPlayer.currentPosition
-        currentWindow = exoPlayer.currentWindowIndex
+        currentWindow = exoPlayer.currentMediaItemIndex
         exoPlayer.release()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putInt(STATE_RESUME_WINDOW, exoPlayer.currentWindowIndex)
+        outState.putInt(STATE_RESUME_WINDOW, exoPlayer.currentMediaItemIndex)
         outState.putLong(STATE_RESUME_POSITION, exoPlayer.currentPosition)
         outState.putBoolean(STATE_PLAYER_FULLSCREEN, isFullscreen)
         outState.putBoolean(STATE_PLAYER_PLAYING, isPlayerPlaying)
@@ -151,7 +151,7 @@ class PlayerActivity : AppCompatActivity(), DownloadTracker.Listener {
 
     override fun onStart() {
         super.onStart()
-        DownloadUtil.getDownloadTracker(this).downloads[mediaItem.playbackProperties?.uri!!]?.let {
+        DownloadUtil.getDownloadTracker(this).downloads[mediaItem.localConfiguration?.uri!!]?.let {
             // Not so clean, used to set the right drawable on the ImageView
             // And start the Flow if the download is in progress
             onDownloadsChanged(it)

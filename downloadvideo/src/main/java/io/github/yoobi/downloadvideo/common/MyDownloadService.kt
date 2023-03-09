@@ -43,10 +43,18 @@ class MyDownloadService : DownloadService(
         return if(Util.SDK_INT >= 21) PlatformScheduler(this, JOB_ID) else null
     }
 
-    override fun getForegroundNotification(downloads: MutableList<Download>): Notification {
+    override fun getForegroundNotification(
+        downloads: MutableList<Download>,
+        notMetRequirements: Int
+    ): Notification {
         return DownloadUtil.getDownloadNotificationHelper(this)
             .buildProgressNotification(
-                this, R.drawable.ic_download, null, null, downloads
+                this,
+                R.drawable.ic_download,
+                null,
+                null,
+                downloads,
+                notMetRequirements
             )
     }
 
@@ -75,7 +83,7 @@ class MyDownloadService : DownloadService(
                 Download.STATE_COMPLETED -> {
                     notificationHelper.buildDownloadCompletedNotification(
                         context,
-                        R.drawable.ic_download_done,  /* contentIntent= */
+                        R.drawable.ic_download_done,  /* contentIntent = */
                         null,
                         Util.fromUtf8Bytes(download.request.data)
                     )
@@ -83,7 +91,7 @@ class MyDownloadService : DownloadService(
                 Download.STATE_FAILED -> {
                     notificationHelper.buildDownloadFailedNotification(
                         context,
-                        R.drawable.ic_download_done,  /* contentIntent= */
+                        R.drawable.ic_download_done,  /* contentIntent = */
                         null,
                         Util.fromUtf8Bytes(download.request.data)
                     )

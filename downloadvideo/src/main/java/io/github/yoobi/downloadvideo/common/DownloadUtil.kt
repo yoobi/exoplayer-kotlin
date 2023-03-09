@@ -3,20 +3,20 @@ package io.github.yoobi.downloadvideo.common
 
 import android.content.Context
 import com.google.android.exoplayer2.database.DatabaseProvider
-import com.google.android.exoplayer2.database.ExoDatabaseProvider
+import com.google.android.exoplayer2.database.StandaloneDatabaseProvider
 import com.google.android.exoplayer2.ext.cronet.CronetDataSource
-import com.google.android.exoplayer2.ext.cronet.CronetEngineWrapper
 import com.google.android.exoplayer2.offline.Download
 import com.google.android.exoplayer2.offline.DownloadManager
 import com.google.android.exoplayer2.ui.DownloadNotificationHelper
 import com.google.android.exoplayer2.upstream.DataSource
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
+import com.google.android.exoplayer2.upstream.DefaultDataSource
 import com.google.android.exoplayer2.upstream.HttpDataSource
 import com.google.android.exoplayer2.upstream.cache.Cache
 import com.google.android.exoplayer2.upstream.cache.CacheDataSource
 import com.google.android.exoplayer2.upstream.cache.NoOpCacheEvictor
 import com.google.android.exoplayer2.upstream.cache.SimpleCache
 import io.github.yoobi.downloadvideo.R
+import org.chromium.net.CronetEngine
 import java.io.File
 import java.util.concurrent.Executors
 
@@ -38,7 +38,7 @@ object DownloadUtil {
     fun getHttpDataSourceFactory(context: Context): HttpDataSource.Factory {
         if(!DownloadUtil::httpDataSourceFactory.isInitialized) {
             httpDataSourceFactory = CronetDataSource.Factory(
-                CronetEngineWrapper(context),
+                CronetEngine.Builder(context).build(),
                 Executors.newSingleThreadExecutor()
             )
         }
@@ -49,7 +49,7 @@ object DownloadUtil {
     fun getReadOnlyDataSourceFactory(context: Context): DataSource.Factory {
         if(!DownloadUtil::dataSourceFactory.isInitialized) {
             val contextApplication = context.applicationContext
-            val upstreamFactory = DefaultDataSourceFactory(
+            val upstreamFactory = DefaultDataSource.Factory(
                 contextApplication,
                 getHttpDataSourceFactory(contextApplication)
             )
@@ -127,7 +127,7 @@ object DownloadUtil {
     @Synchronized
     private fun getDatabaseProvider(context: Context): DatabaseProvider {
         if(!DownloadUtil::databaseProvider.isInitialized) databaseProvider =
-            ExoDatabaseProvider(context)
+            StandaloneDatabaseProvider(context)
         return databaseProvider
     }
 
