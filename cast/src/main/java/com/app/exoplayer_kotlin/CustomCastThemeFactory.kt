@@ -34,5 +34,6 @@ class CustomMediaRouteControllerDialogFragment: MediaRouteControllerDialogFragme
         context: Context,
         savedInstanceState: Bundle?
     ): MediaRouteControllerDialog =
-        MediaRouteControllerDialog(context, R.style.CustomControllerTheme)
+//        MediaRouteControllerDialog(context)
+    MediaRouteControllerDialog(context, R.style.CustomControllerTheme)
 }
