@@ -1,3 +1,3 @@
 include(":app", ":fullscreendialog", ":fullscreenlayoutparams", ":qualityselector",
-        ":rvitempreview", ":nativepreview", ":downloadvideo")
+        ":rvitempreview", ":nativepreview", ":downloadvideo", ":cast")
 rootProject.name = "Exoplayer-kotlin"
