@@ -3,17 +3,19 @@ import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import org.gradle.api.JavaVersion
 
 fun BaseAppModuleExtension.setAppConfig() {
-    compileSdkVersion(ProjectConfiguration.compileSdk)
-    buildToolsVersion(ProjectConfiguration.buildTools)
+    compileSdk = ProjectConfiguration.compileSdk
+    buildToolsVersion = ProjectConfiguration.buildTools
 
     defaultConfig {
-        minSdkVersion(ProjectConfiguration.minSdk)
-        targetSdkVersion(ProjectConfiguration.targetSdk)
+        minSdk = ProjectConfiguration.minSdk
+        targetSdk = ProjectConfiguration.targetSdk
 
         applicationId = ProjectConfiguration.applicationId
         versionCode = ProjectConfiguration.versionCode
         versionName = ProjectConfiguration.versionName
         vectorDrawables.useSupportLibrary = true
+        multiDexEnabled = true
+
         testInstrumentationRunner = ProjectConfiguration.testInstrumentationRunner
     }
 }
@@ -23,8 +25,9 @@ fun BaseExtension.setDefaultConfig() {
     buildToolsVersion(ProjectConfiguration.buildTools)
 
     defaultConfig {
-        minSdkVersion(ProjectConfiguration.minSdk)
-        targetSdkVersion(ProjectConfiguration.targetSdk)
+        minSdk = ProjectConfiguration.minSdk
+        targetSdk = ProjectConfiguration.targetSdk
+        multiDexEnabled = true
 
         testInstrumentationRunner = ProjectConfiguration.testInstrumentationRunner
     }
@@ -36,8 +39,7 @@ fun BaseExtension.useDefaultBuildTypes() = buildTypes {
         proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
     }
     getByName("debug") {
-        isMinifyEnabled = true
-        isUseProguard = false
+        isMinifyEnabled = false
         proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
     }
 }

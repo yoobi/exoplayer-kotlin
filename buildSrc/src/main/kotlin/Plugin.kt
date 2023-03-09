@@ -8,8 +8,8 @@ fun PluginDependenciesSpec.androidApp(): PluginDependencySpec =
 fun PluginDependenciesSpec.kotlinAndroid(): PluginDependencySpec =
     kotlin("android")
 
-fun PluginDependenciesSpec.kotlinAndroidExt(): PluginDependencySpec =
-    kotlin("android.extensions")
+//fun PluginDependenciesSpec.kotlinAndroidExt(): PluginDependencySpec =
+//    kotlin("android.extensions")
 
 fun PluginDependenciesSpec.kotlinKaptExt(): PluginDependencySpec =
     kotlin("kapt")

@@ -1,7 +1,7 @@
 object Libraries {
 
     object Kotlin {
-        private const val version = "1.5.10" // Don't forget to update the version in buildSrc too !
+        private const val version = "1.8.10" // Don't forget to update the version in buildSrc too !
 
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$version"
     }
@@ -27,13 +27,14 @@ object Libraries {
     }
 
     object Exoplayer {
-        private const val version = "2.14.0"
+        private const val version = "2.18.4"
 
         const val exoplayer = "com.google.android.exoplayer:exoplayer:$version"
         const val exoplayercore = "com.google.android.exoplayer:exoplayer-core:$version"
         const val exoplayerui = "com.google.android.exoplayer:exoplayer-ui:$version"
         const val exoplayerdash = "com.google.android.exoplayer:exoplayer-dash:$version"
         const val exoplayerhls = "com.google.android.exoplayer:exoplayer-hls:$version"
+        const val exoplayercast = "com.google.android.exoplayer:extension-cast:$version"
         const val exoplayercornet = "com.google.android.exoplayer:extension-cronet:$version"
     }
 
@@ -42,10 +43,10 @@ object Libraries {
     }
 
     object AndroidTestLibraries {
-        const val runner = "androidx.test.ext:junit:1.1.1"
+        const val runner = "androidx.test.ext:junit-ktx:1.1.5"
 
         object Espresso {
-            private const val version = "3.3.0"
+            private const val version = "3.5.1"
 
             const val core = "androidx.test.espresso:espresso-core:$version"
         }

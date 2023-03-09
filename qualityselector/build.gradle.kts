@@ -1,7 +1,6 @@
 plugins {
     androidApp()
     kotlinAndroid()
-    kotlinAndroidExt()
 }
 
 android {
