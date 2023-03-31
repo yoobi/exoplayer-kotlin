@@ -14,7 +14,6 @@ import io.github.yoobi.downloadvideo.common.MyDownloadService
 import io.github.yoobi.downloadvideo.offlineVideo.OfflineVideoActivity
 
 class MainActivity : AppCompatActivity() {
-
     private val listMediaItem: List<MediaItem> = listOf(
         MediaItem.Builder()
             .setUri("https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8")
@@ -60,6 +59,11 @@ class MainActivity : AppCompatActivity() {
             .setUri("http://playertest.longtailvideo.com/adaptive/oceans_aes/oceans_aes.m3u8")
             .setMimeType(MimeTypes.APPLICATION_M3U8)
             .setMediaMetadata(MediaMetadata.Builder().setTitle("Ocean Example").build())
+            .build(),
+        MediaItem.Builder()
+            .setUri("https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4")
+            .setMimeType(MimeTypes.APPLICATION_MP4)
+            .setMediaMetadata(MediaMetadata.Builder().setTitle("Big Buck Bunny MP4").build())
             .build(),
     )
 

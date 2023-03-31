@@ -29,6 +29,7 @@ import java.io.IOException
 import java.util.concurrent.CopyOnWriteArraySet
 
 private const val TAG = "DownloadTracker"
+private const val DEFAULT_BITRATE = 500_000
 
 /** Tracks media that has been downloaded.  */
 class DownloadTracker(
@@ -264,6 +265,14 @@ class DownloadTracker(
         override fun onPrepared(helper: DownloadHelper) {
             if(helper.periodCount == 0) {
                 Log.d(TAG, "No periods found. Downloading entire stream.")
+                val mediaItemTag: MediaItemTag = mediaItem.localConfiguration?.tag as MediaItemTag
+                val estimatedContentLength: Long = (DEFAULT_BITRATE * mediaItemTag.duration)
+                        .div(C.MILLIS_PER_SECOND).div(C.BITS_PER_BYTE)
+                val downloadRequest: DownloadRequest = downloadHelper.getDownloadRequest(
+                    mediaItemTag.title,
+                    Util.getUtf8Bytes(estimatedContentLength.toString())
+                )
+                startDownload(downloadRequest)
                 downloadHelper.release()
                 return
             }

@@ -12,7 +12,6 @@ import com.google.android.exoplayer2.MediaMetadata
 import com.google.android.exoplayer2.offline.Download
 import com.google.android.exoplayer2.offline.DownloadHelper
 import com.google.android.exoplayer2.offline.DownloadRequest
-import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.ui.StyledPlayerView
 import com.google.android.exoplayer2.util.Util
 import com.google.android.material.snackbar.Snackbar
@@ -20,10 +19,7 @@ import io.github.yoobi.downloadvideo.OnlineAdapter.Companion.BUNDLE_MIME_TYPES
 import io.github.yoobi.downloadvideo.OnlineAdapter.Companion.BUNDLE_TITLE
 import io.github.yoobi.downloadvideo.OnlineAdapter.Companion.BUNDLE_URL
 import io.github.yoobi.downloadvideo.R
-import io.github.yoobi.downloadvideo.common.DownloadTracker
-import io.github.yoobi.downloadvideo.common.DownloadUtil
-import io.github.yoobi.downloadvideo.common.MediaItemTag
-import io.github.yoobi.downloadvideo.common.PieProgressDrawable
+import io.github.yoobi.downloadvideo.common.*
 import kotlin.math.roundToInt
 
 class PlayerActivity : AppCompatActivity(), DownloadTracker.Listener {
@@ -114,8 +110,7 @@ class PlayerActivity : AppCompatActivity(), DownloadTracker.Listener {
                 .getDownloadRequest(mediaItem.localConfiguration?.uri)
         val mediaSource = if(downloadRequest == null) {
             // Online content
-            HlsMediaSource.Factory(DownloadUtil.getHttpDataSourceFactory(this))
-                .createMediaSource(mediaItem)
+            ExoplayerHelper.createMediaSource(this, mediaItem)
         } else {
             // Offline content
             DownloadHelper.createMediaSource(

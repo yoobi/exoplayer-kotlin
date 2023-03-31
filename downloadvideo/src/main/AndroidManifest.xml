@@ -13,6 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
         android:name=".DownloadVideoApplication">
         <activity android:exported="true" android:name=".MainActivity">
             <intent-filter>
