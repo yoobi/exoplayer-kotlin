@@ -10,8 +10,8 @@ import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.MediaMetadata
 import com.google.android.exoplayer2.offline.Download
-import com.google.android.exoplayer2.offline.DownloadHelper
 import com.google.android.exoplayer2.offline.DownloadRequest
+import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.ui.StyledPlayerView
 import com.google.android.exoplayer2.util.Util
 import com.google.android.material.snackbar.Snackbar
@@ -110,13 +110,11 @@ class PlayerActivity : AppCompatActivity(), DownloadTracker.Listener {
                 .getDownloadRequest(mediaItem.localConfiguration?.uri)
         val mediaSource = if(downloadRequest == null) {
             // Online content
-            ExoplayerHelper.createMediaSource(this, mediaItem)
+            ExoplayerHelper.createMediaSource(mediaItem)
         } else {
             // Offline content
-            DownloadHelper.createMediaSource(
-                downloadRequest,
-                DownloadUtil.getReadOnlyDataSourceFactory(this)
-            )
+            ProgressiveMediaSource.Factory(DownloadUtil.getReadOnlyDataSourceFactory(this))
+                .createMediaSource(downloadRequest.toMediaItem())
         }
 
         exoPlayer = ExoPlayer.Builder(this).build()

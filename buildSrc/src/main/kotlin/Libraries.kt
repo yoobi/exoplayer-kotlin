@@ -36,6 +36,7 @@ object Libraries {
         const val exoplayerhls = "com.google.android.exoplayer:exoplayer-hls:$version"
         const val exoplayercast = "com.google.android.exoplayer:extension-cast:$version"
         const val exoplayercornet = "com.google.android.exoplayer:extension-cronet:$version"
+        const val exoplayerokhttp = "com.google.android.exoplayer:extension-okhttp:$version"
     }
 
     object TestLibraries {

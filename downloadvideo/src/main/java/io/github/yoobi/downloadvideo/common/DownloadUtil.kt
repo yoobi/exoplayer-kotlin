@@ -4,19 +4,20 @@ package io.github.yoobi.downloadvideo.common
 import android.content.Context
 import com.google.android.exoplayer2.database.DatabaseProvider
 import com.google.android.exoplayer2.database.StandaloneDatabaseProvider
-import com.google.android.exoplayer2.ext.cronet.CronetDataSource
+import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSource
 import com.google.android.exoplayer2.offline.Download
 import com.google.android.exoplayer2.offline.DownloadManager
 import com.google.android.exoplayer2.ui.DownloadNotificationHelper
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSource
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.google.android.exoplayer2.upstream.HttpDataSource
 import com.google.android.exoplayer2.upstream.cache.Cache
 import com.google.android.exoplayer2.upstream.cache.CacheDataSource
 import com.google.android.exoplayer2.upstream.cache.NoOpCacheEvictor
 import com.google.android.exoplayer2.upstream.cache.SimpleCache
 import io.github.yoobi.downloadvideo.R
-import org.chromium.net.CronetEngine
+import okhttp3.OkHttpClient
 import java.io.File
 import java.util.concurrent.Executors
 
@@ -35,12 +36,10 @@ object DownloadUtil {
     private lateinit var downloadTracker: DownloadTracker
 
     @Synchronized
-    fun getHttpDataSourceFactory(context: Context): HttpDataSource.Factory {
+    fun getHttpDataSourceFactory(): HttpDataSource.Factory {
         if(!DownloadUtil::httpDataSourceFactory.isInitialized) {
-            httpDataSourceFactory = CronetDataSource.Factory(
-                CronetEngine.Builder(context).build(),
-                Executors.newSingleThreadExecutor()
-            )
+            httpDataSourceFactory = OkHttpDataSource.Factory(OkHttpClient.Builder().build())
+//            httpDataSourceFactory = DefaultHttpDataSource.Factory()
         }
         return httpDataSourceFactory
     }
@@ -51,7 +50,7 @@ object DownloadUtil {
             val contextApplication = context.applicationContext
             val upstreamFactory = DefaultDataSource.Factory(
                 contextApplication,
-                getHttpDataSourceFactory(contextApplication)
+                getHttpDataSourceFactory()
             )
             dataSourceFactory =
                 buildReadOnlyCacheDataSource(upstreamFactory, getDownloadCache(contextApplication))
@@ -114,13 +113,13 @@ object DownloadUtil {
                 context,
                 getDatabaseProvider(context),
                 getDownloadCache(context),
-                getHttpDataSourceFactory(context),
+                getHttpDataSourceFactory(),
                 Executors.newFixedThreadPool(6)
             ).apply {
                 maxParallelDownloads = 2
             }
             downloadTracker =
-                DownloadTracker(context, getHttpDataSourceFactory(context), downloadManager)
+                DownloadTracker(context, getHttpDataSourceFactory(), downloadManager)
         }
     }
 

@@ -22,7 +22,7 @@ dependencies {
     implementation(Libraries.Androidx.viewmodel)
 
     implementation(Libraries.Exoplayer.exoplayer)
-    implementation(Libraries.Exoplayer.exoplayercornet)
+    implementation(Libraries.Exoplayer.exoplayerokhttp)
 
     implementation(Libraries.TestLibraries.junit)
     implementation(Libraries.AndroidTestLibraries.runner)

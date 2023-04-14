@@ -65,6 +65,11 @@ class MainActivity : AppCompatActivity() {
             .setMimeType(MimeTypes.APPLICATION_MP4)
             .setMediaMetadata(MediaMetadata.Builder().setTitle("Big Buck Bunny MP4").build())
             .build(),
+        MediaItem.Builder()
+            .setUri("https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4")
+            .setMimeType(MimeTypes.APPLICATION_MP4)
+            .setMediaMetadata(MediaMetadata.Builder().setTitle("The first Blender Open Movie from 2006").build())
+            .build(),
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {

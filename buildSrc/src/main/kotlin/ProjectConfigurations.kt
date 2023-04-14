@@ -3,7 +3,7 @@ object ProjectConfiguration {
 
     const val compileSdk = 33
     const val targetSdk = 33
-    const val minSdk = 19
+    const val minSdk = 21
     const val buildTools = "30.0.2"
     const val testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
