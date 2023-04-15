@@ -108,20 +108,22 @@ class PlayerActivity : AppCompatActivity(), DownloadTracker.Listener {
         val downloadRequest: DownloadRequest? =
             DownloadUtil.getDownloadTracker(this)
                 .getDownloadRequest(mediaItem.localConfiguration?.uri)
-        val mediaSource = if(downloadRequest == null) {
-            // Online content
-            ExoplayerHelper.createMediaSource(mediaItem)
+
+        val mediaSourceFactory = if(downloadRequest == null) {
+            ExoplayerHelper.createMediaSourceFactory(mediaItem)
         } else {
             // Offline content
             ProgressiveMediaSource.Factory(DownloadUtil.getReadOnlyDataSourceFactory(this))
-                .createMediaSource(downloadRequest.toMediaItem())
         }
 
-        exoPlayer = ExoPlayer.Builder(this).build()
+        exoPlayer = ExoPlayer
+            .Builder(this)
+            .setMediaSourceFactory(mediaSourceFactory)
+            .build()
             .apply {
                 playWhenReady = isPlayerPlaying
                 seekTo(currentWindow, playbackPosition)
-                setMediaSource(mediaSource, false)
+                setMediaItem(mediaItem, false)
                 prepare()
             }
         playerView.player = exoPlayer
