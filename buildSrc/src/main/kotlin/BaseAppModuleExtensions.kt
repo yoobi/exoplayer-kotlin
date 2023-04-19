@@ -3,9 +3,9 @@ import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import org.gradle.api.JavaVersion
 
 fun BaseAppModuleExtension.setAppConfig() {
+    namespace = "com.app.exoplayer_kotlin"
     compileSdk = ProjectConfiguration.compileSdk
     buildToolsVersion = ProjectConfiguration.buildTools
-
     defaultConfig {
         minSdk = ProjectConfiguration.minSdk
         targetSdk = ProjectConfiguration.targetSdk
@@ -45,6 +45,6 @@ fun BaseExtension.useDefaultBuildTypes() = buildTypes {
 }
 
 fun BaseExtension.activateJava8() = compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }

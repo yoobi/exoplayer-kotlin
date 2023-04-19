@@ -1,7 +1,10 @@
 object Libraries {
 
     object Kotlin {
-        private const val version = "1.8.10" // Don't forget to update the version in buildSrc too !
+        // Don't forget to update the version in:
+        // root/buildSrc/build.gradle.kts
+        // root/build.gradle.kts
+        private const val version = "1.8.10"
 
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$version"
     }

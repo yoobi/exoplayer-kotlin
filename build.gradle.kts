@@ -5,22 +5,20 @@ plugins {
 }
 
 buildscript {
-    val kotlin_version by extra("1.5.10")
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:4.2.1")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.10")
+        classpath("com.android.tools.build:gradle:8.0.0")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.10")
     }
 }
 
 allprojects {
     repositories {
         google()
-        jcenter()
-
+        mavenCentral()
     }
 }
  task<Delete>("clean") {
