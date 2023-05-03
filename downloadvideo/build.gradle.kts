@@ -6,7 +6,7 @@ plugins {
 android {
     setAppConfig()
     useDefaultBuildTypes()
-    activateJava8()
+    activateJava17()
 }
 
 dependencies {

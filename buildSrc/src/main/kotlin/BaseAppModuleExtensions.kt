@@ -44,7 +44,7 @@ fun BaseExtension.useDefaultBuildTypes() = buildTypes {
     }
 }
 
-fun BaseExtension.activateJava8() = compileOptions {
+fun BaseExtension.activateJava17() = compileOptions {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
 }
