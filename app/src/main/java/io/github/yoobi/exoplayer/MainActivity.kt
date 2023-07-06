@@ -1,4 +1,4 @@
-package com.app.exoplayer_kotlin
+package io.github.yoobi.exoplayer
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

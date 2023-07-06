@@ -19,7 +19,7 @@
   <item
       android:id="@+id/media_route_menu_item"
       android:title="Cast"
-      app:actionProviderClass="com.app.exoplayer_kotlin.CustomCastProvider"
+      app:actionProviderClass="io.github.yoobi.cast.CustomCastProvider"
       app:showAsAction="always" />
 
 </menu>

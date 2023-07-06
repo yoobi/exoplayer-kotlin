@@ -1,5 +1,5 @@
 object ProjectConfiguration {
-    const val applicationId = "com.app.exoplayer_kotlin"
+    const val applicationId = "io.github.yoobi"
 
     const val compileSdk = 33
     const val targetSdk = 33

@@ -2,15 +2,15 @@ import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import org.gradle.api.JavaVersion
 
-fun BaseAppModuleExtension.setAppConfig() {
-    namespace = "com.app.exoplayer_kotlin"
+fun BaseAppModuleExtension.setAppConfig(module: String = "exoplayer") {
+    namespace = "io.github.yoobi.$module"
     compileSdk = ProjectConfiguration.compileSdk
     buildToolsVersion = ProjectConfiguration.buildTools
     defaultConfig {
         minSdk = ProjectConfiguration.minSdk
         targetSdk = ProjectConfiguration.targetSdk
 
-        applicationId = ProjectConfiguration.applicationId
+        applicationId = ProjectConfiguration.applicationId.plus(".$module")
         versionCode = ProjectConfiguration.versionCode
         versionName = ProjectConfiguration.versionName
         vectorDrawables.useSupportLibrary = true

@@ -1,4 +1,4 @@
-package com.app.exoplayer_kotlin
+package io.github.yoobi.cast
 
 import android.content.Context
 import android.os.Bundle

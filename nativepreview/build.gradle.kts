@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    setAppConfig()
+    setAppConfig("nativepreview")
     useDefaultBuildTypes()
     activateJava17()
 }

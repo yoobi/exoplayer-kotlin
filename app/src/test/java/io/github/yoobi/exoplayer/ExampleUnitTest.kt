@@ -1,4 +1,4 @@
-package com.app.exoplayer_kotlin
+package io.github.yoobi.exoplayer
 
 import org.junit.Assert.assertEquals
 import org.junit.Test

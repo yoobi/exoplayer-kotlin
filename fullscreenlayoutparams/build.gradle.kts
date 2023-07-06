@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    setAppConfig()
+    setAppConfig("fullscreenlayoutparams")
     useDefaultBuildTypes()
     activateJava17()
 }

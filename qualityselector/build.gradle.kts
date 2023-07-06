@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    setAppConfig()
+    setAppConfig("qualityselector")
     useDefaultBuildTypes()
     activateJava17()
 }

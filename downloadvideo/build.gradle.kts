@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    setAppConfig()
+    setAppConfig("downloadvideo")
     useDefaultBuildTypes()
     activateJava17()
 }

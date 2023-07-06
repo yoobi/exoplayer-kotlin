@@ -1,5 +1,5 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="app_name">qualityselector</string>
+    <string name="app_name">Exoplayer-qualityselector</string>
     <string name="exo_track_resolution_pixel"><xliff:g id="height" example="768">%1$dp</xliff:g></string>
     <string name="qualitySelector">Select Quality</string>
 </resources>
