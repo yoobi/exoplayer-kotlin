@@ -53,8 +53,11 @@ object DownloadUtil {
                 contextApplication,
                 getHttpDataSourceFactory(contextApplication)
             )
-            dataSourceFactory =
-                buildReadOnlyCacheDataSource(upstreamFactory, getDownloadCache(contextApplication))
+            dataSourceFactory = CacheDataSource.Factory()
+                .setCache(getDownloadCache(contextApplication))
+                .setUpstreamDataSourceFactory(upstreamFactory)
+                .setCacheWriteDataSinkFactory(null)
+                .setFlags(CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR)
         }
         return dataSourceFactory
     }
@@ -139,14 +142,4 @@ object DownloadUtil {
         return downloadDirectory
     }
 
-    private fun buildReadOnlyCacheDataSource(
-        upstreamFactory: DataSource.Factory,
-        cache: Cache
-    ): CacheDataSource.Factory {
-        return CacheDataSource.Factory()
-            .setCache(cache)
-            .setUpstreamDataSourceFactory(upstreamFactory)
-            .setCacheWriteDataSinkFactory(null)
-            .setFlags(CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR)
-    }
 }

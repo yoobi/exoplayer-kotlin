@@ -6,13 +6,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
-import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.util.Util
+import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.offline.Download
-import androidx.media3.exoplayer.offline.DownloadHelper
 import androidx.media3.exoplayer.offline.DownloadRequest
+import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
 import androidx.media3.ui.PlayerView
 import com.google.android.material.snackbar.Snackbar
 import io.github.yoobi.downloadvideo.OnlineAdapter.Companion.BUNDLE_MIME_TYPES
@@ -103,27 +103,38 @@ class PlayerActivity : AppCompatActivity(), DownloadTracker.Listener {
             }
         }
     }
+    private fun maybeSetDownloadProperties(item: MediaItem, downloadRequest: DownloadRequest?): MediaItem {
+        if (downloadRequest == null) {
+            return item
+        }
+        val builder = item.buildUpon()
+            .setMediaId(downloadRequest.id)
+            .setUri(downloadRequest.uri)
+            .setCustomCacheKey(downloadRequest.customCacheKey)
+            .setMimeType(downloadRequest.mimeType)
+            .setStreamKeys(downloadRequest.streamKeys)
 
-    private fun initPlayer() {
-        val downloadRequest: DownloadRequest? =
-            DownloadUtil.getDownloadTracker(this)
-                .getDownloadRequest(mediaItem.localConfiguration?.uri)
-        val mediaSource = if(downloadRequest == null) {
-            // Online content
-            ExoplayerHelper.createMediaSource(this, mediaItem)
-        } else {
-            // Offline content
-            DownloadHelper.createMediaSource(
-                downloadRequest,
-                DownloadUtil.getReadOnlyDataSourceFactory(this)
+        val drmConfiguration = item.localConfiguration!!.drmConfiguration
+        if (drmConfiguration != null) {
+            builder.setDrmConfiguration(
+                drmConfiguration.buildUpon().setKeySetId(downloadRequest.keySetId).build()
             )
         }
+        return builder.build()
+    }
 
-        exoPlayer = ExoPlayer.Builder(this).build()
+    private fun initPlayer() {
+        val downloadRequest: DownloadRequest? = DownloadUtil.getDownloadTracker(this)
+            .getDownloadRequest(mediaItem.localConfiguration?.uri)
+
+        exoPlayer = ExoPlayer.Builder(this)
+            .setMediaSourceFactory(
+                DefaultMediaSourceFactory(DownloadUtil.getReadOnlyDataSourceFactory(this))
+            ).build()
             .apply {
                 playWhenReady = isPlayerPlaying
                 seekTo(currentWindow, playbackPosition)
-                setMediaSource(mediaSource, false)
+                setMediaItem(maybeSetDownloadProperties(mediaItem, downloadRequest), false)
                 prepare()
             }
         playerView.player = exoPlayer

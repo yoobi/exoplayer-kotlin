@@ -277,7 +277,7 @@ class DownloadTracker(
                     Util.getUtf8Bytes(estimatedContentLength.toString())
                 )
                 startDownload(downloadRequest)
-                downloadHelper.release()
+                release()
                 return
             }
 
