@@ -8,14 +8,14 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.source.MediaSource
-import com.google.android.exoplayer2.source.ProgressiveMediaSource
-import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
-import com.google.android.exoplayer2.ui.StyledPlayerView
-import com.google.android.exoplayer2.upstream.DataSource
-import com.google.android.exoplayer2.upstream.DefaultDataSource
+import androidx.media3.common.Player
+import androidx.media3.datasource.DataSource
+import androidx.media3.datasource.DefaultDataSource
+import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.source.MediaSource
+import androidx.media3.exoplayer.source.ProgressiveMediaSource
+import androidx.media3.ui.AspectRatioFrameLayout
+import androidx.media3.ui.PlayerView
 
 class ExoplayerRecyclerView : RecyclerView {
 
@@ -24,7 +24,7 @@ class ExoplayerRecyclerView : RecyclerView {
     private var progressBar: ProgressBar? = null
     private var viewHolderParent: View? = null
     private var frameLayout: FrameLayout? = null
-    private lateinit var videoSurfaceView: StyledPlayerView
+    private lateinit var videoSurfaceView: PlayerView
     private var videoPlayer: ExoPlayer? = null
 
     // vars
@@ -39,7 +39,7 @@ class ExoplayerRecyclerView : RecyclerView {
     }
 
     private fun init(context: Context) {
-        videoSurfaceView = StyledPlayerView(context)
+        videoSurfaceView = PlayerView(context)
         videoSurfaceView.videoSurfaceView
         videoSurfaceView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_ZOOM
 
@@ -123,7 +123,7 @@ class ExoplayerRecyclerView : RecyclerView {
     }
 
     // Remove the old player
-    private fun removeVideoView(videoView: StyledPlayerView?) {
+    private fun removeVideoView(videoView: PlayerView?) {
         val parent = videoView?.parent as ViewGroup?
         val index = parent?.indexOfChild(videoView)
         if(index != null && index >= 0) {

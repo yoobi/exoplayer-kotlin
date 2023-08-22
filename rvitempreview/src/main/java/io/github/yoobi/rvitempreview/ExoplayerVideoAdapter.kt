@@ -7,9 +7,9 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.media3.common.MediaItem
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.google.android.exoplayer2.MediaItem
 
 class ExoplayerVideoAdapter(private val listener: ExoplayerOnClickListener) :
     RecyclerView.Adapter<ExoplayerVideoAdapter.VideoViewHolder>() {

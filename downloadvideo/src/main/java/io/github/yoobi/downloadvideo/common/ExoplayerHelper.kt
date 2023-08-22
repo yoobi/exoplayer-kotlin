@@ -1,11 +1,11 @@
 package io.github.yoobi.downloadvideo.common
 
 import android.content.Context
-import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.source.MediaSource
-import com.google.android.exoplayer2.source.ProgressiveMediaSource
-import com.google.android.exoplayer2.source.hls.HlsMediaSource
-import com.google.android.exoplayer2.util.MimeTypes
+import androidx.media3.common.MediaItem
+import androidx.media3.common.MimeTypes
+import androidx.media3.exoplayer.hls.HlsMediaSource
+import androidx.media3.exoplayer.source.MediaSource
+import androidx.media3.exoplayer.source.ProgressiveMediaSource
 
 object ExoplayerHelper {
     fun createMediaSource(context: Context, mediaItem: MediaItem): MediaSource {

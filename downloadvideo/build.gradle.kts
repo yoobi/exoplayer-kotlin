@@ -21,8 +21,10 @@ dependencies {
     implementation(Libraries.Androidx.lifecycle)
     implementation(Libraries.Androidx.viewmodel)
 
-    implementation(Libraries.Exoplayer.exoplayer)
-    implementation(Libraries.Exoplayer.exoplayercornet)
+    implementation(Libraries.Media3.exoplayer)
+    implementation(Libraries.Media3.exoplayerhls)
+    implementation(Libraries.Media3.exoplayerui)
+    implementation(Libraries.Media3.exoplayercornet)
 
     implementation(Libraries.TestLibraries.junit)
     implementation(Libraries.AndroidTestLibraries.runner)

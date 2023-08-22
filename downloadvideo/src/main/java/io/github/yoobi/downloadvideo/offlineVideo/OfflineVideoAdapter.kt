@@ -9,10 +9,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.media3.exoplayer.offline.Download
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.exoplayer2.offline.Download
 import io.github.yoobi.downloadvideo.OnlineAdapter.Companion.BUNDLE_MIME_TYPES
 import io.github.yoobi.downloadvideo.OnlineAdapter.Companion.BUNDLE_TITLE
 import io.github.yoobi.downloadvideo.OnlineAdapter.Companion.BUNDLE_URL

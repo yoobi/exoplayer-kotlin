@@ -3,24 +3,28 @@ package io.github.yoobi.downloadvideo.common
 import android.content.Context
 import android.net.Uri
 import android.os.StatFs
+import android.util.Log
 import android.view.View
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import com.google.android.exoplayer2.C
-import com.google.android.exoplayer2.DefaultRenderersFactory
-import com.google.android.exoplayer2.Format
-import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.offline.*
-import com.google.android.exoplayer2.offline.DownloadHelper.LiveContentUnsupportedException
-import com.google.android.exoplayer2.source.TrackGroup
-import com.google.android.exoplayer2.source.TrackGroupArray
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
-import com.google.android.exoplayer2.upstream.HttpDataSource
-import com.google.android.exoplayer2.util.Assertions
-import com.google.android.exoplayer2.util.Log
-import com.google.android.exoplayer2.util.MimeTypes
-import com.google.android.exoplayer2.util.Util
+import androidx.media3.common.C
+import androidx.media3.common.Format
+import androidx.media3.common.MediaItem
+import androidx.media3.common.TrackGroup
+import androidx.media3.common.MimeTypes
+import androidx.media3.common.util.Assertions
+import androidx.media3.common.util.Util
+import androidx.media3.datasource.HttpDataSource
+import androidx.media3.exoplayer.DefaultRenderersFactory
+import androidx.media3.exoplayer.offline.Download
+import androidx.media3.exoplayer.offline.DownloadHelper
+import androidx.media3.exoplayer.offline.DownloadIndex
+import androidx.media3.exoplayer.offline.DownloadManager
+import androidx.media3.exoplayer.offline.DownloadRequest
+import androidx.media3.exoplayer.offline.DownloadService
+import androidx.media3.exoplayer.source.TrackGroupArray
+import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import io.github.yoobi.downloadvideo.R
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
@@ -364,7 +368,7 @@ class DownloadTracker(
                 .show()
             Log.e(
                 TAG,
-                if(e is LiveContentUnsupportedException) "Downloading live content unsupported" else "Failed to start download",
+                if(e is DownloadHelper.LiveContentUnsupportedException) "Downloading live content unsupported" else "Failed to start download",
                 e
             )
         }

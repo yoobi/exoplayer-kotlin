@@ -17,7 +17,10 @@ dependencies {
     implementation(Libraries.Androidx.Ktx.core)
     implementation(Libraries.Androidx.recyclerview)
 
-    implementation(Libraries.Exoplayer.exoplayer)
+    implementation(Libraries.Media3.exoplayer)
+    implementation(Libraries.Media3.exoplayerui)
+    implementation(Libraries.Media3.exoplayercommon)
+
     implementation(Libraries.Glide.glide)
 
     implementation(Libraries.TestLibraries.junit)

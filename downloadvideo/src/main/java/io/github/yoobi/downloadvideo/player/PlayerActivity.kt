@@ -6,14 +6,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.MediaMetadata
-import com.google.android.exoplayer2.offline.Download
-import com.google.android.exoplayer2.offline.DownloadHelper
-import com.google.android.exoplayer2.offline.DownloadRequest
-import com.google.android.exoplayer2.ui.StyledPlayerView
-import com.google.android.exoplayer2.util.Util
+import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.common.MediaItem
+import androidx.media3.common.MediaMetadata
+import androidx.media3.common.util.Util
+import androidx.media3.exoplayer.offline.Download
+import androidx.media3.exoplayer.offline.DownloadHelper
+import androidx.media3.exoplayer.offline.DownloadRequest
+import androidx.media3.ui.PlayerView
 import com.google.android.material.snackbar.Snackbar
 import io.github.yoobi.downloadvideo.OnlineAdapter.Companion.BUNDLE_MIME_TYPES
 import io.github.yoobi.downloadvideo.OnlineAdapter.Companion.BUNDLE_TITLE
@@ -26,7 +26,7 @@ class PlayerActivity : AppCompatActivity(), DownloadTracker.Listener {
 
     private lateinit var exoPlayer: ExoPlayer
     private lateinit var progressDrawable: ImageView
-    private lateinit var playerView: StyledPlayerView
+    private lateinit var playerView: PlayerView
 
     private var currentWindow = 0
     private var playbackPosition: Long = 0

@@ -3,16 +3,16 @@ package io.github.yoobi.cast
 import android.os.Bundle
 import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
+import androidx.media3.cast.CastPlayer
+import androidx.media3.cast.SessionAvailabilityListener
 import androidx.mediarouter.app.MediaRouteButton
-import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.ext.cast.CastPlayer
-import com.google.android.exoplayer2.ext.cast.SessionAvailabilityListener
-import com.google.android.exoplayer2.ui.StyledPlayerView
-import com.google.android.exoplayer2.upstream.DataSource
-import com.google.android.exoplayer2.upstream.DefaultDataSource
-import com.google.android.exoplayer2.util.MimeTypes
-import com.google.android.exoplayer2.util.Util
+import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.common.MediaItem
+import androidx.media3.ui.PlayerView
+import androidx.media3.common.MimeTypes
+import androidx.media3.common.util.Util
+import androidx.media3.datasource.DataSource
+import androidx.media3.datasource.DefaultDataSource
 import com.google.android.gms.cast.framework.CastButtonFactory
 import com.google.android.gms.cast.framework.CastContext
 
@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity(), SessionAvailabilityListener {
     private lateinit var castPlayer: CastPlayer
     private lateinit var castContext: CastContext
     private lateinit var dataSourceFactory: DataSource.Factory
-    private lateinit var playerView: StyledPlayerView
+    private lateinit var playerView: PlayerView
 
     private var currentWindow = 0
     private var playbackPosition: Long = 0

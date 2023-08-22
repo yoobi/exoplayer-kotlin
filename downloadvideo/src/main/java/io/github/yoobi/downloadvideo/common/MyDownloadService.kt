@@ -2,13 +2,13 @@ package io.github.yoobi.downloadvideo.common
 
 import android.app.Notification
 import android.content.Context
-import com.google.android.exoplayer2.offline.Download
-import com.google.android.exoplayer2.offline.DownloadManager
-import com.google.android.exoplayer2.offline.DownloadService
-import com.google.android.exoplayer2.scheduler.PlatformScheduler
-import com.google.android.exoplayer2.ui.DownloadNotificationHelper
-import com.google.android.exoplayer2.util.NotificationUtil
-import com.google.android.exoplayer2.util.Util
+import androidx.media3.common.util.NotificationUtil
+import androidx.media3.common.util.Util
+import androidx.media3.exoplayer.offline.Download
+import androidx.media3.exoplayer.offline.DownloadManager
+import androidx.media3.exoplayer.offline.DownloadNotificationHelper
+import androidx.media3.exoplayer.offline.DownloadService
+import androidx.media3.exoplayer.scheduler.PlatformScheduler
 import io.github.yoobi.downloadvideo.R
 import io.github.yoobi.downloadvideo.common.DownloadUtil.DOWNLOAD_NOTIFICATION_CHANNEL_ID
 

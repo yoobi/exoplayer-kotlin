@@ -5,10 +5,10 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.MediaMetadata
-import com.google.android.exoplayer2.offline.DownloadService
-import com.google.android.exoplayer2.util.MimeTypes
+import androidx.media3.common.MediaItem
+import androidx.media3.common.MediaMetadata
+import androidx.media3.common.MimeTypes
+import androidx.media3.exoplayer.offline.DownloadService
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import io.github.yoobi.downloadvideo.common.MyDownloadService
 import io.github.yoobi.downloadvideo.offlineVideo.OfflineVideoActivity

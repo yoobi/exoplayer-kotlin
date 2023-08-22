@@ -1,6 +1,6 @@
 # Exoplayer-kotlin
 
-Example of Exoplayer v2.18.4 in Kotlin
+Example of androix3.media3 v1.1.1 in Kotlin
 
 All example are for HLS video
 
@@ -55,7 +55,7 @@ Small thumb above progress bar
 
 [Exoplayer website](https://exoplayer.dev/)
 
-[Exoplayer github](https://github.com/google/ExoPlayer)
+[Media3 github](https://github.com/androidx/media)
 
 [Recyclerview - forked](https://github.com/mitchtabian/Video-Player-RecyclerView)
 

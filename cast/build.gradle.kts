@@ -16,11 +16,12 @@ dependencies {
     implementation(Libraries.Androidx.material)
     implementation(Libraries.Androidx.constraintlayout)
     implementation(Libraries.Androidx.Ktx.core)
+    implementation(Libraries.Androidx.mediarouter)
 
-    implementation(Libraries.Exoplayer.exoplayercore)
-    implementation(Libraries.Exoplayer.exoplayerui)
-    implementation(Libraries.Exoplayer.exoplayerhls)
-    implementation(Libraries.Exoplayer.exoplayercast)
+    implementation(Libraries.Media3.exoplayer)
+    implementation(Libraries.Media3.exoplayerui)
+    implementation(Libraries.Media3.exoplayerhls)
+    implementation(Libraries.Media3.exoplayercast)
 
     implementation(Libraries.TestLibraries.junit)
     implementation(Libraries.AndroidTestLibraries.runner)
