@@ -19,7 +19,10 @@ import io.github.yoobi.downloadvideo.OnlineAdapter.Companion.BUNDLE_MIME_TYPES
 import io.github.yoobi.downloadvideo.OnlineAdapter.Companion.BUNDLE_TITLE
 import io.github.yoobi.downloadvideo.OnlineAdapter.Companion.BUNDLE_URL
 import io.github.yoobi.downloadvideo.R
-import io.github.yoobi.downloadvideo.common.*
+import io.github.yoobi.downloadvideo.common.DownloadTracker
+import io.github.yoobi.downloadvideo.common.DownloadUtil
+import io.github.yoobi.downloadvideo.common.MediaItemTag
+import io.github.yoobi.downloadvideo.common.PieProgressDrawable
 import kotlin.math.roundToInt
 
 class PlayerActivity : AppCompatActivity(), DownloadTracker.Listener {
@@ -103,6 +106,7 @@ class PlayerActivity : AppCompatActivity(), DownloadTracker.Listener {
             }
         }
     }
+
     private fun maybeSetDownloadProperties(item: MediaItem, downloadRequest: DownloadRequest?): MediaItem {
         if (downloadRequest == null) {
             return item

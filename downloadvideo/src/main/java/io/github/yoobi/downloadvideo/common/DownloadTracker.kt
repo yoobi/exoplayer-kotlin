@@ -11,8 +11,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.media3.common.C
 import androidx.media3.common.Format
 import androidx.media3.common.MediaItem
-import androidx.media3.common.TrackGroup
 import androidx.media3.common.MimeTypes
+import androidx.media3.common.TrackGroup
 import androidx.media3.common.util.Assertions
 import androidx.media3.common.util.Util
 import androidx.media3.datasource.HttpDataSource
@@ -26,9 +26,13 @@ import androidx.media3.exoplayer.offline.DownloadService
 import androidx.media3.exoplayer.source.TrackGroupArray
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import io.github.yoobi.downloadvideo.R
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.withContext
 import java.io.IOException
 import java.util.concurrent.CopyOnWriteArraySet
 
