@@ -18,10 +18,10 @@ dependencies {
 
     implementation(Libraries.Media3.exoplayer)
     implementation(Libraries.Media3.exoplayerui)
+    implementation(Libraries.Media3.exoplayerhls)
 
     implementation(Libraries.TestLibraries.junit)
     implementation(Libraries.AndroidTestLibraries.runner)
     implementation(Libraries.AndroidTestLibraries.Espresso.core)
-    implementation("androidx.media3:media3-ui:1.1.1")
 
 }
