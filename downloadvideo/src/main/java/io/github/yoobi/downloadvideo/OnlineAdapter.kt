@@ -28,7 +28,6 @@ class OnlineAdapter :
                     .putExtra(BUNDLE_TITLE, mediaItem.mediaMetadata.title ?: "No title")
                     .putExtra(BUNDLE_URL, mediaItem.localConfiguration?.uri.toString())
                     .putExtra(BUNDLE_MIME_TYPES, mediaItem.localConfiguration?.mimeType)
-//                    .putExtra(BUNDLE_TAG, mediaItem.localConfiguration?.tag as MediaItemTag)
             )
         }
     }
@@ -58,6 +57,5 @@ class OnlineAdapter :
         const val BUNDLE_TITLE = "MEDIA_ITEM_TITLE"
         const val BUNDLE_URL = "MEDIA_ITEM_URL"
         const val BUNDLE_MIME_TYPES = "MEDIA_MIME_TYPES"
-        const val BUNDLE_TAG = "MEDIA_ITEM_TAG"
     }
 }
