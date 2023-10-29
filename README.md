@@ -6,10 +6,22 @@ All example are for HLS video
 
 # Project Module
 
-### `App`
+### [`App`](/app)
 
-Simple implementation of ExoPlayer with HLS video
-   
+Simple implementation of Exoplayer with HLS video
+
+### `Cast`
+
+Implementation of casting (chrome-cast) feature of Exoplayer
+
+### `HLS and MP4 Download`
+
+Implementation of download feature of Exoplayer with HLS and MP4 file
+
+### `DRM Download (with or without license)`
+
+Download feature of Media3 with DRM file
+
 ### `fullscreenDialog`
  
 Player + fullscreen via Dialog
@@ -22,8 +34,17 @@ Player + fullscreen via modifying LayoutParams
 
 Added Fullscreen thanks to [this repository](https://github.com/danyalstd/fullscreen-exoplayer)
 
+<details>
 <img src="https://github.com/yoobi/exoplayer-kotlin/blob/master/Screenshots/fullscreen_layout_params.png" width="300" />
+</details>
 
+### `nativePreview`
+
+Small thumb above progress bar
+
+<details>
+<img src="https://github.com/yoobi/exoplayer-kotlin/blob/master/Screenshots/native_preview.png" width="300" />
+</details>
 
 ### `qualitySelector`
 
@@ -31,8 +52,9 @@ Player + Quality Selector
 
 Added quality selector thanks to [Exoplayer demo](https://github.com/google/ExoPlayer/tree/release-v2/demos/main/src/main/java/com/google/android/exoplayer2/demo)
 
+<details>
 <img src="https://github.com/yoobi/exoplayer-kotlin/blob/master/Screenshots/quality_selector.png" width="300" />
-
+</details>
 
 ### `rvItemPreview`
 
@@ -40,14 +62,9 @@ Exoplayer in a recyclerview allowing a preview onLongClick
 
 Added and forked from [this repo](https://github.com/mitchtabian/Video-Player-RecyclerView)
 
+<details>
 <img src="https://github.com/yoobi/exoplayer-kotlin/blob/master/Screenshots/rv_item_preview.png" width="300" />
-
-### `nativePreview`
-
-Small thumb above progress bar
-
-<img src="https://github.com/yoobi/exoplayer-kotlin/blob/master/Screenshots/native_preview.png" width="300" />
-
+</details>
 
 # Resources
 
