@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Exoplayer-downloadVideo</string>
+    <string name="dialog_option">%1$dp - %2$s</string>
+    <string name="item_download_percentage">Size: %1$s | Progress: %2$d %%</string>
+
+    <string name="exo_download_notification_channel_name">ExoplayerDownload</string>
+    <string name="download_start_error">Failed to start download</string>
+    <string name="exo_download_queued">Download in queue</string>
+    <string name="exo_download_completed">Download completed</string>
+    <string name="exo_download_downloading">Downloading…</string>
+    <string name="exo_download_failed">Download failed</string>
+    <string name="exo_download_stopped">Download stopped</string>
+    <string name="exo_download_removing">Download removing</string>
+    <string name="exo_download_restarting">Download restarting</string>
+
+</resources>
