@@ -10,25 +10,25 @@ All example are for HLS video
 
 Simple implementation of Exoplayer with HLS video
 
-### `Cast`
+### [`Cast`](/cast)
 
 Implementation of casting (chrome-cast) feature of Exoplayer
 
-### `HLS and MP4 Download`
+### [`HLS and MP4 Download`](/downloadvideo)
 
 Implementation of download feature of Exoplayer with HLS and MP4 file
 
-### `DRM Download (with or without license)`
+### [`DRM Download (with or without license)`](/drmdownloadvideo)
 
 Download feature of Media3 with DRM file
 
-### `fullscreenDialog`
+### [`fullscreenDialog`](/fullscreendialog)
  
 Player + fullscreen via Dialog
 
 Added Fullscreen thanks to [this repository](https://github.com/GeoffLedak/ExoplayerFullscreen)
 
-### `fullscreenLayoutParams`
+### [`fullscreenLayoutParams`](/fullscreenlayoutparams)
 
 Player + fullscreen via modifying LayoutParams
 
@@ -38,7 +38,7 @@ Added Fullscreen thanks to [this repository](https://github.com/danyalstd/fullsc
 <img src="https://github.com/yoobi/exoplayer-kotlin/blob/master/Screenshots/fullscreen_layout_params.png" width="300" />
 </details>
 
-### `nativePreview`
+### [`nativePreview`](/nativepreview)
 
 Small thumb above progress bar
 
@@ -46,7 +46,7 @@ Small thumb above progress bar
 <img src="https://github.com/yoobi/exoplayer-kotlin/blob/master/Screenshots/native_preview.png" width="300" />
 </details>
 
-### `qualitySelector`
+### [`qualitySelector`](/qualityselector)
 
 Player + Quality Selector
 
@@ -56,7 +56,7 @@ Added quality selector thanks to [Exoplayer demo](https://github.com/google/ExoP
 <img src="https://github.com/yoobi/exoplayer-kotlin/blob/master/Screenshots/quality_selector.png" width="300" />
 </details>
 
-### `rvItemPreview`
+### [`rvItemPreview`](/rvitempreview)
 
 Exoplayer in a recyclerview allowing a preview onLongClick
 
