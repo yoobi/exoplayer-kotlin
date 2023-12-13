@@ -1,8 +1,8 @@
 object ProjectConfiguration {
     const val applicationId = "io.github.yoobi"
 
-    const val compileSdk = 33
-    const val targetSdk = 33
+    const val compileSdk = 34
+    const val targetSdk = 34
     const val minSdk = 19
     const val buildTools = "30.0.3"
     const val testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

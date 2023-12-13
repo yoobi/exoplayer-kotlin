@@ -46,6 +46,7 @@ class MainActivity : AppCompatActivity(), SessionAvailabilityListener {
 
         castContext = CastContext.getSharedInstance(this)
         castPlayer = CastPlayer(castContext)
+        castPlayer.setPlaybackSpeed(2f)
         castPlayer.setSessionAvailabilityListener(this)
 
         findViewById<MediaRouteButton>(R.id.exo_cast)?.apply {
@@ -68,6 +69,7 @@ class MainActivity : AppCompatActivity(), SessionAvailabilityListener {
         exoPlayer = ExoPlayer.Builder(this).build().apply {
             playWhenReady = isPlayerPlaying
             seekTo(currentWindow, playbackPosition)
+            setPlaybackSpeed(2f)
             setMediaItem(mediaItem, false)
             prepare()
         }
@@ -91,7 +93,7 @@ class MainActivity : AppCompatActivity(), SessionAvailabilityListener {
 
     override fun onStart() {
         super.onStart()
-        if(Util.SDK_INT > 23) {
+        if(Build.VERSION.SDK_INT > 23) {
             initPlayer()
             playerView.onResume()
         }
@@ -99,7 +101,7 @@ class MainActivity : AppCompatActivity(), SessionAvailabilityListener {
 
     override fun onResume() {
         super.onResume()
-        if(Util.SDK_INT <= 23) {
+        if(Build.VERSION.SDK_INT <= 23) {
             initPlayer()
             playerView.onResume()
         }
@@ -107,7 +109,7 @@ class MainActivity : AppCompatActivity(), SessionAvailabilityListener {
 
     override fun onPause() {
         super.onPause()
-        if(Util.SDK_INT <= 23) {
+        if(Build.VERSION.SDK_INT <= 23) {
             playerView.onPause()
             releasePlayer()
         }
@@ -115,7 +117,7 @@ class MainActivity : AppCompatActivity(), SessionAvailabilityListener {
 
     override fun onStop() {
         super.onStop()
-        if(Util.SDK_INT > 23) {
+        if(Build.VERSION.SDK_INT > 23) {
             playerView.onPause()
             releasePlayer()
         }

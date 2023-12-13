@@ -1,14 +1,17 @@
 package io.github.yoobi.nativepreview
 
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
 import android.widget.FrameLayout
 import android.widget.ImageView
+import androidx.annotation.OptIn
 import androidx.appcompat.app.AppCompatActivity
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MimeTypes
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.common.util.Util
 import androidx.media3.datasource.DataSource
 import androidx.media3.datasource.DefaultDataSource
@@ -58,6 +61,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @OptIn(UnstableApi::class)
     private fun initPlayer() {
         exoPlayer = ExoPlayer.Builder(this).build().apply {
             playWhenReady = isPlayerPlaying
@@ -142,7 +146,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        if(Util.SDK_INT > 23) {
+        if(Build.VERSION.SDK_INT > 23) {
             initPlayer()
             playerView.onResume()
         }
@@ -150,7 +154,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        if(Util.SDK_INT <= 23) {
+        if(Build.VERSION.SDK_INT <= 23) {
             initPlayer()
             playerView.onResume()
         }
@@ -158,7 +162,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        if(Util.SDK_INT <= 23) {
+        if(Build.VERSION.SDK_INT <= 23) {
             playerView.onPause()
             releasePlayer()
         }
@@ -166,7 +170,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-        if(Util.SDK_INT > 23) {
+        if(Build.VERSION.SDK_INT > 23) {
             playerView.onPause()
             releasePlayer()
         }

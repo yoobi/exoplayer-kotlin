@@ -18,6 +18,7 @@ dependencies {
 
     implementation(Libraries.Media3.exoplayer)
     implementation(Libraries.Media3.exoplayerui)
+    implementation(Libraries.Media3.exoplayerhls)
 
     implementation(Libraries.TestLibraries.junit)
     implementation(Libraries.AndroidTestLibraries.runner)

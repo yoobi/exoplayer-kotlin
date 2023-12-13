@@ -40,7 +40,7 @@ class MyDownloadService : DownloadService(
     }
 
     override fun getScheduler(): PlatformScheduler? {
-        return if(Util.SDK_INT >= 21) PlatformScheduler(this, JOB_ID) else null
+        return if(Build.VERSION.SDK_INT >= 21) PlatformScheduler(this, JOB_ID) else null
     }
 
     override fun getForegroundNotification(

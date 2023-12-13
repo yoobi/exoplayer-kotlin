@@ -3,6 +3,7 @@ package io.github.yoobi.fullscreendialog
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.pm.ActivityInfo
+import android.os.Build
 import android.os.Bundle
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -11,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MimeTypes
-import androidx.media3.common.util.Util
 import androidx.media3.datasource.DataSource
 import androidx.media3.datasource.DefaultDataSource
 import androidx.media3.exoplayer.ExoPlayer
@@ -89,7 +89,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        if(Util.SDK_INT > 23) {
+        if(Build.VERSION.SDK_INT > 23) {
             initPlayer()
             playerView.onResume()
         }
@@ -97,7 +97,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        if(Util.SDK_INT <= 23) {
+        if(Build.VERSION.SDK_INT <= 23) {
             initPlayer()
             playerView.onResume()
         }
@@ -105,7 +105,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        if(Util.SDK_INT <= 23) {
+        if(Build.VERSION.SDK_INT <= 23) {
             playerView.onPause()
             releasePlayer()
         }
@@ -113,7 +113,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-        if(Util.SDK_INT > 23) {
+        if(Build.VERSION.SDK_INT > 23) {
             playerView.onPause()
             releasePlayer()
         }

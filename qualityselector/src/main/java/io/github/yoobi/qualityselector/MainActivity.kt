@@ -1,27 +1,26 @@
 package io.github.yoobi.qualityselector
 
 import android.app.Dialog
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageButton
+import androidx.annotation.OptIn
 import androidx.appcompat.app.AppCompatActivity
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MimeTypes
 import androidx.media3.common.Player
-import androidx.media3.common.util.Util
-import androidx.media3.datasource.DataSource
-import androidx.media3.datasource.DefaultDataSourceFactory
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
-import androidx.media3.exoplayer.trackselection.MappingTrackSelector
 import androidx.media3.ui.PlayerView
 import androidx.media3.ui.TrackSelectionDialogBuilder
 
+@OptIn(UnstableApi::class)
 class MainActivity : AppCompatActivity() {
 
     private lateinit var exoPlayer: ExoPlayer
-    private lateinit var dataSourceFactory: DataSource.Factory
     private lateinit var trackSelector: DefaultTrackSelector
     private lateinit var playerView: PlayerView
     private lateinit var exoQuality: ImageButton
@@ -42,11 +41,6 @@ class MainActivity : AppCompatActivity() {
 
         playerView = findViewById(R.id.player_view)
         exoQuality = playerView.findViewById(R.id.exo_quality)
-
-        dataSourceFactory = DefaultDataSourceFactory(
-            this,
-            Util.getUserAgent(this, "testapp")
-        )
 
         exoQuality.setOnClickListener {
             if(trackDialog == null) initPopupQuality()
@@ -103,7 +97,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        if(Util.SDK_INT > 23) {
+        if(Build.VERSION.SDK_INT > 23) {
             initPlayer()
             playerView.onResume()
         }
@@ -111,7 +105,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        if(Util.SDK_INT <= 23) {
+        if(Build.VERSION.SDK_INT <= 23) {
             initPlayer()
             playerView.onResume()
         }
@@ -119,7 +113,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        if(Util.SDK_INT <= 23) {
+        if(Build.VERSION.SDK_INT <= 23) {
             playerView.onPause()
             releasePlayer()
         }
@@ -127,7 +121,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-        if(Util.SDK_INT > 23) {
+        if(Build.VERSION.SDK_INT > 23) {
             playerView.onPause()
             releasePlayer()
         }
@@ -136,41 +130,17 @@ class MainActivity : AppCompatActivity() {
     // QUALITY SELECTOR
 
     private fun initPopupQuality() {
-        val mappedTrackInfo = trackSelector.currentMappedTrackInfo
-        var videoRenderer: Int? = null
-
-        if(mappedTrackInfo == null) return else exoQuality.visibility = View.VISIBLE
-
-        for (i in 0 until mappedTrackInfo.rendererCount) {
-            if(isVideoRenderer(mappedTrackInfo, i)) videoRenderer = i
-        }
-
-        if(videoRenderer == null) {
-            exoQuality.visibility = View.GONE
-            return
-        }
-
         val trackSelectionDialogBuilder = TrackSelectionDialogBuilder(
             this,
             getString(R.string.qualitySelector),
             exoPlayer,
-            videoRenderer
+            C.TRACK_TYPE_VIDEO
         )
         trackSelectionDialogBuilder.setTrackNameProvider {
             // Override function getTrackName
             getString(R.string.exo_track_resolution_pixel, it.height)
         }
         trackDialog = trackSelectionDialogBuilder.build()
-    }
-
-    private fun isVideoRenderer(
-        mappedTrackInfo: MappingTrackSelector.MappedTrackInfo,
-        rendererIndex: Int
-    ): Boolean {
-        val trackGroupArray = mappedTrackInfo.getTrackGroups(rendererIndex)
-        if(trackGroupArray.length == 0) return false
-        val trackType = mappedTrackInfo.getRendererType(rendererIndex)
-        return C.TRACK_TYPE_VIDEO == trackType
     }
 
     companion object {

@@ -185,7 +185,7 @@ class PlayerActivity : AppCompatActivity(), DownloadTracker.Listener {
             // And start the Flow if the download is in progress
             onDownloadsChanged(it)
         }
-        if(Util.SDK_INT > 23) {
+        if(Build.VERSION.SDK_INT > 23) {
             initPlayer()
             playerView.onResume()
         }
@@ -193,7 +193,7 @@ class PlayerActivity : AppCompatActivity(), DownloadTracker.Listener {
 
     override fun onResume() {
         super.onResume()
-        if(Util.SDK_INT <= 23) {
+        if(Build.VERSION.SDK_INT <= 23) {
             initPlayer()
             playerView.onResume()
         }
@@ -201,7 +201,7 @@ class PlayerActivity : AppCompatActivity(), DownloadTracker.Listener {
 
     override fun onPause() {
         super.onPause()
-        if(Util.SDK_INT <= 23) {
+        if(Build.VERSION.SDK_INT <= 23) {
             playerView.onPause()
             releasePlayer()
         }
@@ -210,7 +210,7 @@ class PlayerActivity : AppCompatActivity(), DownloadTracker.Listener {
     override fun onStop() {
         playerViewModel.stopFlow()
         super.onStop()
-        if(Util.SDK_INT > 23) {
+        if(Build.VERSION.SDK_INT > 23) {
             playerView.onPause()
             releasePlayer()
         }

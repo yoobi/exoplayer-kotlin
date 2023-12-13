@@ -2,28 +2,25 @@ package io.github.yoobi.fullscreenlayoutparams
 
 import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo
+import android.os.Build
 import android.os.Bundle
-import android.view.View
-import android.widget.FrameLayout
-import android.widget.ImageView
+import android.util.Log
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MimeTypes
-import androidx.media3.common.util.Util
-import androidx.media3.datasource.DataSource
-import androidx.media3.datasource.DefaultDataSource
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var exoPlayer: ExoPlayer
-    private lateinit var dataSourceFactory: DataSource.Factory
     private lateinit var playerView: PlayerView
-    private lateinit var exoFullScreenIcon: ImageView
-    private lateinit var exoFullScreenBtn: FrameLayout
+    private val windowInsetsController by lazy {
+        WindowInsetsControllerCompat(window, window.decorView)
+    }
 
     private var currentWindow = 0
     private var playbackPosition: Long = 0
@@ -38,11 +35,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         playerView = findViewById(R.id.player_view)
-        exoFullScreenBtn = playerView.findViewById(R.id.exo_fullscreen_button)
-        exoFullScreenIcon = playerView.findViewById(R.id.exo_fullscreen_icon)
-        dataSourceFactory = DefaultDataSource.Factory(this)
-
-        initFullScreenButton()
 
         if(savedInstanceState != null) {
             currentWindow = savedInstanceState.getInt(STATE_RESUME_WINDOW)
@@ -59,12 +51,21 @@ class MainActivity : AppCompatActivity() {
             setMediaItem(mediaItem, false)
             prepare()
         }
+        playerView.setFullscreenButtonClickListener {
+            Log.e("MainActivity", "isFullscreen: $it")
+            if(it) {
+                openFullscreen()
+            } else {
+                closeFullscreen()
+            }
+        }
         playerView.player = exoPlayer
 
         if(isFullscreen) openFullscreen()
     }
 
     private fun releasePlayer() {
+        playerView.setFullscreenButtonClickListener(null)
         isPlayerPlaying = exoPlayer.playWhenReady
         playbackPosition = exoPlayer.currentPosition
         currentWindow = exoPlayer.currentMediaItemIndex
@@ -81,7 +82,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        if(Util.SDK_INT > 23) {
+        if(Build.VERSION.SDK_INT > 23) {
             initPlayer()
             playerView.onResume()
         }
@@ -89,7 +90,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        if(Util.SDK_INT <= 23) {
+        if(Build.VERSION.SDK_INT <= 23) {
             initPlayer()
             playerView.onResume()
         }
@@ -97,7 +98,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        if(Util.SDK_INT <= 23) {
+        if(Build.VERSION.SDK_INT <= 23) {
             playerView.onPause()
             releasePlayer()
         }
@@ -105,7 +106,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-        if(Util.SDK_INT > 23) {
+        if(Build.VERSION.SDK_INT > 23) {
             playerView.onPause()
             releasePlayer()
         }
@@ -121,53 +122,37 @@ class MainActivity : AppCompatActivity() {
 
     // FULLSCREEN PART
 
-    private fun initFullScreenButton() {
-        exoFullScreenBtn.setOnClickListener {
-            if(!isFullscreen) {
-                openFullscreen()
-            } else {
-                closeFullscreen()
-            }
-        }
-    }
-
     @SuppressLint("SourceLockedOrientationActivity")
     private fun openFullscreen() {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-        exoFullScreenIcon.setImageDrawable(
-            ContextCompat.getDrawable(this, R.drawable.ic_fullscreen_shrink)
-        )
-        playerView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorBlack))
         val params: LinearLayout.LayoutParams = playerView.layoutParams as LinearLayout.LayoutParams
         params.width = LinearLayout.LayoutParams.MATCH_PARENT
         params.height = LinearLayout.LayoutParams.MATCH_PARENT
         playerView.layoutParams = params
-        supportActionBar?.hide()
         hideSystemUi()
         isFullscreen = true
     }
 
     private fun closeFullscreen() {
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR
-        exoFullScreenIcon.setImageDrawable(
-            ContextCompat.getDrawable(this, R.drawable.ic_fullscreen_expand)
-        )
-        playerView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorWhite))
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         val params: LinearLayout.LayoutParams = playerView.layoutParams as LinearLayout.LayoutParams
         params.width = LinearLayout.LayoutParams.MATCH_PARENT
         params.height = 0
         playerView.layoutParams = params
-        supportActionBar?.show()
-        playerView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
+        showSystemUi()
         isFullscreen = false
     }
 
     private fun hideSystemUi() {
-        playerView.systemUiVisibility = (
-                View.SYSTEM_UI_FLAG_IMMERSIVE
-                        or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                        or View.SYSTEM_UI_FLAG_FULLSCREEN
-                )
+        supportActionBar?.hide()
+        windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
+        windowInsetsController.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+    }
+
+    private fun showSystemUi() {
+        supportActionBar?.show()
+        windowInsetsController.show(WindowInsetsCompat.Type.systemBars())
+        windowInsetsController.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_DEFAULT
     }
 
     companion object {

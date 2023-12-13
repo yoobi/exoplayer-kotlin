@@ -22,7 +22,7 @@ object Libraries {
         const val viewmodel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
 
         object Ktx {
-            const val core = "androidx.core:core-ktx:1.5.0"
+            const val core = "androidx.core:core-ktx:1.12.0"
         }
     }
 
