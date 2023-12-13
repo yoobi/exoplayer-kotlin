@@ -4,7 +4,7 @@ object Libraries {
         // Don't forget to update the version in:
         // root/buildSrc/build.gradle.kts
         // root/build.gradle.kts
-        private const val version = "1.8.10"
+        private const val version = "1.9.10"
 
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$version"
     }
@@ -31,7 +31,7 @@ object Libraries {
     }
 
     object Media3 {
-        private const val version = "1.1.1"
+        private const val version = "1.2.0"
 
         const val exoplayer = "androidx.media3:media3-exoplayer:$version"
         const val exoplayerui = "androidx.media3:media3-ui:$version"
