@@ -2,10 +2,12 @@ package io.github.yoobi.downloadvideo
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.annotation.OptIn
 import androidx.appcompat.app.AppCompatActivity
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.MimeTypes
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.offline.DownloadService
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,6 +15,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import io.github.yoobi.downloadvideo.common.MyDownloadService
 import io.github.yoobi.downloadvideo.offlineVideo.OfflineVideoActivity
 
+@OptIn(UnstableApi::class)
 class MainActivity : AppCompatActivity() {
     private val listMediaItem: List<MediaItem> = listOf(
         MediaItem.Builder()

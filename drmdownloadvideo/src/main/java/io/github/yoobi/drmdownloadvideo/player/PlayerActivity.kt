@@ -1,7 +1,9 @@
 package io.github.yoobi.drmdownloadvideo.player
 
+import android.os.Build
 import android.os.Bundle
 import android.widget.ImageView
+import androidx.annotation.OptIn
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
@@ -10,6 +12,7 @@ import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaItem.DrmConfiguration
 import androidx.media3.common.MediaMetadata
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.common.util.Util
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.drm.DefaultDrmSessionManagerProvider
@@ -31,6 +34,7 @@ import io.github.yoobi.drmdownloadvideo.common.PieProgressDrawable
 import kotlin.math.roundToInt
 
 
+@OptIn(UnstableApi::class)
 class PlayerActivity : AppCompatActivity(), DownloadTracker.Listener {
 
     private lateinit var exoPlayer: ExoPlayer

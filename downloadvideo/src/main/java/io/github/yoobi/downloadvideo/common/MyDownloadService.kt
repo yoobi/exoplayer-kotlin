@@ -2,7 +2,10 @@ package io.github.yoobi.downloadvideo.common
 
 import android.app.Notification
 import android.content.Context
+import android.os.Build
+import androidx.annotation.OptIn
 import androidx.media3.common.util.NotificationUtil
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.common.util.Util
 import androidx.media3.exoplayer.offline.Download
 import androidx.media3.exoplayer.offline.DownloadManager
@@ -15,6 +18,7 @@ import io.github.yoobi.downloadvideo.common.DownloadUtil.DOWNLOAD_NOTIFICATION_C
 private const val JOB_ID = 8888
 private const val FOREGROUND_NOTIFICATION_ID = 8989
 
+@OptIn(UnstableApi::class)
 class MyDownloadService : DownloadService(
     FOREGROUND_NOTIFICATION_ID,
     DEFAULT_FOREGROUND_NOTIFICATION_UPDATE_INTERVAL,

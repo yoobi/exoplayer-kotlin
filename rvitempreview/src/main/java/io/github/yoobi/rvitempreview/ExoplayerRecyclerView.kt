@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.ProgressBar
+import androidx.annotation.OptIn
 import androidx.media3.common.Player
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.DataSource
 import androidx.media3.datasource.DefaultDataSource
 import androidx.media3.exoplayer.ExoPlayer
@@ -17,6 +19,7 @@ import androidx.media3.ui.AspectRatioFrameLayout
 import androidx.media3.ui.PlayerView
 import androidx.recyclerview.widget.RecyclerView
 
+@OptIn(UnstableApi::class)
 class ExoplayerRecyclerView : RecyclerView {
 
     // ui
@@ -40,7 +43,6 @@ class ExoplayerRecyclerView : RecyclerView {
 
     private fun init(context: Context) {
         videoSurfaceView = PlayerView(context)
-        videoSurfaceView.videoSurfaceView
         videoSurfaceView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_ZOOM
 
         // 2. Create the player
@@ -114,9 +116,7 @@ class ExoplayerRecyclerView : RecyclerView {
         val dataSourceFactory: DataSource.Factory = DefaultDataSource.Factory(context)
 
         holder.videoPreview.let {
-            val videoSource: MediaSource =
-                ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(it)
-            videoPlayer?.setMediaSource(videoSource)
+            videoPlayer?.setMediaItem(it)
             videoPlayer?.prepare()
             videoPlayer?.playWhenReady = true
         }

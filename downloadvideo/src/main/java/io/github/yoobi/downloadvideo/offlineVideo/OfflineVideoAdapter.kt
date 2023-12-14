@@ -8,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.OptIn
 import androidx.core.content.ContextCompat
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.offline.Download
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -23,6 +25,7 @@ import io.github.yoobi.downloadvideo.common.formatFileSize
 import io.github.yoobi.downloadvideo.player.PlayerActivity
 import kotlin.math.roundToInt
 
+@OptIn(UnstableApi::class)
 class OfflineVideoAdapter :
     ListAdapter<Download, OfflineVideoAdapter.DownloadedVideoViewHolder>(DownloadDiffCallback) {
 

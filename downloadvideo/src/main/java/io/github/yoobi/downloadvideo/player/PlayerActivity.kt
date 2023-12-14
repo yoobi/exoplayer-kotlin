@@ -1,13 +1,16 @@
 package io.github.yoobi.downloadvideo.player
 
+import android.os.Build
 import android.os.Bundle
 import android.widget.ImageView
+import androidx.annotation.OptIn
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.common.util.Util
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.offline.Download
@@ -25,6 +28,7 @@ import io.github.yoobi.downloadvideo.common.MediaItemTag
 import io.github.yoobi.downloadvideo.common.PieProgressDrawable
 import kotlin.math.roundToInt
 
+@OptIn(UnstableApi::class)
 class PlayerActivity : AppCompatActivity(), DownloadTracker.Listener {
 
     private lateinit var exoPlayer: ExoPlayer
