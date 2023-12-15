@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import android.widget.PopupMenu
 import android.widget.Toast
+import androidx.annotation.OptIn
 import androidx.appcompat.app.AlertDialog
 import androidx.media3.common.C
 import androidx.media3.common.Format
@@ -14,6 +15,7 @@ import androidx.media3.common.MediaItem
 import androidx.media3.common.MimeTypes
 import androidx.media3.common.TrackGroup
 import androidx.media3.common.util.Assertions
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.common.util.Util
 import androidx.media3.datasource.HttpDataSource
 import androidx.media3.exoplayer.DefaultRenderersFactory
@@ -40,6 +42,7 @@ private const val TAG = "DownloadTracker"
 private const val DEFAULT_BITRATE = 500_000
 
 /** Tracks media that has been downloaded.  */
+@OptIn(UnstableApi::class)
 class DownloadTracker(
     context: Context,
     private val httpDataSourceFactory: HttpDataSource.Factory,
