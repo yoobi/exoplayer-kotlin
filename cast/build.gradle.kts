@@ -1,30 +1,21 @@
 plugins {
-    androidApp()
-    kotlinAndroid()
+    id("io.github.yoobi.app")
 }
 
 android {
-    setAppConfig("cast")
-    useDefaultBuildTypes()
-    activateJava17()
+    namespace = "io.github.yoobi.cast"
+    defaultConfig {
+        applicationId = "io.github.yoobi.cast"
+    }
 }
 
 dependencies {
+    implementation(libs.material)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.mediarouter)
 
-    implementation(Libraries.Kotlin.stdlib)
-    implementation(Libraries.Androidx.appcompat)
-    implementation(Libraries.Androidx.material)
-    implementation(Libraries.Androidx.constraintlayout)
-    implementation(Libraries.Androidx.Ktx.core)
-    implementation(Libraries.Androidx.mediarouter)
-
-    implementation(Libraries.Media3.exoplayer)
-    implementation(Libraries.Media3.exoplayerui)
-    implementation(Libraries.Media3.exoplayerhls)
-    implementation(Libraries.Media3.exoplayercast)
-
-    implementation(Libraries.TestLibraries.junit)
-    implementation(Libraries.AndroidTestLibraries.runner)
-    implementation(Libraries.AndroidTestLibraries.Espresso.core)
-
+    implementation(libs.bundles.media3.basic)
+    implementation(libs.androidx.media3.cast)
 }

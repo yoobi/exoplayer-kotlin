@@ -1,30 +1,21 @@
 plugins {
-    androidApp()
-    kotlinAndroid()
+    id("io.github.yoobi.app")
 }
 
 android {
-    setAppConfig("nativepreview")
-    useDefaultBuildTypes()
-    activateJava17()
+    namespace = "io.github.yoobi.nativepreview"
+    defaultConfig {
+        applicationId = "io.github.yoobi.nativepreview"
+    }
 }
 
 dependencies {
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.recyclerview)
+    implementation(libs.glide)
 
-    implementation(Libraries.Kotlin.stdlib)
-    implementation(Libraries.Androidx.appcompat)
-    implementation(Libraries.Androidx.constraintlayout)
-    implementation(Libraries.Androidx.Ktx.core)
-    implementation(Libraries.Androidx.recyclerview)
-
-    implementation(Libraries.Media3.exoplayer)
-    implementation(Libraries.Media3.exoplayerui)
-    implementation(Libraries.Media3.exoplayerhls)
-
-    implementation(Libraries.Glide.glide)
-
-    implementation(Libraries.TestLibraries.junit)
-    implementation(Libraries.AndroidTestLibraries.runner)
-    implementation(Libraries.AndroidTestLibraries.Espresso.core)
+    implementation(libs.bundles.media3.basic)
 
 }

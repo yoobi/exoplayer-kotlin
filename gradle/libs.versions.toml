@@ -1,0 +1,48 @@
+[versions]
+minSdk = "19"
+targetSdk = "34"
+compileSdk = "34"
+androidGradle = "8.4.2"
+kotlin = "1.9.23"
+glide = "4.16.0"
+material = "1.3.0"
+
+androidx-media3 = "1.2.0"
+androidx-recyclerview = "1.3.2"
+androidx-core-ktx = "1.12.0"
+androidx-mediarouter = "1.4.0"
+androidx-appcompat = "1.6.1"
+androidx-constraintlayout = "2.1.4"
+androidx-coordinatorlayout = "1.1.0"
+androidx-lifecycle-ktx = "2.7.0"
+
+[libraries]
+android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "androidGradle" }
+kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+
+androidx-media3-exoplayer = { module = "androidx.media3:media3-exoplayer", version.ref = "androidx-media3" }
+androidx-media3-ui = { module = "androidx.media3:media3-ui", version.ref = "androidx-media3" }
+androidx-media3-common = { module = "androidx.media3:media3-common", version.ref = "androidx-media3" }
+androidx-media3-exoplayer-dash = { module = "androidx.media3:media3-exoplayer-dash", version.ref = "androidx-media3" }
+androidx-media3-exoplayer-hls = { module = "androidx.media3:media3-exoplayer-hls", version.ref = "androidx-media3" }
+androidx-media3-cast = { module = "androidx.media3:media3-cast", version.ref = "androidx-media3" }
+androidx-media3-datasource-cronet = { module = "androidx.media3:media3-datasource-cronet", version.ref = "androidx-media3" }
+
+glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+
+material = { module = "com.google.android.material:material", version.ref = "material" }
+androidx-mediarouter = { module = "androidx.mediarouter:mediarouter", version.ref = "androidx-mediarouter" }
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
+androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "androidx-constraintlayout" }
+androidx-coordinatorlayout = { module = "androidx.coordinatorlayout:coordinatorlayout", version.ref = "androidx-coordinatorlayout" }
+androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "androidx-recyclerview" }
+androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "androidx-lifecycle-ktx" }
+androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidx-lifecycle-ktx" }
+androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx-core-ktx" }
+
+[plugins]
+androidApplication = { id = "com.android.application", version.ref = "androidGradle" }
+kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+
+[bundles]
+media3-basic = ["androidx-media3-exoplayer", "androidx-media3-ui", "androidx-media3-exoplayer-hls"]

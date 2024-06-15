@@ -1,28 +1,20 @@
 plugins {
-    androidApp()
-    kotlinAndroid()
+    id("io.github.yoobi.app")
 }
 
 android {
-    setAppConfig("fullscreenlayoutparams")
-    useDefaultBuildTypes()
-    activateJava17()
+    namespace = "io.github.yoobi.fullscreenlayoutparams"
+    defaultConfig {
+        applicationId = "io.github.yoobi.fullscreenlayoutparams"
+    }
 }
 
 dependencies {
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.core.ktx)
 
-    implementation(Libraries.Kotlin.stdlib)
-    implementation(Libraries.Androidx.appcompat)
-    implementation(Libraries.Androidx.constraintlayout)
-    implementation(Libraries.Androidx.Ktx.core)
-
-    implementation(Libraries.Media3.exoplayer)
-    implementation(Libraries.Media3.exoplayerui)
-    implementation(Libraries.Media3.exoplayercommon)
-    implementation(Libraries.Media3.exoplayerhls)
-
-    implementation(Libraries.TestLibraries.junit)
-    implementation(Libraries.AndroidTestLibraries.runner)
-    implementation(Libraries.AndroidTestLibraries.Espresso.core)
+    implementation(libs.bundles.media3.basic)
+    implementation(libs.androidx.media3.common)
 
 }

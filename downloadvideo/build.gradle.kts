@@ -1,33 +1,24 @@
 plugins {
-    androidApp()
-    kotlinAndroid()
+    id("io.github.yoobi.app")
 }
 
 android {
-    setAppConfig("downloadvideo")
-    useDefaultBuildTypes()
-    activateJava17()
+    namespace = "io.github.yoobi.downloadvideo"
+    defaultConfig {
+        applicationId = "io.github.yoobi.downloadvideo"
+    }
 }
 
 dependencies {
+    implementation(libs.material)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.coordinatorlayout)
+    implementation(libs.androidx.recyclerview)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
-    implementation(Libraries.Kotlin.stdlib)
-    implementation(Libraries.Androidx.Ktx.core)
-    implementation(Libraries.Androidx.appcompat)
-    implementation(Libraries.Androidx.constraintlayout)
-    implementation(Libraries.Androidx.coordinatorlayout)
-    implementation(Libraries.Androidx.material)
-    implementation(Libraries.Androidx.recyclerview)
-    implementation(Libraries.Androidx.lifecycle)
-    implementation(Libraries.Androidx.viewmodel)
-
-    implementation(Libraries.Media3.exoplayer)
-    implementation(Libraries.Media3.exoplayerhls)
-    implementation(Libraries.Media3.exoplayerui)
-    implementation(Libraries.Media3.exoplayercornet)
-
-    implementation(Libraries.TestLibraries.junit)
-    implementation(Libraries.AndroidTestLibraries.runner)
-    implementation(Libraries.AndroidTestLibraries.Espresso.core)
-
+    implementation(libs.bundles.media3.basic)
+    implementation(libs.androidx.media3.datasource.cronet)
 }
