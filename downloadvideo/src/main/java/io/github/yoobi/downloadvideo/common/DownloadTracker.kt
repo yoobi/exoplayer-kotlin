@@ -29,10 +29,10 @@ import androidx.media3.exoplayer.source.TrackGroupArray
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import io.github.yoobi.downloadvideo.R
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.withContext
 import java.io.IOException
@@ -181,22 +181,20 @@ class DownloadTracker(
         }
     }
 
-    @ExperimentalCoroutinesApi
-    suspend fun getAllDownloadProgressFlow(): Flow<List<Download>> = callbackFlow {
-        while (coroutineContext.isActive) {
-            offer(downloads.values.toList())
+    suspend fun getAllDownloadProgressFlow(): Flow<List<Download>> = flow {
+        while (currentCoroutineContext().isActive) {
+            emit(downloads.values.toList())
             delay(1000)
         }
     }
 
-    @ExperimentalCoroutinesApi
     suspend fun getCurrentProgressDownload(uri: Uri?): Flow<Float?> {
         var percent: Float? =
             downloadManager.currentDownloads.find { it.request.uri == uri }?.percentDownloaded
-        return callbackFlow {
+        return flow {
             while (percent != null) {
                 percent = downloadManager.currentDownloads.find { it.request.uri == uri }?.percentDownloaded
-                offer(percent)
+                emit(percent)
                 withContext(Dispatchers.IO) {
                     delay(1000)
                 }

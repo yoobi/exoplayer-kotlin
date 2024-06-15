@@ -1,7 +1,11 @@
 package io.github.yoobi.downloadvideo
 
+import android.Manifest
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.OptIn
 import androidx.appcompat.app.AppCompatActivity
 import androidx.media3.common.MediaItem
@@ -70,8 +74,26 @@ class MainActivity : AppCompatActivity() {
             .build(),
     )
 
+    private val permissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        val text = if (isGranted) {
+            "You've granted permission to see download notifications"
+        } else {
+            "You won't see notification when downloading, go to settings to allow"
+        }
+        Toast.makeText(
+            this,
+            text,
+            Toast.LENGTH_LONG
+        ).show()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
         setContentView(R.layout.activity_main)
 
         // Can be moved to Application class

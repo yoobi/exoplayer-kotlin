@@ -1,7 +1,11 @@
 package io.github.yoobi.drmdownloadvideo
 
+import android.Manifest
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.OptIn
 import androidx.appcompat.app.AppCompatActivity
 import androidx.media3.common.C
@@ -35,8 +39,6 @@ class MainActivity : AppCompatActivity() {
             .setMimeType(MimeTypes.APPLICATION_MPD)
             .setMediaMetadata(MediaMetadata.Builder().setTitle("Clear - HD (WebM, VP9)").build())
             .build(),
-
-
         MediaItem.Builder()
             .setUri("https://storage.googleapis.com/wvmedia/cenc/h264/tears/tears.mpd")
             .setMimeType(MimeTypes.APPLICATION_MPD)
@@ -59,8 +61,25 @@ class MainActivity : AppCompatActivity() {
             .build(),
     )
 
+    private val permissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        val text = if (isGranted) {
+            "You've granted permission to see download notifications"
+        } else {
+            "You won't see notification when downloading, go to settings to allow"
+        }
+        Toast.makeText(
+            this,
+            text,
+            Toast.LENGTH_LONG
+        ).show()
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
         setContentView(R.layout.activity_main)
 
         // Can be moved to Application class
@@ -81,5 +100,7 @@ class MainActivity : AppCompatActivity() {
         findViewById<FloatingActionButton>(R.id.fab_my_downloads).setOnClickListener {
             startActivity(Intent(this, OfflineVideoActivity::class.java))
         }
+
+
     }
 }

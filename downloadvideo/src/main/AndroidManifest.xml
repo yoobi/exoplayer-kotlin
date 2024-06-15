@@ -2,8 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
     <application
         android:allowBackup="true"
@@ -24,7 +26,9 @@
         <activity android:exported="true" android:name=".offlineVideo.OfflineVideoActivity" />
         <activity android:exported="true" android:name=".player.PlayerActivity" />
 
-        <service android:name=".common.MyDownloadService" android:exported="false">
+        <service android:name=".common.MyDownloadService"
+            android:exported="false"
+            android:foregroundServiceType="dataSync">
             <!-- This is needed for Scheduler -->
             <intent-filter>
                 <action android:name="androidx.media3.exoplayer.downloadService.action.RESTART"/>

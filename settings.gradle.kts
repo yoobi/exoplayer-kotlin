@@ -33,3 +33,6 @@ include(
     ":drmdownloadvideo"
 )
 rootProject.name = "exoplayer-kotlin"
+
+// https://issuetracker.google.com/issues/328871352
+gradle.startParameter.excludedTaskNames.addAll(listOf(":build-logic:convention:testClasses"))

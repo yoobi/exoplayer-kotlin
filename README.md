@@ -1,6 +1,6 @@
 # Exoplayer-kotlin
 
-Example of androix3.media3 v1.1.1 in Kotlin
+Example of androidx.media3 v1.3.1 in Kotlin
 
 All example are for HLS video
 
